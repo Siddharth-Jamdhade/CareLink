@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareLink Handoff — Problem vs Solution</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+@page{size:A4;margin:0}
+body{font-family:'Inter',sans-serif;background:#fff;color:#1a1a2e;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+
+/* ---- PAGE ---- */
+.page{width:210mm;min-height:297mm;margin:0 auto;page-break-after:always;position:relative;overflow:hidden}
+.page:last-child{page-break-after:auto}
+@media screen{.page{box-shadow:0 4px 40px rgba(0,0,0,.12);margin:20px auto;border-radius:4px}body{background:#ddd}}
+
+/* ---- COVER ---- */
+.cover{background:linear-gradient(160deg,#0F0F1A 0%,#1A1A2E 45%,#0F3460 100%);display:flex;flex-direction:column;justify-content:space-between;padding:50px}
+.cover-glow1{position:absolute;top:-80px;right:-80px;width:450px;height:450px;background:radial-gradient(circle,rgba(108,60,225,.3),transparent 65%);border-radius:50%;pointer-events:none}
+.cover-glow2{position:absolute;bottom:-60px;left:-60px;width:380px;height:380px;background:radial-gradient(circle,rgba(0,212,170,.18),transparent 65%);border-radius:50%;pointer-events:none}
+.cover-tag{display:inline-block;background:rgba(108,60,225,.35);border:1px solid rgba(108,60,225,.6);color:#c4b0ff;padding:7px 22px;border-radius:50px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:44px;position:relative;z-index:2}
+.cover-main{position:relative;z-index:2}
+.cover-main h1{font-size:54px;font-weight:900;color:#fff;line-height:1.05;letter-spacing:-1.5px;margin-bottom:10px}
+.cover-main h1 em{font-style:normal;background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cover-main p{font-size:16px;color:#a4b0cc;font-weight:300;line-height:1.6;max-width:500px;margin-bottom:40px}
+.cover-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:50px;position:relative;z-index:2}
+.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#c8d0e0;padding:6px 16px;border-radius:50px;font-size:11px;font-weight:600}
+.chip.purple{background:rgba(108,60,225,.2);border-color:rgba(108,60,225,.4);color:#c4b0ff}
+.chip.green{background:rgba(0,212,170,.15);border-color:rgba(0,212,170,.35);color:#00D4AA}
+.cover-meta{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center}
+.cover-meta p{color:#5C6B8A;font-size:12px;line-height:1.7}
+.cover-meta strong{color:#a4b0cc;font-weight:600}
+
+/* ---- CONTENT PAGE ---- */
+.cp{padding:44px 50px;display:flex;flex-direction:column}
+.pg-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:16px;border-bottom:2px solid #f0f0f8}
+.pg-hd-title{font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#a4b0cc;font-weight:700}
+.pg-hd-num{background:#1a1a2e;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.section-hed{font-size:30px;font-weight:900;color:#1a1a2e;letter-spacing:-.5px;margin-bottom:5px;line-height:1.2}
+.section-sub{font-size:13px;color:#5C6B8A;margin-bottom:26px;line-height:1.5}
+
+/* ---- PROBLEM STATEMENT ---- */
+.ps-big{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:14px;padding:28px 32px;margin-bottom:20px;position:relative;overflow:hidden}
+.ps-big::before{content:'"';position:absolute;top:-10px;left:18px;font-size:80px;color:rgba(108,60,225,.2);font-family:Georgia,serif;line-height:1}
+.ps-big p{font-size:15px;color:#e8ecf4;font-style:italic;line-height:1.7;padding-left:30px;font-weight:300}
+.ps-big .ps-source{color:#6C3CE1;font-size:11px;font-weight:700;margin-top:10px;padding-left:30px;font-style:normal}
+
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.pain-card{border:1px solid #eee;border-radius:12px;padding:18px 16px}
+.pain-icon{font-size:28px;margin-bottom:10px}
+.pain-card h4{font-size:13px;font-weight:800;color:#1a1a2e;margin-bottom:5px}
+.pain-card p{font-size:11px;color:#5C6B8A;line-height:1.55}
+
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.stat-box{text-align:center;padding:18px 10px;border-radius:12px;border:2px solid #f0f0f8}
+.stat-num{font-size:32px;font-weight:900;background:linear-gradient(135deg,#6C3CE1,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#5C6B8A;font-weight:600;line-height:1.4}
+
+/* ---- GAP FLOW ---- */
+.gap-flow{display:flex;align-items:center;justify-content:center;gap:0;margin:20px 0;flex-wrap:nowrap}
+.gap-node{text-align:center;flex:0 0 auto}
+.gap-circle{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 8px;border:3px solid}
+.gc-red{background:#FFE8EA;border-color:#FF4757}
+.gc-orange{background:#FFF3E0;border-color:#FFA502}
+.gc-gray{background:#F0F0F8;border-color:#A4B0CC;border-style:dashed}
+.gap-lbl{font-size:10px;font-weight:700;color:#5C6B8A;text-transform:uppercase;letter-spacing:.5px}
+.gap-arrow{font-size:18px;color:#d0d5e0;margin:0 6px;padding-bottom:18px}
+
+/* ---- MARKET TABLE ---- */
+.mkt-table{width:100%;border-collapse:collapse;font-size:10.5px;margin:10px 0}
+.mkt-table th{background:#1a1a2e;color:#fff;padding:9px 12px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+.mkt-table td{padding:9px 12px;border-bottom:1px solid #f0f0f8;vertical-align:top;line-height:1.45}
+.mkt-table tr:last-child td{border-bottom:none}
+.mkt-table td:first-child{font-weight:700;color:#1a1a2e;white-space:nowrap}
+.mkt-table .bad{color:#C0392B}
+.mkt-table .ok{color:#E65100}
+.mkt-table .us{color:#00795A;font-weight:700}
+.xmark{color:#FF4757;font-weight:800}
+.check-mark{color:#2ED573;font-weight:800}
+.half-mark{color:#FFA502;font-weight:800}
+
+/* ---- SOLUTION CARDS ---- */
+.sol-feat{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.sf-card{border-radius:12px;padding:18px 16px;border:1px solid}
+.sf-card h4{font-size:13px;font-weight:800;margin-bottom:5px}
+.sf-card p{font-size:11px;line-height:1.55}
+.sf-purple{background:#EDE5FF;border-color:rgba(108,60,225,.2)}
+.sf-purple h4{color:#4A1FB8}
+.sf-purple p{color:#6C3CE1}
+.sf-green{background:#E0FFF5;border-color:rgba(0,212,170,.25)}
+.sf-green h4{color:#00795A}
+.sf-green p{color:#00B894}
+.sf-red{background:#FFE8EA;border-color:rgba(255,71,87,.2)}
+.sf-red h4{color:#C0392B}
+.sf-red p{color:#E74C3C}
+.sf-orange{background:#FFF3E0;border-color:rgba(255,165,2,.25)}
+.sf-orange h4{color:#E65100}
+.sf-orange p{color:#FFA502}
+
+/* ---- HOW DIFFERENT ---- */
+.diff-row{display:flex;gap:14px;margin-bottom:14px}
+.diff-box{flex:1;border-radius:12px;padding:18px 16px;border:2px solid}
+.diff-box h4{font-size:12px;font-weight:800;margin-bottom:8px}
+.diff-box ul{list-style:none;padding:0}
+.diff-box li{font-size:11px;margin-bottom:5px;padding-left:16px;position:relative;line-height:1.4}
+.diff-box li::before{position:absolute;left:0;font-weight:800}
+.diff-them{background:#FFF8F8;border-color:#FFD5D5}
+.diff-them h4{color:#C0392B}
+.diff-them li::before{content:'✗';color:#FF4757}
+.diff-them li{color:#5C6B8A}
+.diff-us{background:#F0FFF8;border-color:#B0EDD5}
+.diff-us h4{color:#00795A}
+.diff-us li::before{content:'✓';color:#2ED573}
+.diff-us li{color:#2C3E6B}
+
+/* ---- CLOSING ---- */
+.closing{background:linear-gradient(160deg,#0F0F1A,#0F3460);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:50px;position:relative;overflow:hidden}
+.closing-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(108,60,225,.18),transparent 65%);border-radius:50%;pointer-events:none}
+.closing h2{font-size:32px;font-weight:900;color:#fff;line-height:1.4;max-width:560px;position:relative;z-index:2;margin-bottom:20px}
+.closing h2 span{background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing p{font-size:13px;color:#a4b0cc;max-width:440px;line-height:1.7;position:relative;z-index:2}
+
+/* ---- CALLOUTS ---- */
+.call{border-left:4px solid;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:11px;line-height:1.55}
+.c-purple{border-color:#6C3CE1;background:#EDE5FF;color:#4A1FB8}
+.c-green{border-color:#00D4AA;background:#E0FFF5;color:#00795A}
+.c-red{border-color:#FF4757;background:#FFE8EA;color:#C0392B}
+
+/* ---- TIMELINE ---- */
+.timeline-dark{background:#1E1E2E;border-radius:12px;padding:20px 24px;margin:14px 0}
+.tl-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.tl-row:last-child{margin-bottom:0}
+.tl-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.td-g{background:#2ED573;box-shadow:0 0 8px rgba(46,213,115,.4)}
+.td-y{background:#FFA502;box-shadow:0 0 8px rgba(255,165,2,.4)}
+.td-r{background:#FF4757;box-shadow:0 0 8px rgba(255,71,87,.4)}
+.td-d{background:#5C6B8A;border:2px dashed #A4B0CC}
+.tl-line{width:36px;height:2px;background:#2C3E6B;flex-shrink:0}
+.tl-label{font-size:11.5px;color:#c8d0e0;flex:1}
+.tl-tag{font-size:9px;font-weight:700;padding:3px 10px;border-radius:50px;text-transform:uppercase;white-space:nowrap}
+.tt-v{background:rgba(46,213,115,.2);color:#2ED573}
+.tt-u{background:rgba(255,165,2,.2);color:#FFA502}
+.tt-c{background:rgba(255,71,87,.2);color:#FF4757}
+.tt-m{background:rgba(92,107,138,.3);color:#A4B0CC}
+
+.pill{display:inline-block;padding:3px 12px;border-radius:50px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+.p-hw{background:#FFF3E0;color:#E65100}
+.p-ai{background:#EDE5FF;color:#6C3CE1}
+.p-offline{background:#E3F2FD;color:#1565C0}
+.p-novel{background:#FFE8EA;color:#C0392B}
+
+.pg-footer{margin-top:auto;padding-top:14px;border-top:1px solid #f0f0f8;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#a4b0cc}
+.pg-footer strong{color:#5C6B8A}
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER ==================== -->
+<div class="page cover">
+  <div class="cover-glow1"></div>
+  <div class="cover-glow2"></div>
+  <div>
+    <div class="cover-tag">Health-A-Thon 2026 · Maternal &amp; Women's Health</div>
+    <div class="cover-main">
+      <h1>Problem.<br><em>Gap.</em><br>Our Solution.</h1>
+      <p>A full picture of why the maternal care handoff is broken, what exists today, and exactly how CareLink Handoff fixes it differently from anything on the market.</p>
+    </div>
+    <div class="cover-chips">
+      <span class="chip purple">CareLink Handoff</span>
+      <span class="chip green">Consultation Readiness</span>
+      <span class="chip">Patient Journey Review</span>
+      <span class="chip">LMIC Settings</span>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <p><strong>Siddharth Balu Jamdhade</strong><br>YCCE, Nagpur · B.Tech CSE (IoT)</p>
+    <p style="text-align:right"><strong>Track:</strong> Maternal &amp; Women's Health<br><strong>Round:</strong> Top 150 → Round 2</p>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2: THE PROBLEM STATEMENT ==================== -->
+<div class="page cp">
+  <div class="pg-hd">
+    <span class="pg-hd-title">Problem Statement</span>
+    <span class="pg-hd-num">2</span>
+  </div>
+
+  <h2 class="section-hed">The Problem</h2>
+  <p class="section-sub">Clearly defined. Clinically honest. Operationally real.</p>
+
+  <div class="ps-big">
+    <p>
+      When a pregnant woman reaches a maternal-care consultation, her health history is scattered across
+      paper antenatal cards, handwritten prescriptions, lab reports, WhatsApp photos of records, and
+      notes from previous visits at different facilities. The clinician spends 8–12 minutes of every
+      consult reconstructing what has already happened and what is missing — instead of starting with
+      a clear, verified picture. The woman gets less care time. Gaps go undetected. Conflicts go unresolved.
+    </p>
+    <p class="ps-source">— Core problem definition · CareLink Handoff · Health-A-Thon 2026</p>
+  </div>
+
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">📄</div>
+      <h4>Records are scattered</h4>
+      <p>ANC card at home, prescription at another facility, lab report on a phone, referral note lost in a bag. No one has the full picture.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🏥</div>
+      <h4>Multi-facility care</h4>
+      <p>A woman visits community health worker → PHC → sub-centre → referral hospital. Each visit creates a new paper trail in a new place.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">⚡</div>
+      <h4>Conflicting information</h4>
+      <p>Two records show different gestational ages. A drug listed "prescribed" in one, "allergic" in another. Nobody checks — until a crisis.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📵</div>
+      <h4>No connectivity</h4>
+      <p>PHCs, sub-centres, and community health posts often have poor or no internet. Digital solutions that need Wi-Fi simply don't work here.</p>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-num">8–12</div>
+      <div class="stat-lbl">Minutes wasted per consult<br>reconstructing records</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">67%</div>
+      <div class="stat-lbl">Indian births at facilities<br>with fragmented records*</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">4+</div>
+      <div class="stat-lbl">Facilities a high-risk<br>mother may visit</div>
+    </div>
+  </div>
+
+  <div class="call c-purple">
+    <strong>Key insight:</strong> This is an <em>operational workflow problem</em>, not a clinical one. The information often exists. It is simply not organised, verified, or in front of the clinician at the moment it's needed.
+  </div>
+
+  <div class="pg-footer">
+    <strong>CareLink Handoff</strong>
+    <span>Health-A-Thon 2026 · Problem Statement</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 3: THE JOURNEY GAP ==================== -->
+<div class="page cp">
+  <div class="pg-hd">
+    <span class="pg-hd-title">The Care Journey Gap</span>
+    <span class="pg-hd-num">3</span>
+  </div>
+
+  <h2 class="section-hed">What Happens Today</h2>
+  <p class="section-sub">Every arrow in this chain is a potential gap, conflict, or lost record.</p>
+
+  <div class="gap-flow">
+    <div class="gap-node">
+      <div class="gap-circle gc-orange">👩</div>
+      <div class="gap-lbl">Patient</div>
+    </div>
+    <div class="gap-arrow">→</div>
+    <div class="gap-node">
+      <div class="gap-circle gc-orange">🏘️</div>
+      <div class="gap-lbl">ASHA Worker<br>(paper card)</div>
+    </div>
+    <div class="gap-arrow">→</div>
+    <div class="gap-node">
+      <div class="gap-circle gc-orange">🏥</div>
+      <div class="gap-lbl">PHC<br>(new card)</div>
+    </div>
+    <div class="gap-arrow">→</div>
+    <div class="gap-node">
+      <div class="gap-circle gc-gray">❓</div>
+      <div class="gap-lbl">Sub-centre<br>(records lost?)</div>
+    </div>
+    <div class="gap-arrow">→</div>
+    <div class="gap-node">
+      <div class="gap-circle gc-red">🏛️</div>
+      <div class="gap-lbl">Referral Hosp.<br>(starts over)</div>
+    </div>
+  </div>
+
+  <div class="call c-red" style="margin-bottom:16px">
+    <strong>At the referral hospital:</strong> The clinician sees a woman in labour or at a critical consult — with a plastic bag of papers from 3 different facilities. The consult clock starts. The detective work begins.
+  </div>
+
+  <h3 style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:12px">The Exact Moment We're Fixing</h3>
+
+  <div class="timeline-dark">
+    <div style="font-size:10px;color:#6C7086;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-weight:600">
+      Patient Priya · Referral Consult · What the Clinician Sees
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot td-g"></div>
+      <div class="tl-line"></div>
+      <div class="tl-label">Visit 1 — PHC Nagpur — 12 Aug 2026 — ANC Card</div>
+      <span class="tl-tag tt-v">✓ Verified</span>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot td-g"></div>
+      <div class="tl-line"></div>
+      <div class="tl-label">Visit 2 — Sub-centre Wardha — 09 Sep 2026 — Prescription</div>
+      <span class="tl-tag tt-v">✓ Verified</span>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot td-y"></div>
+      <div class="tl-line"></div>
+      <div class="tl-label">Referral Note — date torn, partially unreadable</div>
+      <span class="tl-tag tt-u">⏳ Confirm</span>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot td-r"></div>
+      <div class="tl-line"></div>
+      <div class="tl-label">Visit 3 — two documents show different dates</div>
+      <span class="tl-tag tt-c">⚡ Conflict</span>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot td-d"></div>
+      <div class="tl-line"></div>
+      <div class="tl-label">Haemoglobin test — expected by Week 20, no record found</div>
+      <span class="tl-tag tt-m">? Missing</span>
+    </div>
+  </div>
+
+  <p style="font-size:11px;color:#5C6B8A;margin-top:12px;line-height:1.6">Without CareLink: The clinician manually reads every paper, tries to recall the ANC protocol, guesses at the conflict, and may miss the missing Hb test entirely. <strong>With CareLink: this view is ready before the patient enters the room.</strong></p>
+
+  <div class="pg-footer">
+    <strong>CareLink Handoff</strong>
+    <span>Health-A-Thon 2026 · Problem Framing</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 4: EXISTING MARKET SOLUTIONS ==================== -->
+<div class="page cp">
+  <div class="pg-hd">
+    <span class="pg-hd-title">Existing Market Solutions</span>
+    <span class="pg-hd-num">4</span>
+  </div>
+
+  <h2 class="section-hed">What Exists Today</h2>
+  <p class="section-sub">Every existing solution either ignores this specific problem or solves it in a way that doesn't work in the real field conditions.</p>
+
+  <table class="mkt-table">
+    <thead>
+      <tr>
+        <th style="width:20%">Solution Type</th>
+        <th style="width:22%">Examples</th>
+        <th style="width:30%">What It Does</th>
+        <th style="width:28%">Why It Fails Here</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>🏥 National EHR Systems</td>
+        <td>ABDM (Ayushman Bharat Digital Mission), HMIS</td>
+        <td>Central government health records platform. Patients get ABHA ID. Records stored in cloud.</td>
+        <td class="bad">Requires internet, smartphone literacy, and active enrolment. Penetration at PHC/sub-centre level is still nascent. Paper cards still dominate.</td>
+      </tr>
+      <tr>
+        <td>📱 mHealth Apps</td>
+        <td>Kilkari, NIKSHAY, Sahi Saheli</td>
+        <td>SMS/app reminders for ANC visits, ASHA tracking, nutrition guidance.</td>
+        <td class="bad">Reminder tools — not record management tools. Don't capture, verify or organise actual paper records. No consult-ready view.</td>
+      </tr>
+      <tr>
+        <td>🤖 AI Diagnostic Tools</td>
+        <td>Niramai, Qure.ai, Wadhwani AI</td>
+        <td>AI reads scans, X-rays, or symptom data to flag clinical risk.</td>
+        <td class="bad">Clinical inference tools — high regulatory risk. None designed for administrative record organisation or handoff readiness. Require trained operators.</td>
+      </tr>
+      <tr>
+        <td>📋 Telemedicine Platforms</td>
+        <td>MFine, Practo, eSanjeevani</td>
+        <td>Video consultation, e-prescriptions, doctor booking.</td>
+        <td class="bad">Assumes connectivity. Doesn't solve the paper record problem. Adds a new digital channel but doesn't bridge existing fragmented history.</td>
+      </tr>
+      <tr>
+        <td>📦 Generic EMR/EHR</td>
+        <td>Bahmni, OpenMRS, eVital</td>
+        <td>Open-source Electronic Medical Records systems for clinics and hospitals.</td>
+        <td class="bad">Requires data entry from scratch. Doesn't ingest existing paper records. Not designed for multi-facility handoffs. No conflict detection.</td>
+      </tr>
+      <tr>
+        <td>💬 WhatsApp for Records</td>
+        <td>No formal product — informal use</td>
+        <td>Health workers photograph and forward records via WhatsApp. Extremely common in India.</td>
+        <td class="bad">Unstructured, unverified, no searchable history, HIPAA/data risk. Works — but the information stays scattered in chat threads.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="call c-red" style="margin-top:12px">
+    <strong>The Gap No One Fills:</strong> None of these solutions address the specific problem of <em>organising existing paper records from multiple facilities into a verified, conflict-checked, source-linked, consultation-ready summary — that works offline.</em>
+  </div>
+
+  <div class="pg-footer">
+    <strong>CareLink Handoff</strong>
+    <span>Health-A-Thon 2026 · Market Analysis</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 5: WHAT WE BUILD ==================== -->
+<div class="page cp">
+  <div class="pg-hd">
+    <span class="pg-hd-title">Our Solution</span>
+    <span class="pg-hd-num">5</span>
+  </div>
+
+  <h2 class="section-hed">What We Build</h2>
+  <p class="section-sub">A physical + digital trust chain — from scattered paper to verified wristband.</p>
+
+  <div class="sol-feat">
+    <div class="sf-card sf-purple">
+      <div style="font-size:24px;margin-bottom:8px">📸</div>
+      <h4>Live Camera Extraction</h4>
+      <p>Point a phone at any paper record. AI reads it in real-time — extracting visit dates, facility names, document types. Each field shows a confidence score.</p>
+    </div>
+    <div class="sf-card sf-green">
+      <div style="font-size:24px;margin-bottom:8px">🔗</div>
+      <h4>Source-Linked Facts</h4>
+      <p>Every extracted piece of data links back to the exact source image. Clinician can tap any fact → see the original document. Full traceability.</p>
+    </div>
+    <div class="sf-card sf-red">
+      <div style="font-size:24px;margin-bottom:8px">⚡</div>
+      <h4>Conflict Detection</h4>
+      <p>Automatic rule-based checks compare facts across records. Contradictions are flagged instantly — never silently merged. A human resolves every conflict.</p>
+    </div>
+    <div class="sf-card sf-orange">
+      <div style="font-size:24px;margin-bottom:8px">📋</div>
+      <h4>Protocol Gap Detection</h4>
+      <p>Checks patient's records against the government's ANC schedule. If Hb test should have happened by Week 20 and there's no record — flags it as MISSING.</p>
+    </div>
+    <div class="sf-card sf-purple">
+      <div style="font-size:24px;margin-bottom:8px">🗣️</div>
+      <h4>Patient Voice Verification</h4>
+      <p>Health worker asks the mother: "When was your last visit?" Her spoken answer is transcribed and matched against document data — a third verification source.</p>
+    </div>
+    <div class="sf-card sf-green">
+      <div style="font-size:24px;margin-bottom:8px">✅</div>
+      <h4>Human-in-the-Loop</h4>
+      <p>Nothing is shown as "verified" until a human confirms it. AI extracts — humans decide. Every fact needs a person before anyone relies on it.</p>
+    </div>
+  </div>
+
+  <div style="margin:10px 0">
+    <span class="pill p-hw">🔌 Hardware</span>
+    <span class="pill p-ai">🤖 AI Powered</span>
+    <span class="pill p-offline">📴 Works Offline</span>
+    <span class="pill p-novel">💡 First of its Kind</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+    <div style="background:linear-gradient(135deg,#EDE5FF,#F5F0FF);border:1px solid rgba(108,60,225,.2);border-radius:12px;padding:16px">
+      <div style="font-size:22px;margin-bottom:8px">💎</div>
+      <h4 style="font-size:13px;font-weight:800;color:#4A1FB8;margin-bottom:5px">NFC Patient Wristband</h4>
+      <p style="font-size:11px;color:#6C3CE1;line-height:1.5">Patient wears a ₹50 silicone NFC wristband. Any health worker taps their phone → patient journey opens instantly. No app download. No login. Works offline.</p>
+    </div>
+    <div style="background:linear-gradient(135deg,#E0FFF5,#F0FFF8);border:1px solid rgba(0,212,170,.25);border-radius:12px;padding:16px">
+      <div style="font-size:22px;margin-bottom:8px">🖨️</div>
+      <h4 style="font-size:13px;font-weight:800;color:#00795A;margin-bottom:5px">Thermal Handoff Card</h4>
+      <p style="font-size:11px;color:#00B894;line-height:1.5">Thermal printer produces a pocket-sized card with key facts + QR code. Works where there's no phone, no internet. Verified data — smaller than a prescription slip.</p>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <strong>CareLink Handoff</strong>
+    <span>Health-A-Thon 2026 · Solution Architecture</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 6: US vs THEM ==================== -->
+<div class="page cp">
+  <div class="pg-hd">
+    <span class="pg-hd-title">Competitive Differentiation</span>
+    <span class="pg-hd-num">6</span>
+  </div>
+
+  <h2 class="section-hed">Market vs CareLink</h2>
+  <p class="section-sub">Head-to-head on every dimension that matters for this problem.</p>
+
+  <table class="mkt-table" style="margin-bottom:20px">
+    <thead>
+      <tr>
+        <th style="width:22%">Dimension</th>
+        <th style="width:13%">EHR<br>Systems</th>
+        <th style="width:13%">mHealth<br>Apps</th>
+        <th style="width:13%">AI Diag.<br>Tools</th>
+        <th style="width:13%">Tele-<br>medicine</th>
+        <th style="width:13%">WhatsApp<br>(informal)</th>
+        <th style="width:13%">CareLink<br>Handoff</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ingests paper records</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="half-mark">△</td>
+        <td class="xmark">✗</td>
+        <td class="half-mark">△</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Works offline / no internet</td>
+        <td class="xmark">✗</td>
+        <td class="half-mark">△</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="half-mark">△</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Conflict detection</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Source-linked facts</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Multi-facility handoff</td>
+        <td class="half-mark">△</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="half-mark">△</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Human verification required</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>No clinical AI (safe)</td>
+        <td class="check-mark">✓</td>
+        <td class="check-mark">✓</td>
+        <td class="xmark">✗</td>
+        <td class="check-mark">✓</td>
+        <td class="check-mark">✓</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Physical hardware token</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+      <tr>
+        <td>Consult-ready in under 2 min</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="xmark">✗</td>
+        <td class="check-mark us">✓✓</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="font-size:10px;color:#a4b0cc;margin-bottom:16px">✗ Not available &nbsp;|&nbsp; △ Partial / indirect &nbsp;|&nbsp; ✓✓ Core feature, purpose-built</div>
+
+  <div class="diff-row">
+    <div class="diff-box diff-them">
+      <h4>❌ What Every Competitor Does</h4>
+      <ul>
+        <li>Assumes internet connectivity</li>
+        <li>Requires data entry from scratch</li>
+        <li>Ignores multi-facility paper trails</li>
+        <li>Shows AI output without source proof</li>
+        <li>No human confirmation step</li>
+        <li>Can't ingest WhatsApp images or paper</li>
+        <li>No conflict detection between records</li>
+        <li>No physical offline fallback</li>
+      </ul>
+    </div>
+    <div class="diff-box diff-us">
+      <h4>✅ What CareLink Handoff Does</h4>
+      <ul>
+        <li>Offline-first — NFC + printed card + cached PWA</li>
+        <li>Ingests what already exists (paper, photos, PDFs)</li>
+        <li>Bridges multi-facility records into one view</li>
+        <li>Every fact linked to its source image</li>
+        <li>Nothing verified until a human confirms it</li>
+        <li>Camera, WhatsApp, upload — any ingestion path</li>
+        <li>Rule-based conflict detection flags contradictions</li>
+        <li>NFC wristband + thermal card as physical layer</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <strong>CareLink Handoff</strong>
+    <span>Health-A-Thon 2026 · Competitive Differentiation</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 7: THE SAFETY LINE ==================== -->
+<div class="page cp">
+  <div class="pg-hd">
+    <span class="pg-hd-title">Design Principles &amp; Safety</span>
+    <span class="pg-hd-num">7</span>
+  </div>
+
+  <h2 class="section-hed">Why This Wins With Clinician Judges</h2>
+  <p class="section-sub">Every design decision is explained. Every AI boundary is explicit.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+    <div style="background:#1E1E2E;border-radius:12px;padding:20px">
+      <h4 style="color:#A6E3A1;font-size:13px;font-weight:700;margin-bottom:12px">✅ What the AI Does</h4>
+      <ul style="list-style:none;padding:0">
+        <li style="color:#CDD6F4;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0;color:#2ED573">▸</span>Reads records into a fixed administrative schema</li>
+        <li style="color:#CDD6F4;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0;color:#2ED573">▸</span>Extracts visit date, facility name, document type</li>
+        <li style="color:#CDD6F4;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0;color:#2ED573">▸</span>Identifies pending follow-up items mentioned</li>
+        <li style="color:#CDD6F4;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0;color:#2ED573">▸</span>Links every field to its source image</li>
+        <li style="color:#CDD6F4;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0;color:#2ED573">▸</span>Assigns a confidence score to each field</li>
+        <li style="color:#CDD6F4;font-size:11.5px;padding-left:20px;position:relative"><span style="position:absolute;left:0;color:#2ED573">▸</span>Flags low-confidence items for human review</li>
+      </ul>
+    </div>
+    <div style="background:#FFE8EA;border:2px solid rgba(255,71,87,.2);border-radius:12px;padding:20px">
+      <h4 style="color:#C0392B;font-size:13px;font-weight:700;margin-bottom:12px">🚫 What the AI Never Does</h4>
+      <ul style="list-style:none;padding:0">
+        <li style="color:#C0392B;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0">✗</span>Diagnose any condition</li>
+        <li style="color:#C0392B;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0">✗</span>Score clinical risk</li>
+        <li style="color:#C0392B;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0">✗</span>Interpret lab values, BP, or vitals</li>
+        <li style="color:#C0392B;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0">✗</span>Recommend treatment or medication</li>
+        <li style="color:#C0392B;font-size:11.5px;margin-bottom:7px;padding-left:20px;position:relative"><span style="position:absolute;left:0">✗</span>Act without human confirmation</li>
+        <li style="color:#C0392B;font-size:11.5px;padding-left:20px;position:relative"><span style="position:absolute;left:0">✗</span>Silently resolve conflicts or missing data</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:800;color:#1a1a2e;margin:20px 0 12px">The Three-Source Trust Chain</h3>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="text-align:center;padding:18px 14px;border-radius:12px;background:#EDE5FF;border:1px solid rgba(108,60,225,.2)">
+      <div style="font-size:26px;margin-bottom:8px">📄</div>
+      <div style="font-weight:800;font-size:13px;color:#4A1FB8;margin-bottom:5px">Document</div>
+      <div style="font-size:10.5px;color:#6C3CE1;line-height:1.5">OCR + Gemini reads the paper record. Confidence scored per field. Source image preserved.</div>
+    </div>
+    <div style="text-align:center;padding:18px 14px;border-radius:12px;background:#E0FFF5;border:1px solid rgba(0,212,170,.2)">
+      <div style="font-size:26px;margin-bottom:8px">👩‍⚕️</div>
+      <div style="font-weight:800;font-size:13px;color:#00795A;margin-bottom:5px">Health Worker</div>
+      <div style="font-size:10.5px;color:#00B894;line-height:1.5">Manually confirms or rejects each extracted fact. Nothing advances to "verified" without this step.</div>
+    </div>
+    <div style="text-align:center;padding:18px 14px;border-radius:12px;background:#FFF3E0;border:1px solid rgba(255,165,2,.2)">
+      <div style="font-size:26px;margin-bottom:8px">🗣️</div>
+      <div style="font-weight:800;font-size:13px;color:#E65100;margin-bottom:5px">Patient Voice</div>
+      <div style="font-size:10.5px;color:#FFA502;line-height:1.5">Mother verbally confirms key facts. Spoken answer matched against document data. Raises confidence or flags conflict.</div>
+    </div>
+  </div>
+
+  <div class="call c-green">
+    <strong>When all three sources agree:</strong> Confidence reaches maximum. Status = Verified. The clinician can rely on this fact.<br>
+    <strong>When sources disagree:</strong> Flagged as conflict. Never silently merged. A human resolves it before anyone acts.
+  </div>
+
+  <div class="call c-purple" style="margin-top:10px">
+    <strong>The answer that wins clinician judges:</strong> "CareLink doesn't replace clinical judgment — it ensures the clinician has the complete, verified picture to make that judgment. We organize paperwork. Doctors do medicine."
+  </div>
+
+  <div class="pg-footer">
+    <strong>CareLink Handoff</strong>
+    <span>Health-A-Thon 2026 · AI Safety &amp; Design Principles</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 8: CLOSING ==================== -->
+<div class="page closing">
+  <div class="closing-glow"></div>
+  <div style="background:rgba(108,60,225,.2);border:1px solid rgba(108,60,225,.4);color:#c4b0ff;padding:6px 20px;border-radius:50px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:44px;position:relative;z-index:2">The Bottom Line</div>
+
+  <h2 class="section-hed" style="font-size:28px;font-weight:900;color:#fff;text-align:center;max-width:540px;line-height:1.4;margin-bottom:24px;position:relative;z-index:2">
+    The market solves access, scheduling, and diagnostics.<br><br>
+    <span style="background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Nobody solves the moment a woman walks into a referral hospital with a bag full of papers</span> from three different clinics and the clinician has 10 minutes.
+  </h2>
+
+  <p style="font-size:14px;color:#a4b0cc;max-width:460px;line-height:1.7;text-align:center;position:relative;z-index:2;margin-bottom:40px">That is the exact moment CareLink Handoff was built for. Not general healthcare. Not AI diagnostics. The 10-minute scramble — turned into a 30-second verified summary.</p>
+
+  <div style="display:flex;gap:14px;position:relative;z-index:2;margin-bottom:44px">
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 22px;text-align:center">
+      <div style="font-size:26px;font-weight:900;background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">8→2</div>
+      <div style="font-size:10px;color:#a4b0cc;margin-top:3px">Min consult prep</div>
+    </div>
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 22px;text-align:center">
+      <div style="font-size:26px;font-weight:900;background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">3×</div>
+      <div style="font-size:10px;color:#a4b0cc;margin-top:3px">More gaps caught</div>
+    </div>
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 22px;text-align:center">
+      <div style="font-size:26px;font-weight:900;background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">0</div>
+      <div style="font-size:10px;color:#a4b0cc;margin-top:3px">Silently merged conflicts</div>
+    </div>
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 22px;text-align:center">
+      <div style="font-size:26px;font-weight:900;background:linear-gradient(135deg,#c4b0ff,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">₹3.2K</div>
+      <div style="font-size:10px;color:#a4b0cc;margin-top:3px">Total hardware cost</div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px;text-align:center;position:relative;z-index:2">
+    <p style="color:#5C6B8A;font-size:12px;line-height:1.8">CareLink Handoff · Health-A-Thon 2026 · Maternal &amp; Women's Health<br>
+    <strong style="color:#a4b0cc">Siddharth Balu Jamdhade · YCCE, Nagpur</strong></p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareLink Handoff — Complete Build Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --primary: #6C3CE1;
+    --primary-dark: #4A1FB8;
+    --primary-light: #EDE5FF;
+    --accent: #00D4AA;
+    --danger: #FF4757;
+    --warning: #FFA502;
+    --success: #2ED573;
+    --dark: #1A1A2E;
+    --gray-900: #16213E;
+    --gray-700: #2C3E6B;
+    --gray-500: #5C6B8A;
+    --gray-300: #A4B0CC;
+    --gray-100: #E8ECF4;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page { size: A4; margin: 18mm 16mm 20mm 16mm; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: var(--dark);
+    font-size: 11px;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ===== COVER ===== */
+  .cover-page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #1A1A2E 0%, #16213E 40%, #0F3460 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  .cover-page::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 450px; height: 450px;
+    background: radial-gradient(circle, rgba(108,60,225,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .cover-page::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(0,212,170,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .cv-badge {
+    background: rgba(108,60,225,0.3);
+    border: 1px solid rgba(108,60,225,0.5);
+    color: #B794F6;
+    padding: 7px 22px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    position: relative; z-index: 1;
+  }
+
+  .cv-title {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    position: relative; z-index: 1;
+  }
+
+  .cv-title span {
+    background: linear-gradient(135deg, #B794F6, #00D4AA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cv-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray-300);
+    margin-bottom: 12px;
+    max-width: 460px;
+    line-height: 1.5;
+    position: relative; z-index: 1;
+  }
+
+  .cv-sub2 {
+    font-size: 13px; color: var(--gray-500); position: relative; z-index: 1;
+    margin-bottom: 44px;
+  }
+
+  .cv-line {
+    width: 70px; height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 2px;
+    margin-bottom: 44px;
+    position: relative; z-index: 1;
+  }
+
+  .cv-meta { position: relative; z-index: 1; color: var(--gray-500); font-size: 12px; line-height: 1.8; }
+  .cv-meta strong { color: var(--gray-300); font-weight: 600; }
+
+  .cv-footer {
+    position: absolute; bottom: 36px; left: 0; right: 0; text-align: center;
+    z-index: 1;
+  }
+
+  .cv-footer span {
+    background: linear-gradient(135deg, rgba(108,60,225,0.2), rgba(0,212,170,0.2));
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 28px; border-radius: 8px;
+    font-size: 10px; color: var(--gray-300);
+    letter-spacing: 2px; text-transform: uppercase;
+    display: inline-block;
+  }
+
+  /* ===== CONTENT ===== */
+  .content { max-width: 178mm; margin: 0 auto; }
+
+  .page-break { page-break-before: always; }
+
+  /* Section headers */
+  .week-header {
+    background: linear-gradient(135deg, var(--dark), var(--gray-900));
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 10px;
+    margin: 28px 0 18px 0;
+    page-break-after: avoid;
+  }
+
+  .week-header h2 {
+    font-size: 20px; font-weight: 800; margin-bottom: 3px;
+  }
+
+  .week-header p { font-size: 11px; color: var(--gray-300); font-weight: 400; }
+
+  .week-header:first-child { margin-top: 0; }
+
+  /* Steps */
+  .step {
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .step h3 {
+    display: inline;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--dark);
+    vertical-align: middle;
+  }
+
+  .step-body {
+    margin-top: 8px;
+    margin-left: 36px;
+  }
+
+  .step-body p {
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--gray-700);
+    line-height: 1.65;
+  }
+
+  /* Code blocks */
+  pre {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 8px 0;
+    page-break-inside: avoid;
+  }
+
+  pre .comment { color: #6C7086; font-style: italic; }
+  pre .keyword { color: #CBA6F7; }
+  pre .string { color: #A6E3A1; }
+  pre .function { color: #89B4FA; }
+  pre .number { color: #FAB387; }
+  pre .flag { color: #F38BA8; }
+
+  code {
+    background: #F0ECFE;
+    color: var(--primary-dark);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 10.5px;
+    page-break-inside: avoid;
+  }
+
+  th {
+    background: var(--dark);
+    color: #fff;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  th:first-child { border-radius: 6px 0 0 0; }
+  th:last-child { border-radius: 0 6px 0 0; }
+
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+  }
+
+  /* Callouts */
+  .callout {
+    border-left: 4px solid;
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+    font-size: 10.5px;
+    line-height: 1.55;
+    page-break-inside: avoid;
+  }
+
+  .callout strong { font-weight: 700; }
+  .c-purple { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+  .c-green { border-color: var(--accent); background: #E0FFF5; color: #00795A; }
+  .c-red { border-color: var(--danger); background: #FFE8EA; color: #C0392B; }
+  .c-orange { border-color: var(--warning); background: #FFF3E0; color: #E65100; }
+  .c-blue { border-color: #2196F3; background: #E3F2FD; color: #0D47A1; }
+
+  /* Wiring diagram */
+  .wiring-box {
+    background: #1E1E2E;
+    border-radius: 10px;
+    padding: 16px 20px;
+    color: #CDD6F4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.8;
+    margin: 8px 0;
+    page-break-inside: avoid;
+  }
+
+  .wiring-box .pin-esp { color: #89B4FA; }
+  .wiring-box .pin-dev { color: #A6E3A1; }
+  .wiring-box .pin-warn { color: #FAB387; }
+  .wiring-box .label { color: #6C7086; }
+
+  /* File tree */
+  .file-tree {
+    background: #F8F9FA;
+    border: 1px solid var(--gray-100);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.9;
+    color: var(--gray-700);
+    page-break-inside: avoid;
+  }
+
+  .file-tree .folder { color: var(--primary); font-weight: 600; }
+  .file-tree .file { color: var(--gray-700); }
+  .file-tree .important { color: var(--danger); font-weight: 600; }
+
+  /* Checkpoint boxes */
+  .checkpoint {
+    background: linear-gradient(135deg, #E0FFF5, #F0FFF0);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+
+  .checkpoint h4 {
+    color: #00795A;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .checkpoint p { color: #00795A; font-size: 10.5px; }
+
+  /* Receipt mockup */
+  .receipt {
+    background: #FFFEF5;
+    border: 2px dashed var(--gray-300);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.6;
+    color: var(--dark);
+    max-width: 260px;
+    margin: 10px auto;
+    page-break-inside: avoid;
+  }
+
+  /* Numbered list */
+  .num-list { margin: 6px 0; padding-left: 0; list-style: none; }
+  .num-list li {
+    margin-bottom: 5px;
+    padding-left: 24px;
+    position: relative;
+    font-size: 11px;
+    color: var(--gray-700);
+  }
+  .num-list li::before {
+    content: attr(data-n);
+    position: absolute;
+    left: 0;
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 11px;
+  }
+
+  /* Pill */
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .pill-hw { background: #FFF3E0; color: #E65100; }
+  .pill-sw { background: #EDE5FF; color: var(--primary); }
+  .pill-demo { background: #FFE8EA; color: var(--danger); }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 8px 0; }
+
+  .grid-card {
+    border: 1px solid var(--gray-100);
+    border-radius: 10px;
+    padding: 14px 14px;
+    page-break-inside: avoid;
+  }
+  .grid-card h4 { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .grid-card p { font-size: 10px; color: var(--gray-500); line-height: 1.5; }
+
+  .toc { margin: 16px 0; }
+  .toc a {
+    display: block;
+    padding: 6px 0;
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .toc a:hover { color: var(--primary); }
+  .toc .toc-week { font-weight: 700; font-size: 13px; color: var(--dark); margin-top: 6px; }
+
+  hr { border: none; border-top: 1px solid var(--gray-100); margin: 16px 0; }
+
+  h4.sub-heading {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 14px 0 6px 0;
+    page-break-after: avoid;
+  }
+
+  @media screen {
+    .cover-page {
+      box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+      margin: 20px auto;
+      border-radius: 4px;
+    }
+    body { background: #EAEAEA; }
+    .content { background: #fff; padding: 20mm 16mm; margin: 20px auto; max-width: 210mm; box-shadow: 0 2px 20px rgba(0,0,0,0.08); border-radius: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover-page">
+  <div class="cv-badge">Complete Build Guide · Beginner Friendly</div>
+  <h1 class="cv-title">CareLink <span>Handoff</span></h1>
+  <p class="cv-sub">Step-by-step guide to build the prototype from zero — even if you've never built a full-stack project before.</p>
+  <p class="cv-sub2">30 Steps · 5 Weeks · Every Command Explained</p>
+  <div class="cv-line"></div>
+  <div class="cv-meta">
+    <strong>Health-A-Thon 2026</strong> · Maternal &amp; Women's Health<br>
+    Siddharth Balu Jamdhade · YCCE, Nagpur
+  </div>
+  <div class="cv-footer">
+    <span>Backend · Frontend · Hardware · AI · Demo Prep</span>
+  </div>
+</div>
+
+<!-- ===== BODY ===== -->
+<div class="content">
+
+<!-- TABLE OF CONTENTS -->
+<h2 style="font-size:22px;font-weight:900;margin-bottom:4px;">Table of Contents</h2>
+<p style="font-size:11px;color:var(--gray-500);margin-bottom:12px;">Follow in order. Don't skip ahead.</p>
+
+<div class="toc">
+  <a class="toc-week">🔧 Week 0 — Setup &amp; Architecture (Day 1–2)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 1: Install required software</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 2: Get your Gemini API key (free)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 3: Order hardware NOW</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 4: Create the project folder structure</a>
+  <a class="toc-week">⚙️ Week 1 — Backend + AI Extraction (Day 3–9)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 5: Create the Python environment</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 6: Build the database</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 7: Build the FastAPI server</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 8: Build the OCR service</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 9: Build the AI extraction service</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 10: Build the conflict detector</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 11: Build the upload &amp; extraction API</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 12: Test the backend</a>
+  <a class="toc-week">🖥️ Week 2 — Frontend React PWA (Day 10–16)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 13: Create the React project</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 14: Build the Dashboard page</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 15: Build the Journey Timeline page</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 16: Build the Camera Capture page</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 17: Build the Source Image Modal</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 18: Build the Conflict Review page</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 19: Make it a PWA (offline)</a>
+  <a class="toc-week">🔌 Week 3 — Hardware Integration (Day 17–23)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 20: Set up Arduino IDE for ESP32</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 21: Wire &amp; program the NFC reader</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 22: Write data to NFC wristband</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 23: Wire &amp; program the thermal printer</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 24: Build the QR code generator</a>
+  <a class="toc-week">🔗 Week 4 — Advanced Features (Day 24–30)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 25: Add voice verification</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 26: Add protocol gap detection</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 27: Add offline mode</a>
+  <a class="toc-week">🎬 Week 5 — Demo Prep (Day 31–35)</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 28: Create "Priya's journey" synthetic data</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 29: Polish the UI</a>
+  <a>&nbsp;&nbsp;&nbsp;Step 30: Rehearse the demo</a>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- WEEK 0 -->
+<!-- ============================================================ -->
+<div class="week-header">
+  <h2>🔧 Week 0 — Setup &amp; Architecture</h2>
+  <p>Day 1–2 · Install tools, get API keys, order hardware, create folder structure</p>
+</div>
+
+<!-- STEP 1 -->
+<div class="step">
+  <span class="step-num">1</span>
+  <h3>Install Required Software</h3>
+  <div class="step-body">
+    <p>You need 4 things installed on your computer. Here's what each does and how to install it:</p>
+
+    <h4 class="sub-heading">1A. Python 3.10+ (runs the backend server)</h4>
+    <p><strong>What it does:</strong> Python runs your entire backend — the server, the AI, the database, everything.</p>
+    <p><strong>How to install:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">Go to <code>https://www.python.org/downloads/</code></li>
+      <li data-n="2.">Download the latest Python (3.12+)</li>
+      <li data-n="3."><strong>IMPORTANT:</strong> During installation, check ✅ "Add Python to PATH"</li>
+      <li data-n="4.">Open a terminal (PowerShell or Command Prompt) and verify:</li>
+    </ul>
+    <pre>python --version
+<span class="comment"># Should show: Python 3.12.x (or higher)</span>
+
+pip --version
+<span class="comment"># Should show: pip 24.x.x</span></pre>
+
+    <h4 class="sub-heading">1B. Node.js 20+ (runs the frontend)</h4>
+    <p><strong>What it does:</strong> Node.js runs your React frontend — the web interface that clinicians see.</p>
+    <p><strong>How to install:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">Go to <code>https://nodejs.org</code></li>
+      <li data-n="2.">Download the <strong>LTS</strong> version (green button)</li>
+      <li data-n="3.">Install with default settings</li>
+      <li data-n="4.">Verify:</li>
+    </ul>
+    <pre>node --version
+<span class="comment"># Should show: v20.x.x or v22.x.x</span>
+
+npm --version
+<span class="comment"># Should show: 10.x.x</span></pre>
+
+    <h4 class="sub-heading">1C. Git (version control)</h4>
+    <p><strong>What it does:</strong> Tracks your code changes. Also needed by some install tools.</p>
+    <p><strong>How to install:</strong> Download from <code>https://git-scm.com/downloads</code> → install with defaults.</p>
+    <pre>git --version
+<span class="comment"># Should show: git version 2.x.x</span></pre>
+
+    <h4 class="sub-heading">1D. Arduino IDE (programs the ESP32 hardware)</h4>
+    <p><strong>What it does:</strong> Lets you write code for the ESP32 microcontroller that controls the NFC reader and thermal printer.</p>
+    <p><strong>How to install:</strong> Download from <code>https://www.arduino.cc/en/software</code> → install version 2.x.</p>
+
+    <h4 class="sub-heading">1E. VS Code (recommended code editor)</h4>
+    <p>Download from <code>https://code.visualstudio.com</code> if you don't already have it.</p>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step">
+  <span class="step-num">2</span>
+  <h3>Get Your Gemini API Key (Free)</h3>
+  <div class="step-body">
+    <p>The Gemini API is the AI brain of CareLink. It reads images and extracts data. The free tier is enough for your prototype.</p>
+    <ul class="num-list">
+      <li data-n="1.">Go to <code>https://aistudio.google.com/apikey</code></li>
+      <li data-n="2.">Sign in with your Google account</li>
+      <li data-n="3.">Click <strong>"Create API Key"</strong></li>
+      <li data-n="4.">Copy the key (it looks like: <code>AIzaSy...</code>)</li>
+      <li data-n="5.">Save it somewhere safe — you'll need it in Step 5</li>
+    </ul>
+    <div class="callout c-red">
+      <strong>⚠️ Never share your API key publicly or commit it to GitHub.</strong> We'll store it in a <code>.env</code> file that stays private.
+    </div>
+    <p><strong>Free tier limits:</strong> 15 requests per minute, 1,500 per day — more than enough for a demo.</p>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step">
+  <span class="step-num">3</span>
+  <h3>Order Hardware NOW</h3>
+  <div class="step-body">
+    <p><strong>Do this on Day 1. Delivery takes 3–5 days.</strong> You'll need the hardware by Week 3.</p>
+
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Search on Amazon.in</th><th>Cost (₹)</th><th>Why You Need It</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ESP32-S3 DevKit</strong></td><td>"ESP32-S3 DevKitC N16R8"</td><td>~600</td><td>The brain — controls NFC + printer</td></tr>
+        <tr><td><strong>RC522 NFC Module</strong></td><td>"RC522 RFID module Arduino"</td><td>~200</td><td>Reads/writes NFC wristbands</td></tr>
+        <tr><td><strong>NFC Wristbands × 10</strong></td><td>"NTAG215 NFC silicone wristband"</td><td>~500</td><td>Patient wears this</td></tr>
+        <tr><td><strong>Thermal Printer 58mm</strong></td><td>"58mm embedded thermal printer TTL"</td><td>~1,500</td><td>Prints the handoff card</td></tr>
+        <tr><td><strong>Thermal Paper Roll</strong></td><td>"58mm thermal paper roll"</td><td>~100</td><td>Paper for the printer</td></tr>
+        <tr><td><strong>Breadboard + Jumper Wires</strong></td><td>"breadboard jumper wire kit"</td><td>~200</td><td>Connect everything together</td></tr>
+        <tr><td colspan="2"><strong>TOTAL</strong></td><td><strong>~₹3,100</strong></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-orange">
+      <strong>💡 Tip:</strong> If you can't find "NTAG215 wristbands", search for "NTAG213 NFC wristband" — they also work but have less memory (144 bytes vs 504 bytes). Either is fine for storing a short URL.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step">
+  <span class="step-num">4</span>
+  <h3>Create the Project Folder Structure</h3>
+  <div class="step-body">
+    <p>Open your terminal and run these commands to create all folders:</p>
+    <pre><span class="comment"># Navigate to your Desktop (or wherever you want the project)</span>
+cd C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon
+
+<span class="comment"># Create all folders</span>
+mkdir carelink-handoff
+cd carelink-handoff
+
+mkdir backend
+mkdir backend\app
+mkdir backend\app\routers
+mkdir backend\app\services
+mkdir backend\app\data
+mkdir backend\uploads
+
+mkdir frontend
+
+mkdir hardware
+mkdir hardware\esp32_firmware
+
+mkdir synthetic_data
+mkdir synthetic_data\images</pre>
+
+    <p>Your project should look like this:</p>
+    <div class="file-tree">
+      <span class="folder">📁 carelink-handoff/</span><br>
+      &nbsp;&nbsp;<span class="folder">📁 backend/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 app/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 __init__.py</span> &nbsp;<span style="color:#999">← empty file</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="important">📄 main.py</span> &nbsp;<span style="color:#999">← the main server</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 config.py</span> &nbsp;<span style="color:#999">← settings &amp; API keys</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 database.py</span> &nbsp;<span style="color:#999">← database setup</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 models.py</span> &nbsp;<span style="color:#999">← database tables</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 schemas.py</span> &nbsp;<span style="color:#999">← data shapes</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 routers/</span> &nbsp;<span style="color:#999">← API endpoints</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 patients.py, records.py, extraction.py, verification.py</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 services/</span> &nbsp;<span style="color:#999">← business logic</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 ocr_service.py, llm_extractor.py, conflict_detector.py, protocol_checker.py</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 data/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 anc_protocol.json</span> &nbsp;<span style="color:#999">← ANC visit schedule</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 uploads/</span> &nbsp;<span style="color:#999">← uploaded images stored here</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 requirements.txt</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 .env</span> &nbsp;<span style="color:#999">← your API key goes here</span><br>
+      &nbsp;&nbsp;<span class="folder">📁 frontend/</span> &nbsp;<span style="color:#999">← React app (created in Week 2)</span><br>
+      &nbsp;&nbsp;<span class="folder">📁 hardware/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 esp32_firmware/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">📄 main.ino</span> &nbsp;<span style="color:#999">← ESP32 code</span><br>
+      &nbsp;&nbsp;<span class="folder">📁 synthetic_data/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">📁 images/</span> &nbsp;<span style="color:#999">← fake medical records for demo</span><br>
+    </div>
+
+    <p>Create the empty <code>__init__.py</code> files (Python needs these):</p>
+    <pre>type nul > backend\app\__init__.py
+type nul > backend\app\routers\__init__.py
+type nul > backend\app\services\__init__.py</pre>
+
+    <p>Create the <code>.env</code> file with your API key:</p>
+    <pre><span class="comment"># File: backend/.env</span>
+GEMINI_API_KEY=<span class="string">paste_your_key_here</span></pre>
+
+    <div class="checkpoint">
+      <h4>✅ Week 0 Checkpoint</h4>
+      <p>Python, Node.js, Git, and Arduino IDE are installed. Gemini API key is saved. Hardware is ordered. All folders exist. You're ready to code.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- WEEK 1 -->
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<div class="week-header">
+  <h2>⚙️ Week 1 — Backend + AI Extraction Pipeline</h2>
+  <p>Day 3–9 · The brain of CareLink — upload an image, get structured data back</p>
+</div>
+
+<!-- STEP 5 -->
+<div class="step">
+  <span class="step-num">5</span>
+  <h3>Create the Python Environment &amp; Install Libraries</h3>
+  <div class="step-body">
+    <p><strong>What is a "virtual environment"?</strong> It's a separate Python installation just for this project, so libraries don't conflict with other projects on your computer.</p>
+    <pre><span class="comment"># Open terminal, navigate to the backend folder</span>
+cd C:\Users\SIDDHARTH\OneDrive\Desktop\"Health A thon"\carelink-handoff\backend
+
+<span class="comment"># Create a virtual environment called "venv"</span>
+python -m venv venv
+
+<span class="comment"># Activate it (you must do this every time you open a new terminal)</span>
+venv\Scripts\activate
+
+<span class="comment"># Your terminal should now show (venv) at the start of the line</span>
+<span class="comment"># Like: (venv) C:\Users\...\backend></span></pre>
+
+    <p>Now install all the Python libraries you need:</p>
+    <pre><span class="comment"># Web server framework</span>
+pip install fastapi uvicorn[standard]
+
+<span class="comment"># Database</span>
+pip install sqlalchemy
+
+<span class="comment"># Data validation</span>
+pip install pydantic python-dotenv
+
+<span class="comment"># File uploads</span>
+pip install python-multipart
+
+<span class="comment"># Image handling</span>
+pip install Pillow
+
+<span class="comment"># OCR (reads text from images)</span>
+pip install paddlepaddle paddleocr
+
+<span class="comment"># Google Gemini AI SDK</span>
+pip install google-genai
+
+<span class="comment"># QR code generation</span>
+pip install qrcode[pil]
+
+<span class="comment"># Save the list of installed libraries</span>
+pip freeze > requirements.txt</pre>
+
+    <div class="callout c-blue">
+      <strong>💡 What each library does:</strong><br>
+      • <code>fastapi</code> — Creates web APIs (the server that your frontend talks to)<br>
+      • <code>uvicorn</code> — Runs the FastAPI server<br>
+      • <code>sqlalchemy</code> — Talks to the SQLite database using Python code<br>
+      • <code>paddleocr</code> — Reads printed/handwritten text from images (OCR)<br>
+      • <code>google-genai</code> — Calls the Gemini AI to extract structured data from images
+    </div>
+  </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="step">
+  <span class="step-num">6</span>
+  <h3>Build the Database</h3>
+  <div class="step-body">
+    <p><strong>What is SQLite?</strong> A simple database stored as a single file. No server to install. Perfect for prototypes.</p>
+
+    <h4 class="sub-heading">File: <code>backend/app/config.py</code></h4>
+    <p>This file loads your API key from the <code>.env</code> file:</p>
+    <pre><span class="keyword">import</span> os
+<span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv
+
+load_dotenv()  <span class="comment"># reads the .env file</span>
+
+GEMINI_API_KEY = os.getenv(<span class="string">"GEMINI_API_KEY"</span>)
+DATABASE_URL = <span class="string">"sqlite:///./carelink.db"</span></pre>
+
+    <h4 class="sub-heading">File: <code>backend/app/database.py</code></h4>
+    <p>This sets up the database connection:</p>
+    <pre><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine
+<span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker, declarative_base
+<span class="keyword">from</span> .config <span class="keyword">import</span> DATABASE_URL
+
+engine = create_engine(DATABASE_URL, connect_args={<span class="string">"check_same_thread"</span>: False})
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+Base = declarative_base()
+
+<span class="keyword">def</span> <span class="function">get_db</span>():
+    db = SessionLocal()
+    <span class="keyword">try</span>:
+        <span class="keyword">yield</span> db
+    <span class="keyword">finally</span>:
+        db.close()</pre>
+
+    <h4 class="sub-heading">File: <code>backend/app/models.py</code></h4>
+    <p>This defines your database tables — think of each class as a spreadsheet:</p>
+
+    <table>
+      <thead><tr><th>Table</th><th>What It Stores</th><th>Key Columns</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>patients</strong></td>
+          <td>Each patient's basic info</td>
+          <td>id, name, age, gestational_week, created_at</td>
+        </tr>
+        <tr>
+          <td><strong>records</strong></td>
+          <td>Each uploaded document image</td>
+          <td>id, patient_id, source_image_path, uploaded_at</td>
+        </tr>
+        <tr>
+          <td><strong>extracted_facts</strong></td>
+          <td>Each piece of data extracted from a record</td>
+          <td>id, record_id, patient_id, visit_date, facility_name, document_type, gestational_week, pending_items, confidence, status, verified_by, conflict_details</td>
+        </tr>
+        <tr>
+          <td><strong>verifications</strong></td>
+          <td>Each human confirmation action</td>
+          <td>id, fact_id, source_type ("health_worker" / "patient_voice"), value, verified_at</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Create each table as a Python class using SQLAlchemy. Use <code>Column</code>, <code>String</code>, <code>Integer</code>, <code>Float</code>, <code>DateTime</code>, <code>Text</code>, and <code>ForeignKey</code>. Use <code>uuid4()</code> for IDs.</p>
+
+    <div class="callout c-purple">
+      <strong>🔑 Key concept — the <code>status</code> field on extracted_facts has 4 possible values:</strong><br>
+      • <code>"verified"</code> — Confirmed by a human ✅<br>
+      • <code>"unverified"</code> — Extracted by AI, awaiting confirmation 🟡<br>
+      • <code>"conflict"</code> — Disagrees with another record 🔴<br>
+      • <code>"missing"</code> — Expected by protocol but no record found ⚪
+    </div>
+  </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="step">
+  <span class="step-num">7</span>
+  <h3>Build the FastAPI Server</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>backend/app/main.py</code></h4>
+    <p>This is the entry point — it starts your server:</p>
+    <pre><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI
+<span class="keyword">from</span> fastapi.middleware.cors <span class="keyword">import</span> CORSMiddleware
+<span class="keyword">from</span> fastapi.staticfiles <span class="keyword">import</span> StaticFiles
+<span class="keyword">from</span> .database <span class="keyword">import</span> engine, Base
+<span class="keyword">from</span> .routers <span class="keyword">import</span> patients, records, extraction, verification
+
+<span class="comment"># Create all database tables</span>
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(title=<span class="string">"CareLink Handoff API"</span>)
+
+<span class="comment"># Allow the React frontend to talk to this server</span>
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[<span class="string">"*"</span>],   <span class="comment"># in production, lock this down</span>
+    allow_methods=[<span class="string">"*"</span>],
+    allow_headers=[<span class="string">"*"</span>],
+)
+
+<span class="comment"># Serve uploaded images as static files</span>
+app.mount(<span class="string">"/uploads"</span>, StaticFiles(directory=<span class="string">"uploads"</span>), name=<span class="string">"uploads"</span>)
+
+<span class="comment"># Register all API routes</span>
+app.include_router(patients.router, prefix=<span class="string">"/api/patients"</span>, tags=[<span class="string">"patients"</span>])
+app.include_router(records.router, prefix=<span class="string">"/api/records"</span>, tags=[<span class="string">"records"</span>])
+app.include_router(extraction.router, prefix=<span class="string">"/api/extract"</span>, tags=[<span class="string">"extraction"</span>])
+app.include_router(verification.router, prefix=<span class="string">"/api/verify"</span>, tags=[<span class="string">"verification"</span>])</pre>
+
+    <p><strong>How to run it:</strong></p>
+    <pre><span class="comment"># Make sure you're in the backend/ folder with venv activated</span>
+cd backend
+venv\Scripts\activate
+uvicorn app.main:app --reload --port 8000
+
+<span class="comment"># You should see:</span>
+<span class="comment"># INFO:     Uvicorn running on http://127.0.0.1:8000</span>
+<span class="comment"># INFO:     Application startup complete.</span></pre>
+
+    <p>Open <code>http://localhost:8000/docs</code> in your browser — you'll see an auto-generated API testing page.</p>
+  </div>
+</div>
+
+<!-- STEP 8 -->
+<div class="step">
+  <span class="step-num">8</span>
+  <h3>Build the OCR Service</h3>
+  <div class="step-body">
+    <p><strong>What is OCR?</strong> Optical Character Recognition — it reads text from images. Think of it as the AI's "eyes" for printed text.</p>
+
+    <h4 class="sub-heading">File: <code>backend/app/services/ocr_service.py</code></h4>
+
+    <p><strong>What this file does:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">Takes an image file path (e.g., <code>uploads/anc_card.jpg</code>)</li>
+      <li data-n="2.">Runs PaddleOCR to detect all text in the image</li>
+      <li data-n="3.">Returns all detected text as one combined string</li>
+    </ul>
+
+    <p><strong>How to build it:</strong></p>
+    <pre><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PaddleOCR
+
+<span class="comment"># Initialize ONCE at startup (takes 2-3 sec to load models)</span>
+ocr = PaddleOCR(use_angle_cls=True, lang=<span class="string">'en'</span>)
+
+<span class="keyword">def</span> <span class="function">extract_text</span>(image_path: str) -> str:
+    result = ocr.ocr(image_path, cls=True)
+    <span class="comment"># result is a list of lists of [box, (text, confidence)]</span>
+    lines = []
+    <span class="keyword">for</span> page <span class="keyword">in</span> result:
+        <span class="keyword">if</span> page:
+            <span class="keyword">for</span> line <span class="keyword">in</span> page:
+                text = line[<span class="number">1</span>][<span class="number">0</span>]  <span class="comment"># the detected text</span>
+                lines.append(text)
+    <span class="keyword">return</span> <span class="string">"\n"</span>.join(lines)</pre>
+
+    <div class="callout c-orange">
+      <strong>💡 First run is slow (~30 sec)</strong> because PaddleOCR downloads model files. After that, each image takes 1–3 seconds.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 9 -->
+<div class="step">
+  <span class="step-num">9</span>
+  <h3>Build the AI Extraction Service (Most Important File)</h3>
+  <div class="step-body">
+    <p><strong>What this does:</strong> Takes the OCR text + original image → sends both to Gemini AI → gets structured JSON with visit dates, facility names, document types, etc.</p>
+
+    <h4 class="sub-heading">File: <code>backend/app/services/llm_extractor.py</code></h4>
+
+    <p><strong>How to build it:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">Import the Gemini SDK: <code>from google import genai</code></li>
+      <li data-n="2.">Create a client: <code>client = genai.Client(api_key=GEMINI_API_KEY)</code></li>
+      <li data-n="3.">Load the image as bytes using <code>PIL.Image</code></li>
+      <li data-n="4.">Send a multimodal prompt (text + image) to <code>gemini-2.0-flash</code></li>
+      <li data-n="5.">Parse the JSON response</li>
+      <li data-n="6.">Calculate confidence scores</li>
+    </ul>
+
+    <h4 class="sub-heading">The Extraction Prompt (use this exactly)</h4>
+    <pre><span class="string">"""
+You are a medical record data entry assistant. You extract
+ONLY administrative facts from maternal health records.
+You NEVER interpret clinical data, diagnose, score risk,
+or recommend treatment.
+
+Extract these fields into JSON:
+
+{
+  "visit_date": "YYYY-MM-DD or null if unclear",
+  "facility_name": "string or null",
+  "document_type": "ANC Card | Prescription | Lab Report |
+      Ultrasound | Referral Note | Vaccination Record |
+      Discharge Summary | Other",
+  "gestational_week": integer or null,
+  "pending_items": ["list of follow-ups or tests mentioned"],
+  "provider_name": "doctor/nurse name or null",
+  "next_appointment": "YYYY-MM-DD or null",
+  "confidence_notes": "anything unclear and why"
+}
+
+Rules:
+- Only extract what is clearly written. Do not infer.
+- If unclear, set to null and explain in confidence_notes.
+- Do NOT extract vitals, BP, weight, or lab values.
+- Return ONLY valid JSON. No extra text.
+
+OCR Text from this document:
+{ocr_text}
+"""</span></pre>
+
+    <h4 class="sub-heading">Confidence Scoring Logic</h4>
+    <table>
+      <thead><tr><th>Condition</th><th>Confidence Score</th></tr></thead>
+      <tbody>
+        <tr><td>Field returned by Gemini AND confirmed by OCR text</td><td>0.85 – 0.95</td></tr>
+        <tr><td>Field returned by Gemini but OCR text is ambiguous</td><td>0.60 – 0.80</td></tr>
+        <tr><td>Field mentioned in <code>confidence_notes</code> as unclear</td><td>0.40 – 0.55</td></tr>
+        <tr><td>Field is null / not found</td><td>0.0</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Auto-set status:</strong></p>
+    <ul class="num-list">
+      <li data-n="•">Confidence ≥ 0.80 → status = <code>"unverified"</code> (good but needs human OK)</li>
+      <li data-n="•">Confidence &lt; 0.80 → status = <code>"unverified"</code> + flag for priority review</li>
+      <li data-n="•">Nothing starts as "verified" — only a human can set that</li>
+    </ul>
+  </div>
+</div>
+
+<!-- STEP 10 -->
+<div class="step">
+  <span class="step-num">10</span>
+  <h3>Build the Conflict Detector</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>backend/app/services/conflict_detector.py</code></h4>
+    <p><strong>When to run:</strong> Every time a new fact is extracted for a patient.</p>
+    <p><strong>What it does:</strong> Compares the new fact against all existing facts for that patient. If any rules trigger, it marks both facts as <code>"conflict"</code>.</p>
+
+    <h4 class="sub-heading">Implement these 5 conflict rules:</h4>
+
+    <table>
+      <thead><tr><th>#</th><th>Rule Name</th><th>Logic</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Date collision</strong></td><td>Two records show visits within 2 days but at different facilities</td><td>Record A: "PHC, 12 Aug" vs Record B: "Sub-centre, 13 Aug"</td></tr>
+        <tr><td>2</td><td><strong>Gestational week mismatch</strong></td><td>If Visit A says 20 weeks on Aug 12, Visit B says 18 weeks on Sep 9 — that's impossible (weeks should increase)</td><td>Week goes backward between visits</td></tr>
+        <tr><td>3</td><td><strong>Duplicate document</strong></td><td>Same document_type + same facility + dates within 3 days</td><td>Two "ANC Card" entries from same PHC, 1 day apart</td></tr>
+        <tr><td>4</td><td><strong>Contradictory items</strong></td><td>An item listed as "done" in one record but "pending" in a later record</td><td>TT-1 "given" in Record A, TT-1 "pending" in Record B (later date)</td></tr>
+        <tr><td>5</td><td><strong>Missing link</strong></td><td>Visit 1 and Visit 3 exist but no Visit 2</td><td>Gap in the sequence</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>How to implement:</strong> Write a function <code>detect_conflicts(patient_id, new_fact, all_existing_facts)</code> that loops through each rule and returns a list of conflicts found.</p>
+  </div>
+</div>
+
+<!-- STEP 11 -->
+<div class="step">
+  <span class="step-num">11</span>
+  <h3>Build the Upload &amp; Extraction API Endpoints</h3>
+  <div class="step-body">
+
+    <h4 class="sub-heading">File: <code>backend/app/routers/patients.py</code></h4>
+    <table>
+      <thead><tr><th>Method</th><th>URL</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td>POST</td><td><code>/api/patients/</code></td><td>Create a new patient (name, age, gestational_week)</td></tr>
+        <tr><td>GET</td><td><code>/api/patients/</code></td><td>List all patients</td></tr>
+        <tr><td>GET</td><td><code>/api/patients/{id}</code></td><td>Get one patient with all their facts</td></tr>
+        <tr><td>GET</td><td><code>/api/patients/{id}/journey</code></td><td>Get the full timeline for the consult view</td></tr>
+        <tr><td>GET</td><td><code>/api/patients/{id}/qr</code></td><td>Generate QR code image for this patient</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="sub-heading">File: <code>backend/app/routers/records.py</code></h4>
+    <table>
+      <thead><tr><th>Method</th><th>URL</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td>POST</td><td><code>/api/records/upload/{patient_id}</code></td><td>Upload an image → run OCR → run Gemini extraction → save facts → run conflict detection → return results</td></tr>
+      </tbody>
+    </table>
+
+    <p>The upload endpoint is the <strong>most important endpoint</strong>. Here's what it does step by step:</p>
+    <ul class="num-list">
+      <li data-n="1.">Receive the uploaded image file</li>
+      <li data-n="2.">Save it to <code>uploads/{patient_id}/{filename}</code></li>
+      <li data-n="3.">Call <code>ocr_service.extract_text(image_path)</code> → get raw text</li>
+      <li data-n="4.">Call <code>llm_extractor.extract_facts(image_path, ocr_text)</code> → get structured JSON</li>
+      <li data-n="5.">Save the extracted facts to the database</li>
+      <li data-n="6.">Call <code>conflict_detector.detect_conflicts(patient_id, new_fact, existing_facts)</code></li>
+      <li data-n="7.">Return the extracted facts with status and confidence</li>
+    </ul>
+
+    <h4 class="sub-heading">File: <code>backend/app/routers/verification.py</code></h4>
+    <table>
+      <thead><tr><th>Method</th><th>URL</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td>POST</td><td><code>/api/verify/{fact_id}/confirm</code></td><td>Health worker confirms → status becomes "verified"</td></tr>
+        <tr><td>POST</td><td><code>/api/verify/{fact_id}/reject</code></td><td>Health worker rejects → status stays "unverified", adds note</td></tr>
+        <tr><td>POST</td><td><code>/api/verify/{fact_id}/resolve-conflict</code></td><td>Health worker picks which record is correct</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STEP 12 -->
+<div class="step">
+  <span class="step-num">12</span>
+  <h3>Test the Backend</h3>
+  <div class="step-body">
+    <p><strong>Before writing any frontend code, make sure the backend works perfectly:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">Start the server: <code>uvicorn app.main:app --reload --port 8000</code></li>
+      <li data-n="2.">Open <code>http://localhost:8000/docs</code> in Chrome</li>
+      <li data-n="3.">Create a patient: POST /api/patients/ with <code>{"name": "Priya Devi", "age": 26, "gestational_week": 28}</code></li>
+      <li data-n="4.">Upload a test image: POST /api/records/upload/{patient_id} — attach any image of text</li>
+      <li data-n="5.">Check the response — you should get structured JSON with confidence scores</li>
+      <li data-n="6.">Upload a second image with a different date — check if conflict detection fires</li>
+      <li data-n="7.">Get the journey: GET /api/patients/{id}/journey — see all facts organized</li>
+    </ul>
+
+    <div class="checkpoint">
+      <h4>✅ Week 1 Checkpoint</h4>
+      <p>Upload an image → OCR reads text → Gemini extracts structured JSON → conflicts detected → journey API returns organized data. If this works, the hardest part is done.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- WEEK 2 -->
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<div class="week-header">
+  <h2>🖥️ Week 2 — Frontend React PWA</h2>
+  <p>Day 10–16 · The clinician-facing web app — mobile-first, works offline</p>
+</div>
+
+<!-- STEP 13 -->
+<div class="step">
+  <span class="step-num">13</span>
+  <h3>Create the React Project</h3>
+  <div class="step-body">
+    <pre><span class="comment"># Navigate to the frontend folder</span>
+cd C:\...\carelink-handoff\frontend
+
+<span class="comment"># Create a new React app</span>
+npx create-react-app carelink-app
+cd carelink-app
+
+<span class="comment"># Install libraries you'll need</span>
+npm install axios                  <span class="comment"># makes API calls to backend</span>
+npm install react-router-dom       <span class="comment"># page navigation</span>
+npm install react-icons            <span class="comment"># icons (checkmarks, warnings, etc.)</span>
+npm install framer-motion          <span class="comment"># smooth animations</span>
+
+<span class="comment"># Start the development server</span>
+npm start
+
+<span class="comment"># Opens http://localhost:3000 in your browser</span></pre>
+
+    <h4 class="sub-heading">File: <code>src/api.js</code> — Connect to your backend</h4>
+    <pre><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span>;
+
+<span class="keyword">const</span> API = axios.create({
+  baseURL: <span class="string">'http://localhost:8000/api'</span>
+});
+
+<span class="keyword">export default</span> API;</pre>
+  </div>
+</div>
+
+<!-- STEP 14 -->
+<div class="step">
+  <span class="step-num">14</span>
+  <h3>Build the Dashboard Page</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>src/pages/Dashboard.jsx</code></h4>
+    <p><strong>What it shows:</strong></p>
+    <ul class="num-list">
+      <li data-n="•">Page title: "CareLink Handoff" with a ✚ button</li>
+      <li data-n="•">A list of patient cards — each card shows: name, age, gestational week, number of records, number of conflicts</li>
+      <li data-n="•">Tapping a card → navigates to <code>/patient/{id}</code> (the Journey page)</li>
+      <li data-n="•">A floating "📸 Scan" button at bottom-right → goes to Camera Capture page</li>
+    </ul>
+    <p><strong>How to build:</strong> On mount, call <code>GET /api/patients/</code>. Map the response into card components. Use <code>react-router-dom</code>'s <code>useNavigate()</code> for navigation.</p>
+  </div>
+</div>
+
+<!-- STEP 15 -->
+<div class="step">
+  <span class="step-num">15</span>
+  <h3>Build the Patient Journey Page (THE Key Page)</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>src/pages/PatientJourney.jsx</code></h4>
+    <p><strong>This is the page clinicians will actually use.</strong> It must be perfect.</p>
+
+    <h4 class="sub-heading">Layout (top to bottom):</h4>
+    <ul class="num-list">
+      <li data-n="1."><strong>Header bar:</strong> Patient name, age, "28 weeks", last updated time</li>
+      <li data-n="2."><strong>Alert banners</strong> (if any): red banner for conflicts, orange for missing items</li>
+      <li data-n="3."><strong>The Journey Timeline</strong> — vertical line with colored dots (see below)</li>
+      <li data-n="4."><strong>Action bar</strong> at bottom: "📸 Add Record" | "✅ Verify All" | "🖨️ Print Card"</li>
+    </ul>
+
+    <h4 class="sub-heading">The Timeline Component (<code>src/components/JourneyTimeline.jsx</code>)</h4>
+    <p><strong>How to build the vertical timeline with CSS:</strong></p>
+    <ul class="num-list">
+      <li data-n="•">Container: <code>position: relative; padding-left: 40px;</code></li>
+      <li data-n="•">Vertical line: <code>::before</code> pseudo-element, <code>position: absolute; left: 15px; width: 3px; background: #E8ECF4;</code></li>
+      <li data-n="•">Each node: a colored circle (<code>border-radius: 50%</code>) at the left + a content card to the right</li>
+      <li data-n="•">Colors: green = <code>#2ED573</code>, yellow = <code>#FFA502</code>, red = <code>#FF4757</code>, gray = <code>#A4B0CC</code></li>
+    </ul>
+
+    <p><strong>Each timeline node shows:</strong></p>
+    <ul class="num-list">
+      <li data-n="•">Colored dot (based on status)</li>
+      <li data-n="•">Visit date + facility name</li>
+      <li data-n="•">Document type (small badge)</li>
+      <li data-n="•">Confidence bar (horizontal colored bar)</li>
+      <li data-n="•">"📎 View Source" link → opens SourceImageModal</li>
+      <li data-n="•">Pending items as small pills/tags</li>
+      <li data-n="•">If conflict: red "⚡ CONFLICT — tap to review" banner</li>
+      <li data-n="•">If missing: dashed-border gray card with "⚠️ Expected: Hb test by Week 20"</li>
+    </ul>
+
+    <p><strong>Data source:</strong> On mount, call <code>GET /api/patients/{id}/journey</code>. Sort facts by visit_date ascending.</p>
+  </div>
+</div>
+
+<!-- STEP 16 -->
+<div class="step">
+  <span class="step-num">16</span>
+  <h3>Build the Camera Capture Page</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>src/pages/CameraCapture.jsx</code></h4>
+    <p><strong>This is your demo "wow" moment.</strong></p>
+
+    <h4 class="sub-heading">How to access the camera in a browser:</h4>
+    <pre><span class="comment">// Request camera access</span>
+<span class="keyword">const</span> stream = <span class="keyword">await</span> navigator.mediaDevices.getUserMedia({
+  video: { facingMode: <span class="string">'environment'</span> } <span class="comment">// back camera on phone</span>
+});
+videoRef.current.srcObject = stream;</pre>
+
+    <h4 class="sub-heading">How to capture a frame:</h4>
+    <pre><span class="comment">// Draw current video frame to a canvas</span>
+<span class="keyword">const</span> canvas = document.createElement(<span class="string">'canvas'</span>);
+canvas.width = videoRef.current.videoWidth;
+canvas.height = videoRef.current.videoHeight;
+canvas.getContext(<span class="string">'2d'</span>).drawImage(videoRef.current, <span class="number">0</span>, <span class="number">0</span>);
+
+<span class="comment">// Convert to blob for upload</span>
+canvas.toBlob(<span class="keyword">async</span> (blob) => {
+  <span class="keyword">const</span> formData = <span class="keyword">new</span> FormData();
+  formData.append(<span class="string">'file'</span>, blob, <span class="string">'capture.jpg'</span>);
+  <span class="keyword">const</span> response = <span class="keyword">await</span> API.post(<span class="string">`/records/upload/${patientId}`</span>, formData);
+  <span class="comment">// Show the extracted fields with animation!</span>
+}, <span class="string">'image/jpeg'</span>);</pre>
+
+    <h4 class="sub-heading">The "streaming extraction" visual effect:</h4>
+    <p>After the API responds, don't show all fields at once. Reveal them one by one with a 300ms delay between each field — this creates the "reading the document live" effect:</p>
+    <pre><span class="keyword">const</span> fields = Object.entries(response.data);
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < fields.length; i++) {
+  <span class="keyword">await</span> <span class="keyword">new</span> Promise(r => setTimeout(r, <span class="number">300</span>));
+  setVisibleFields(prev => [...prev, fields[i]]);
+}</pre>
+  </div>
+</div>
+
+<!-- STEP 17 -->
+<div class="step">
+  <span class="step-num">17</span>
+  <h3>Build the Source Image Modal</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>src/components/SourceImageModal.jsx</code></h4>
+    <p>When a clinician taps "📎 View Source" on any fact, a full-screen overlay shows the original uploaded image. This is the "trust" feature — every fact can be traced back to its source.</p>
+    <p><strong>Build:</strong> A modal overlay (<code>position: fixed; top:0; left:0; width:100%; height:100%</code>) with the image from <code>http://localhost:8000/uploads/{image_path}</code> and a ✕ close button.</p>
+  </div>
+</div>
+
+<!-- STEP 18 -->
+<div class="step">
+  <span class="step-num">18</span>
+  <h3>Build the Conflict Review Page</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>src/pages/ConflictReview.jsx</code></h4>
+    <p><strong>Layout:</strong> Two columns side by side.</p>
+    <ul class="num-list">
+      <li data-n="•">Left column: Record A (with its source image thumbnail)</li>
+      <li data-n="•">Right column: Record B (with its source image thumbnail)</li>
+      <li data-n="•">Conflicting fields highlighted in red on both sides</li>
+      <li data-n="•">Three buttons at the bottom: "Use Record A" | "Use Record B" | "Neither — Ask Patient"</li>
+    </ul>
+    <p>On selection, call <code>POST /api/verify/{fact_id}/resolve-conflict</code>.</p>
+  </div>
+</div>
+
+<!-- STEP 19 -->
+<div class="step">
+  <span class="step-num">19</span>
+  <h3>Make It a PWA (Works Offline)</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>public/manifest.json</code></h4>
+    <pre>{
+  <span class="string">"short_name"</span>: <span class="string">"CareLink"</span>,
+  <span class="string">"name"</span>: <span class="string">"CareLink Handoff"</span>,
+  <span class="string">"start_url"</span>: <span class="string">"/"</span>,
+  <span class="string">"display"</span>: <span class="string">"standalone"</span>,
+  <span class="string">"theme_color"</span>: <span class="string">"#6C3CE1"</span>,
+  <span class="string">"background_color"</span>: <span class="string">"#ffffff"</span>
+}</pre>
+
+    <h4 class="sub-heading">Offline strategy (simple version):</h4>
+    <ul class="num-list">
+      <li data-n="1.">When the journey page loads (online), save the response to <code>localStorage</code></li>
+      <li data-n="2.">When the app detects no internet (<code>!navigator.onLine</code>), load from <code>localStorage</code></li>
+      <li data-n="3.">Show a banner: "📴 Offline — showing last synced data"</li>
+    </ul>
+    <p>This is enough for the demo. For the NFC wristband scenario: the NFC tag opens a URL → PWA loads → reads cached data → works without internet.</p>
+
+    <div class="checkpoint">
+      <h4>✅ Week 2 Checkpoint</h4>
+      <p>Open the app on your phone → see patient list → tap patient → see journey timeline with green/yellow/red nodes → tap "View Source" → see original image → camera capture works → conflicts shown side by side. Looks good on mobile.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- WEEK 3 -->
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<div class="week-header">
+  <h2>🔌 Week 3 — Hardware Integration</h2>
+  <p>Day 17–23 · NFC wristband + thermal printer — what makes you unforgettable</p>
+</div>
+
+<!-- STEP 20 -->
+<div class="step">
+  <span class="step-num">20</span>
+  <h3>Set Up Arduino IDE for ESP32</h3>
+  <div class="step-body">
+    <ul class="num-list">
+      <li data-n="1.">Open Arduino IDE</li>
+      <li data-n="2.">Go to <strong>File → Preferences</strong></li>
+      <li data-n="3.">In "Additional Board Manager URLs", paste:<br><code>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code></li>
+      <li data-n="4.">Go to <strong>Tools → Board → Board Manager</strong> → search <strong>"esp32"</strong> → Install</li>
+      <li data-n="5.">Go to <strong>Tools → Board</strong> → select <strong>"ESP32S3 Dev Module"</strong></li>
+      <li data-n="6.">Connect ESP32 via USB → select the COM port under <strong>Tools → Port</strong></li>
+      <li data-n="7.">Go to <strong>Sketch → Include Library → Manage Libraries</strong> → install:
+        <ul>
+          <li><code>MFRC522</code> (for the NFC reader)</li>
+          <li><code>Adafruit Thermal Printer</code> (for the printer)</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- STEP 21 -->
+<div class="step">
+  <span class="step-num">21</span>
+  <h3>Wire &amp; Program the NFC Reader</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">Wiring Diagram — RC522 to ESP32-S3</h4>
+    <div class="wiring-box">
+      <span class="label">RC522 NFC Module</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label">ESP32-S3</span><br>
+      ┌──────────────┐ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌─────────────┐<br>
+      │ <span class="pin-dev">SDA (SS)</span> &nbsp;│───────→│ <span class="pin-esp">GPIO 5</span> &nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-dev">SCK</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GPIO 18</span> &nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-dev">MOSI</span> &nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GPIO 23</span> &nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-dev">MISO</span> &nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GPIO 19</span> &nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-dev">RST</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GPIO 22</span> &nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-dev">3.3V</span> &nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">3.3V</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-dev">GND</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GND</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-warn">IRQ</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ &nbsp;(not connected)<br>
+      └──────────────┘ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─────────────┘<br><br>
+      <span class="pin-warn">⚠️ RC522 uses 3.3V — NEVER connect to 5V!</span>
+    </div>
+
+    <p><strong>Test code:</strong> Upload the MFRC522 example sketch → hold an NFC wristband near the reader → the Serial Monitor should show the tag's UID (a hex number like <code>04:A3:2F:1B</code>). If you see the UID, the wiring is correct.</p>
+  </div>
+</div>
+
+<!-- STEP 22 -->
+<div class="step">
+  <span class="step-num">22</span>
+  <h3>Write Patient Data to NFC Wristband</h3>
+  <div class="step-body">
+    <p><strong>What we store on the wristband:</strong> A short URL like <code>https://carelink.app/p/P-0417</code></p>
+    <p>When any phone taps the wristband, it reads this URL and opens the CareLink PWA at that patient's journey page.</p>
+
+    <h4 class="sub-heading">How to write to NTAG215:</h4>
+    <ul class="num-list">
+      <li data-n="1.">Format the URL as an NDEF URI record (this is the standard NFC data format)</li>
+      <li data-n="2.">Use the MFRC522 library's <code>MIFARE_Write()</code> function to write data blocks</li>
+      <li data-n="3.">NTAG215 has pages 4–129 available for user data (504 bytes — plenty for a URL)</li>
+    </ul>
+
+    <div class="callout c-green">
+      <strong>💡 For the demo, the simplest approach:</strong><br>
+      Write the wristband BEFORE the demo using the ESP32. On stage, just tap your phone on it — modern Android and iOS phones have built-in NFC readers that automatically open URLs from NFC tags. No app needed on the phone.
+    </div>
+
+    <p><strong>Alternative (even simpler):</strong> Use the free "NFC Tools" app on your phone to write the URL to the wristband — no ESP32 needed for writing. But having the ESP32 write it is more impressive for the demo.</p>
+  </div>
+</div>
+
+<!-- STEP 23 -->
+<div class="step">
+  <span class="step-num">23</span>
+  <h3>Wire &amp; Program the Thermal Printer</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">Wiring Diagram — Thermal Printer to ESP32-S3</h4>
+    <div class="wiring-box">
+      <span class="label">Thermal Printer (58mm)</span> &nbsp;&nbsp;&nbsp;<span class="label">ESP32-S3</span><br>
+      ┌──────────────────┐ &nbsp;&nbsp;&nbsp;&nbsp;┌─────────────┐<br>
+      │ <span class="pin-dev">TX</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GPIO 16 (RX)</span>│<br>
+      │ <span class="pin-dev">RX</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│←───────│ <span class="pin-esp">GPIO 17 (TX)</span>│<br>
+      │ <span class="pin-dev">GND</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-esp">GND</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      │ <span class="pin-warn">VCC (5-9V)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│───────→│ <span class="pin-warn">EXTERNAL PSU</span>│<br>
+      └──────────────────┘ &nbsp;&nbsp;&nbsp;&nbsp;└─────────────┘<br><br>
+      <span class="pin-warn">⚠️ The printer draws 1.5A+ — use a SEPARATE 5V/2A power supply!</span><br>
+      <span class="pin-warn">&nbsp;&nbsp;&nbsp;A phone charger (5V 2A) works perfectly.</span>
+    </div>
+
+    <h4 class="sub-heading">What the printed card looks like:</h4>
+    <div class="receipt">
+      ════════════════════════<br>
+      &nbsp;&nbsp;&nbsp;CARELINK HANDOFF<br>
+      ════════════════════════<br>
+      Patient: Priya Devi<br>
+      ID: P-0417 &nbsp;|&nbsp; 28 wks<br>
+      ────────────────────────<br>
+      ✓ Visit 1 · PHC · 12 Aug<br>
+      ✓ Visit 2 · SC · 09 Sep<br>
+      ⚠ Visit 3 · CONFLICT<br>
+      ✗ Hb Test · MISSING<br>
+      ────────────────────────<br>
+      Next: TT Booster, Hb Re<br>
+      ────────────────────────<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ QR CODE ]<br>
+      &nbsp;&nbsp;Scan for full journey<br>
+      ════════════════════════
+    </div>
+
+    <p><strong>How to print the QR code:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">On the backend, generate a QR image using the Python <code>qrcode</code> library</li>
+      <li data-n="2.">Convert to 1-bit bitmap (black &amp; white)</li>
+      <li data-n="3.">Send the bitmap bytes to ESP32 over HTTP or Serial</li>
+      <li data-n="4.">ESP32 prints the bitmap using the Adafruit Thermal library's <code>printBitmap()</code></li>
+    </ul>
+
+    <div class="checkpoint">
+      <h4>✅ Week 3 Checkpoint</h4>
+      <p>Tap NFC wristband with phone → journey opens. Press button → printer prints a card with patient summary + QR code. QR code scans and opens the journey. If this works, you have hardware that no other team can match.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 24 -->
+<div class="step">
+  <span class="step-num">24</span>
+  <h3>Build the QR Code Generator</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">Backend endpoint: <code>GET /api/patients/{id}/qr</code></h4>
+    <pre><span class="keyword">import</span> qrcode
+<span class="keyword">import</span> io
+<span class="keyword">from</span> fastapi.responses <span class="keyword">import</span> StreamingResponse
+
+@router.get(<span class="string">"/{patient_id}/qr"</span>)
+<span class="keyword">def</span> <span class="function">get_qr</span>(patient_id: str):
+    url = <span class="string">f"https://carelink.app/patient/{patient_id}"</span>
+    img = qrcode.make(url)
+    buf = io.BytesIO()
+    img.save(buf, format=<span class="string">"PNG"</span>)
+    buf.seek(<span class="number">0</span>)
+    <span class="keyword">return</span> StreamingResponse(buf, media_type=<span class="string">"image/png"</span>)</pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- WEEK 4 -->
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<div class="week-header">
+  <h2>🔗 Week 4 — Advanced Features</h2>
+  <p>Day 24–30 · Voice verification, protocol gap detection, offline sync</p>
+</div>
+
+<!-- STEP 25 -->
+<div class="step">
+  <span class="step-num">25</span>
+  <h3>Add Voice Verification</h3>
+  <div class="step-body">
+    <p><strong>What:</strong> Health worker asks the mother a question. Her spoken answer is matched against the extracted data.</p>
+
+    <h4 class="sub-heading">Frontend — use the browser's Web Speech API:</h4>
+    <pre><span class="keyword">const</span> startVoiceVerification = (factId) => {
+  <span class="keyword">const</span> recognition = <span class="keyword">new</span> (window.SpeechRecognition
+    || window.webkitSpeechRecognition)();
+  recognition.lang = <span class="string">'en-IN'</span>;  <span class="comment">// Indian English</span>
+  recognition.start();
+
+  recognition.onresult = <span class="keyword">async</span> (event) => {
+    <span class="keyword">const</span> transcript = event.results[<span class="number">0</span>][<span class="number">0</span>].transcript;
+    <span class="comment">// Send to backend for matching</span>
+    <span class="keyword">await</span> API.post(<span class="string">`/verify/${factId}/voice`</span>, {
+      spoken_text: transcript
+    });
+  };
+};</pre>
+
+    <h4 class="sub-heading">Backend — fuzzy matching:</h4>
+    <ul class="num-list">
+      <li data-n="1.">Receive the spoken text: "September ninth at the sub-centre"</li>
+      <li data-n="2.">Compare against the extracted visit_date: "2026-09-09" → convert both to comparable format</li>
+      <li data-n="3.">Check for date words: "September" → 09, "ninth" → 09</li>
+      <li data-n="4.">Check facility: "sub-centre" matches "Sub-centre Wardha"</li>
+      <li data-n="5.">If match → add <code>"patient_voice"</code> to <code>verified_by</code>, boost confidence by 0.10</li>
+      <li data-n="6.">If mismatch → create a new conflict entry</li>
+    </ul>
+
+    <div class="callout c-orange">
+      <strong>💡 For the demo:</strong> If Web Speech API is flaky, pre-record a voice clip and play it. Show the transcript appear, then show it matching. The concept matters more than perfect speech recognition.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 26 -->
+<div class="step">
+  <span class="step-num">26</span>
+  <h3>Add Protocol Gap Detection</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">File: <code>backend/app/data/anc_protocol.json</code></h4>
+    <p>Create a JSON file with the Indian government ANC schedule (4 mandatory visits with required tests/vaccines at each).</p>
+
+    <h4 class="sub-heading">File: <code>backend/app/services/protocol_checker.py</code></h4>
+    <p><strong>Logic:</strong></p>
+    <ul class="num-list">
+      <li data-n="1.">Load the protocol JSON</li>
+      <li data-n="2.">Get the patient's current gestational week</li>
+      <li data-n="3.">For each protocol visit whose <code>expected_week_range</code> end is ≤ current week:</li>
+      <li data-n="4.">&nbsp;&nbsp;→ Check if a matching visit record exists</li>
+      <li data-n="5.">&nbsp;&nbsp;→ Check if each <code>required_item</code> appears in any record</li>
+      <li data-n="6.">&nbsp;&nbsp;→ If missing, create a fact with status <code>"missing"</code></li>
+    </ul>
+
+    <h4 class="sub-heading">Backend endpoint: <code>GET /api/patients/{id}/gaps</code></h4>
+    <p>Returns a list of missing visits and missing items. The frontend shows these as dashed gray nodes on the timeline + orange alert banners.</p>
+  </div>
+</div>
+
+<!-- STEP 27 -->
+<div class="step">
+  <span class="step-num">27</span>
+  <h3>Add Offline Mode</h3>
+  <div class="step-body">
+    <p><strong>Simple approach using localStorage:</strong></p>
+    <pre><span class="comment">// When loading journey data (online):</span>
+<span class="keyword">const</span> data = <span class="keyword">await</span> API.get(<span class="string">`/patients/${id}/journey`</span>);
+localStorage.setItem(<span class="string">`journey-${id}`</span>, JSON.stringify(data));
+
+<span class="comment">// When loading journey data (offline):</span>
+<span class="keyword">if</span> (!navigator.onLine) {
+  <span class="keyword">const</span> cached = localStorage.getItem(<span class="string">`journey-${id}`</span>);
+  <span class="keyword">if</span> (cached) setJourney(JSON.parse(cached));
+  setOfflineMode(true);
+}</pre>
+    <p>Show a purple banner: "📴 Offline — showing last synced data from 2:30 PM"</p>
+
+    <div class="checkpoint">
+      <h4>✅ Week 4 Checkpoint</h4>
+      <p>Complete end-to-end flow: Upload image → AI extracts → conflicts detected → protocol gaps flagged → voice verification works → NFC tap opens journey → thermal card prints → works offline. Everything is connected.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- WEEK 5 -->
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<div class="week-header">
+  <h2>🎬 Week 5 — Demo Prep &amp; Polish</h2>
+  <p>Day 31–35 · Create the narrative, polish the UI, rehearse until it's muscle memory</p>
+</div>
+
+<!-- STEP 28 -->
+<div class="step">
+  <span class="step-num">28</span>
+  <h3>Create "Priya's Journey" — The Demo Data</h3>
+  <div class="step-body">
+    <p>Create one complete synthetic patient story. This is what you'll show on stage.</p>
+
+    <table>
+      <thead><tr><th>Document</th><th>Facility</th><th>Status</th><th>What It Triggers</th></tr></thead>
+      <tbody>
+        <tr><td>ANC Card (front)</td><td>PHC Nagpur</td><td>✅ Verified</td><td>Clean extraction — shows the system working</td></tr>
+        <tr><td>ANC Card (back)</td><td>PHC Nagpur</td><td>✅ Verified</td><td>Shows TT-1 given, Iron tablets prescribed</td></tr>
+        <tr><td>Prescription photo</td><td>Sub-centre Wardha</td><td>✅ Verified</td><td>Second visit at a different facility</td></tr>
+        <tr><td>WhatsApp ultrasound</td><td>Private clinic</td><td>🟡 Confirm</td><td>Date partially torn — low confidence</td></tr>
+        <tr><td>Lab report</td><td>District Hospital</td><td>🔴 Conflict</td><td>Date says 15 Oct, but referral note says 12 Oct</td></tr>
+        <tr><td>(no record)</td><td>—</td><td>⚪ Missing</td><td>Hb test expected by Week 20 — not found</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="sub-heading">How to create the synthetic images:</h4>
+    <ul class="num-list">
+      <li data-n="1.">Find a blank Indian ANC card template (search "MCP card India template")</li>
+      <li data-n="2.">Print it, fill in with pen (slightly messy handwriting = realistic)</li>
+      <li data-n="3.">Photograph with your phone at a slight angle (not perfectly flat)</li>
+      <li data-n="4.">For the WhatsApp image: take a photo → send to yourself on WhatsApp → screenshot the chat</li>
+      <li data-n="5.">Add "SYNTHETIC DATA" watermark to all images</li>
+    </ul>
+  </div>
+</div>
+
+<!-- STEP 29 -->
+<div class="step">
+  <span class="step-num">29</span>
+  <h3>Polish the UI</h3>
+  <div class="step-body">
+    <ul class="num-list">
+      <li data-n="•">Add loading skeletons (gray rectangles that pulse) while extraction runs</li>
+      <li data-n="•">Add fade-in animations to timeline nodes (use <code>framer-motion</code>)</li>
+      <li data-n="•">Make the confidence bars animate from 0% to their value</li>
+      <li data-n="•">Test on your actual phone — pinch, scroll, tap targets</li>
+      <li data-n="•">Make buttons at least 48px tall (finger-friendly)</li>
+      <li data-n="•">Use the color scheme: purple (#6C3CE1), green (#2ED573), orange (#FFA502), red (#FF4757)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- STEP 30 -->
+<div class="step">
+  <span class="step-num">30</span>
+  <h3>Rehearse the Demo</h3>
+  <div class="step-body">
+    <h4 class="sub-heading">The 4-minute demo script:</h4>
+
+    <table>
+      <thead><tr><th>Time</th><th>What You Do</th><th>What You Say</th></tr></thead>
+      <tbody>
+        <tr><td><strong>0:00</strong></td><td>Place paper pile on table</td><td>"This is what a clinician sees. 4 documents from 3 facilities."</td></tr>
+        <tr><td><strong>0:30</strong></td><td>Point camera at ANC card</td><td>"CareLink reads it. Visit date: Aug 12. PHC Nagpur. Confidence: 94%."</td></tr>
+        <tr><td><strong>1:30</strong></td><td>Show conflict on screen</td><td>"These two records disagree. CareLink flags it — waits for a human."</td></tr>
+        <tr><td><strong>2:00</strong></td><td>Voice verification</td><td>"The patient says September 9th. That matches. Confidence upgrades."</td></tr>
+        <tr><td><strong>2:30</strong></td><td>Show missing item</td><td>"28 weeks. No Hb test on record. CareLink flags: MISSING."</td></tr>
+        <tr><td><strong>2:50</strong></td><td>Show journey timeline</td><td>"One page. Every fact verified. Every gap visible."</td></tr>
+        <tr><td><strong>3:20</strong></td><td>Tap NFC wristband</td><td>"Patient wears this. Any health worker, anywhere, taps — journey opens."</td></tr>
+        <tr><td><strong>3:50</strong></td><td>Printer prints card</td><td>"Or we print this. No phone, no internet. Verified data — in her pocket."</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-red">
+      <strong>🛡️ The answer that wins Q&amp;A:</strong><br>
+      If a judge asks "Can it detect pre-eclampsia risk?" — answer:<br>
+      <em>"That's a clinical decision. CareLink ensures the clinician has the complete, verified picture to make that call. We don't replace clinical judgment — we make it faster."</em>
+    </div>
+
+    <h4 class="sub-heading">Demo-day packing list:</h4>
+    <div class="grid-3">
+      <div class="grid-card">
+        <h4>💻 Tech</h4>
+        <p>Laptop (charged)<br>Phone (NFC enabled)<br>USB cables<br>Power bank</p>
+      </div>
+      <div class="grid-card">
+        <h4>🔌 Hardware</h4>
+        <p>ESP32 + breadboard<br>Thermal printer<br>Printer power supply<br>3 NFC wristbands<br>Extra thermal paper</p>
+      </div>
+      <div class="grid-card">
+        <h4>📄 Props</h4>
+        <p>Paper ANC card<br>Prescription printout<br>Lab report printout<br>Pre-printed backup card<br>Phone with WhatsApp img</p>
+      </div>
+    </div>
+
+    <div class="checkpoint">
+      <h4>🏆 Final Checkpoint</h4>
+      <p>Demo runs under 4 minutes. Hardware works every time. Backup video recorded. Physical props ready. Q&amp;A answers rehearsed. You're ready to win.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FINAL PAGE ===== -->
+<div class="page-break"></div>
+<div style="text-align:center;padding-top:80px;">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--gray-500);font-weight:600;margin-bottom:30px;">
+    The Untouchable Summary
+  </div>
+  <div style="font-size:24px;font-weight:900;color:var(--dark);line-height:1.5;max-width:480px;margin:0 auto 30px;">
+    Other teams show judges a screen.<br><br>
+    You hand them a <span style="color:var(--primary);">wristband</span>,<br>
+    tap it with a phone,<br>
+    <span style="color:var(--accent-dark);">print a card</span>,<br>
+    and turn a paper record into<br>
+    verified data — <span style="color:var(--primary);">live on camera</span>.<br><br>
+    <span style="color:var(--danger);">Nobody forgets that.</span>
+  </div>
+  <div style="width:70px;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px;margin:0 auto 30px;"></div>
+  <div style="color:var(--gray-500);font-size:12px;line-height:1.8;">
+    CareLink Handoff · Health-A-Thon 2026<br>
+    Maternal &amp; Women's Health<br>
+    <strong style="color:var(--dark);">Siddharth Balu Jamdhade · YCCE, Nagpur</strong>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+</body>
+</html>

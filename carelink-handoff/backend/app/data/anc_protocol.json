@@ -1,0 +1,44 @@
+{
+  "protocol_name": "Indian ANC Protocol (MoHFW Guidelines)",
+  "visits": [
+    {
+      "visit_number": 1,
+      "label": "Registration and First ANC Visit",
+      "expected_by_week": 12,
+      "required_items": [
+        "ANC registration",
+        "Blood group test",
+        "Haemoglobin test",
+        "Urine test"
+      ]
+    },
+    {
+      "visit_number": 2,
+      "label": "Second ANC Visit",
+      "expected_by_week": 20,
+      "required_items": [
+        "TT-1 vaccination",
+        "Iron and Folic acid tablets"
+      ]
+    },
+    {
+      "visit_number": 3,
+      "label": "Third ANC Visit",
+      "expected_by_week": 30,
+      "required_items": [
+        "TT-2 vaccination",
+        "Haemoglobin retest",
+        "Ultrasound if not done"
+      ]
+    },
+    {
+      "visit_number": 4,
+      "label": "Fourth ANC Visit",
+      "expected_by_week": 36,
+      "required_items": [
+        "Birth preparedness plan",
+        "Delivery plan counseling"
+      ]
+    }
+  ]
+}

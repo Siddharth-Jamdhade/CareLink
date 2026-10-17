@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareLink Handoff — Complete Prototype Guide (Every Line of Code)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+@page{size:A4;margin:14mm 14mm 16mm 14mm}
+body{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.65;color:#1a1a2e;background:#fff;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+h1{font-size:28px;font-weight:900;margin:0 0 4px}
+h2{font-size:20px;font-weight:800;color:#1a1a2e;margin:24px 0 6px;page-break-after:avoid}
+h3{font-size:15px;font-weight:700;color:#1a1a2e;margin:16px 0 4px;page-break-after:avoid}
+h4{font-size:12px;font-weight:700;color:#2c3e6b;margin:12px 0 4px;page-break-after:avoid}
+p{margin:4px 0 6px;color:#2c3e6b}
+ul,ol{margin:4px 0 8px 20px;color:#2c3e6b}
+li{margin-bottom:3px}
+a{color:#6C3CE1}
+.cover{width:210mm;min-height:297mm;margin:0 auto;background:linear-gradient(135deg,#1A1A2E,#0F3460);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;page-break-after:always;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(108,60,225,.25),transparent 70%);border-radius:50%}
+.cover h1{font-size:50px;color:#fff;position:relative;z-index:1}
+.cover h1 span{background:linear-gradient(135deg,#B794F6,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cover p{color:#a4b0cc;max-width:450px;font-size:14px;position:relative;z-index:1}
+.cover .badge{background:rgba(108,60,225,.3);border:1px solid rgba(108,60,225,.5);color:#B794F6;padding:6px 20px;border-radius:50px;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:30px;position:relative;z-index:1}
+.content{max-width:178mm;margin:0 auto}
+pre{background:#1E1E2E;color:#CDD6F4;border-radius:8px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.7;overflow-x:auto;margin:6px 0 10px;page-break-inside:avoid;white-space:pre-wrap;word-wrap:break-word}
+code{background:#F0ECFE;color:#4A1FB8;padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.cmd{background:#0D1117;color:#58A6FF;border-radius:8px;padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;margin:6px 0 10px;border-left:4px solid #58A6FF;page-break-inside:avoid;white-space:pre-wrap}
+.file-label{display:inline-block;background:#6C3CE1;color:#fff;padding:3px 12px;border-radius:4px 4px 0 0;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;margin-top:8px}
+.file-label+pre{border-radius:0 8px 8px 8px;margin-top:0}
+.note{border-left:4px solid #6C3CE1;background:#EDE5FF;padding:8px 14px;border-radius:0 6px 6px 0;margin:8px 0;font-size:10.5px;color:#4A1FB8;page-break-inside:avoid}
+.warn{border-left:4px solid #FF4757;background:#FFE8EA;padding:8px 14px;border-radius:0 6px 6px 0;margin:8px 0;font-size:10.5px;color:#C0392B;page-break-inside:avoid}
+.tip{border-left:4px solid #00D4AA;background:#E0FFF5;padding:8px 14px;border-radius:0 6px 6px 0;margin:8px 0;font-size:10.5px;color:#00795A;page-break-inside:avoid}
+.check{background:linear-gradient(135deg,#E0FFF5,#F0FFF0);border:2px solid #00D4AA;border-radius:8px;padding:10px 14px;margin:12px 0;page-break-inside:avoid}
+.check h4{color:#00795A;margin:0 0 3px}
+.check p{color:#00795A;font-size:10.5px;margin:0}
+.step-box{background:#F8F9FA;border:1px solid #E8ECF4;border-radius:8px;padding:12px 16px;margin:10px 0;page-break-inside:avoid}
+.pb{page-break-before:always}
+table{width:100%;border-collapse:collapse;margin:6px 0;font-size:10.5px;page-break-inside:avoid}
+th{background:#1a1a2e;color:#fff;padding:7px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px}
+td{padding:6px 10px;border-bottom:1px solid #E8ECF4}
+.num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#6C3CE1;color:#fff;font-size:12px;font-weight:800;margin-right:6px}
+hr{border:none;border-top:2px solid #E8ECF4;margin:20px 0}
+.wiring{background:#1E1E2E;border-radius:8px;padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.8;color:#CDD6F4;margin:8px 0;page-break-inside:avoid}
+@media screen{.cover{box-shadow:0 4px 40px rgba(0,0,0,.1);margin:20px auto;border-radius:4px}.content{background:#fff;padding:16mm;margin:20px auto;max-width:210mm;box-shadow:0 2px 20px rgba(0,0,0,.06);border-radius:4px}body{background:#eee}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+<div class="badge">Step-by-Step Build Guide</div>
+<h1>CareLink <span>Handoff</span></h1>
+<p style="font-size:16px;margin-bottom:8px;color:#E8ECF4;">Complete Prototype — Every Line of Code</p>
+<p>Copy-paste friendly. Beginner-ready. From zero to working demo.</p>
+<div style="width:60px;height:3px;background:linear-gradient(90deg,#6C3CE1,#00D4AA);border-radius:2px;margin:30px auto"></div>
+<p style="font-size:12px;">Health-A-Thon 2026 · Siddharth Balu Jamdhade · YCCE Nagpur</p>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<h1>Before You Start</h1>
+<p>This guide gives you <strong>every file, every command, every line of code</strong> needed to build the CareLink Handoff prototype. You don't need to know React, FastAPI, or ESP32 beforehand — just follow each step in order.</p>
+
+<div class="note"><strong>How to use this guide:</strong> Each step has a grey command box (things to type in terminal) and purple code blocks (file contents to copy-paste). Create each file and paste the code exactly as shown.</div>
+
+<hr>
+
+<!-- ============================================== -->
+<h1>PHASE 1: Setup (30 minutes)</h1>
+<!-- ============================================== -->
+
+<h2><span class="num">1</span> Install Python</h2>
+<p>Go to <strong>https://python.org/downloads</strong> → Download Python 3.12+ → Install it.</p>
+<div class="warn"><strong>CRITICAL:</strong> During installation, check the box that says <strong>"Add Python to PATH"</strong>. If you miss this, nothing will work.</div>
+<p>Open PowerShell (press <code>Win + X</code> → "Terminal") and verify:</p>
+<div class="cmd">python --version
+# You should see: Python 3.12.x or higher</div>
+
+<h2><span class="num">2</span> Install Node.js</h2>
+<p>Go to <strong>https://nodejs.org</strong> → Download the <strong>LTS</strong> version (green button) → Install with defaults.</p>
+<div class="cmd">node --version
+# Should show: v20.x.x or v22.x.x</div>
+
+<h2><span class="num">3</span> Get Your Free Gemini API Key</h2>
+<ol>
+<li>Go to <strong>https://aistudio.google.com/apikey</strong></li>
+<li>Sign in with Google</li>
+<li>Click <strong>"Create API Key"</strong></li>
+<li>Copy the key (looks like <code>AIzaSy...</code>)</li>
+<li>Save it — you'll paste it into a file in Step 5</li>
+</ol>
+
+<h2><span class="num">4</span> Create All Folders</h2>
+<p>Open PowerShell and run these commands one by one:</p>
+<div class="cmd">cd "C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon"
+
+mkdir carelink-handoff
+cd carelink-handoff
+
+mkdir backend
+mkdir backend\app
+mkdir backend\app\routers
+mkdir backend\app\services
+mkdir backend\app\data
+mkdir backend\uploads
+
+mkdir frontend
+
+mkdir hardware
+mkdir hardware\esp32_firmware
+
+mkdir synthetic_data
+mkdir synthetic_data\images</div>
+
+<h2><span class="num">5</span> Install Python Libraries</h2>
+<div class="cmd">cd "C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\carelink-handoff\backend"
+
+python -m venv venv
+venv\Scripts\activate
+
+pip install fastapi uvicorn[standard] sqlalchemy pydantic python-dotenv
+pip install python-multipart Pillow qrcode[pil]
+pip install paddlepaddle paddleocr
+pip install google-genai</div>
+
+<div class="note"><strong>What does <code>venv\Scripts\activate</code> do?</strong> It activates the virtual environment. You'll see <code>(venv)</code> appear at the start of your terminal line. <strong>You must run this command every time you open a new terminal.</strong></div>
+
+<p>Now create the <code>.env</code> file to store your API key:</p>
+
+<div class="file-label">📄 backend/.env</div>
+<pre>GEMINI_API_KEY=paste_your_actual_key_here</pre>
+<p>Replace <code>paste_your_actual_key_here</code> with the key you copied in Step 3.</p>
+
+<div class="check"><h4>✅ Phase 1 Complete</h4><p>Python, Node.js installed. Gemini key saved. All folders created. Virtual environment activated.</p></div>
+
+<hr>
+
+<!-- ============================================== -->
+<h1 class="pb">PHASE 2: Build the Backend (2–3 days)</h1>
+<p>The backend is the brain. It stores data, runs OCR, calls Gemini AI, and detects conflicts.<br>Create these files one by one inside <code>backend\app\</code>.</p>
+<!-- ============================================== -->
+
+<h2><span class="num">6</span> Config File</h2>
+
+<div class="file-label">📄 backend/app/config.py</div>
+<pre>import os
+from dotenv import load_dotenv
+
+load_dotenv()  # reads the .env file
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+DATABASE_URL = "sqlite:///./carelink.db"
+UPLOAD_DIR = "uploads"</pre>
+
+<h2><span class="num">7</span> Database Setup</h2>
+
+<div class="file-label">📄 backend/app/database.py</div>
+<pre>from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+from .config import DATABASE_URL
+
+# Create the database engine (SQLite = a single file on disk)
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={"check_same_thread": False}  # needed for SQLite
+)
+
+# Create a session factory
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Base class for all database models
+Base = declarative_base()
+
+
+def get_db():
+    """
+    Creates a database session for each API request.
+    FastAPI calls this automatically.
+    """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()</pre>
+
+<h2><span class="num">8</span> Database Models (Tables)</h2>
+
+<div class="file-label">📄 backend/app/models.py</div>
+<pre>import uuid
+from datetime import datetime
+from sqlalchemy import Column, String, Integer, Float, DateTime, Text, ForeignKey
+from sqlalchemy.orm import relationship
+from .database import Base
+
+
+def generate_uuid():
+    return str(uuid.uuid4())
+
+
+class Patient(Base):
+    __tablename__ = "patients"
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    name = Column(String, nullable=False)
+    age = Column(Integer)
+    gestational_week = Column(Integer)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    records = relationship("Record", back_populates="patient")
+    facts = relationship("ExtractedFact", back_populates="patient")
+
+
+class Record(Base):
+    __tablename__ = "records"
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    patient_id = Column(String, ForeignKey("patients.id"), nullable=False)
+    source_image_path = Column(String, nullable=False)
+    original_filename = Column(String)
+    uploaded_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    patient = relationship("Patient", back_populates="records")
+    facts = relationship("ExtractedFact", back_populates="record")
+
+
+class ExtractedFact(Base):
+    __tablename__ = "extracted_facts"
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    record_id = Column(String, ForeignKey("records.id"), nullable=False)
+    patient_id = Column(String, ForeignKey("patients.id"), nullable=False)
+
+    visit_date = Column(String, nullable=True)
+    facility_name = Column(String, nullable=True)
+    document_type = Column(String, nullable=True)
+    gestational_week = Column(Integer, nullable=True)
+    pending_items = Column(Text, nullable=True)      # stored as JSON string
+    provider_name = Column(String, nullable=True)
+    next_appointment = Column(String, nullable=True)
+
+    confidence = Column(Float, default=0.0)
+    status = Column(String, default="unverified")     # verified/unverified/conflict/missing
+    verified_by = Column(Text, default='["document"]') # JSON list
+    conflict_details = Column(Text, nullable=True)
+    confidence_notes = Column(Text, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    record = relationship("Record", back_populates="facts")
+    patient = relationship("Patient", back_populates="facts")
+
+
+class Verification(Base):
+    __tablename__ = "verifications"
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    fact_id = Column(String, ForeignKey("extracted_facts.id"), nullable=False)
+    source_type = Column(String, nullable=False)  # "health_worker" or "patient_voice"
+    value = Column(String)
+    verified_at = Column(DateTime, default=datetime.utcnow)</pre>
+
+<h2><span class="num">9</span> Pydantic Schemas (Data Shapes)</h2>
+<p>These define what data the API accepts and returns.</p>
+
+<div class="file-label">📄 backend/app/schemas.py</div>
+<pre>from pydantic import BaseModel
+from typing import Optional, List
+from datetime import datetime
+
+
+# ----- Patient -----
+class PatientCreate(BaseModel):
+    name: str
+    age: int
+    gestational_week: int
+
+
+class PatientResponse(BaseModel):
+    id: str
+    name: str
+    age: int
+    gestational_week: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ----- Extracted Fact -----
+class FactResponse(BaseModel):
+    id: str
+    record_id: str
+    patient_id: str
+    visit_date: Optional[str] = None
+    facility_name: Optional[str] = None
+    document_type: Optional[str] = None
+    gestational_week: Optional[int] = None
+    pending_items: Optional[str] = None
+    provider_name: Optional[str] = None
+    next_appointment: Optional[str] = None
+    confidence: float
+    status: str
+    verified_by: str
+    conflict_details: Optional[str] = None
+    confidence_notes: Optional[str] = None
+    source_image_path: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+# ----- Journey (what the clinician sees) -----
+class JourneyResponse(BaseModel):
+    patient: PatientResponse
+    facts: List[FactResponse]
+    missing_items: List[dict]
+    conflicts: List[dict]</pre>
+
+<h2><span class="num">10</span> OCR Service</h2>
+
+<div class="file-label">📄 backend/app/services/ocr_service.py</div>
+<pre>from paddleocr import PaddleOCR
+
+# Initialize once (takes ~30 seconds on first run to download models)
+print("Loading OCR engine...")
+ocr_engine = PaddleOCR(use_angle_cls=True, lang='en', show_log=False)
+print("OCR engine ready!")
+
+
+def extract_text_from_image(image_path: str) -> str:
+    """
+    Takes an image file path.
+    Returns all text found in the image as a single string.
+    """
+    result = ocr_engine.ocr(image_path, cls=True)
+
+    lines = []
+    if result and result[0]:
+        for line in result[0]:
+            text = line[1][0]       # the detected text
+            confidence = line[1][1] # how confident the OCR is
+            if confidence > 0.5:    # only keep reasonably confident text
+                lines.append(text)
+
+    return "\n".join(lines)</pre>
+
+<h2><span class="num">11</span> AI Extraction Service (The Core)</h2>
+
+<div class="file-label">📄 backend/app/services/llm_extractor.py</div>
+<pre>import json
+from google import genai
+from google.genai import types
+from ..config import GEMINI_API_KEY
+
+# Initialize the Gemini client
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+EXTRACTION_PROMPT = """You are a medical record data entry assistant. You extract ONLY administrative facts from maternal health records. You NEVER interpret clinical data, diagnose, score risk, or recommend treatment.
+
+From this record image and its OCR text, extract the following fields into JSON:
+
+{
+  "visit_date": "YYYY-MM-DD or null if unclear",
+  "facility_name": "name of hospital/clinic/centre or null",
+  "document_type": "one of: ANC Card, Prescription, Lab Report, Ultrasound Report, Referral Note, Vaccination Record, Discharge Summary, Other",
+  "gestational_week": "integer or null",
+  "pending_items": ["list of pending follow-ups, tests, or referrals"],
+  "provider_name": "doctor or nurse name if visible, or null",
+  "next_appointment": "YYYY-MM-DD or null",
+  "confidence_notes": "describe anything unclear or hard to read"
+}
+
+Rules:
+- Only extract what is clearly written or printed. Do not guess.
+- If a field is unreadable or ambiguous, set it to null and explain in confidence_notes.
+- Do NOT extract blood pressure, weight, heart rate, lab values, or any clinical measurements.
+- pending_items should only list administrative follow-ups (next visit, tests to get, referrals).
+- Return ONLY valid JSON. No explanation text before or after.
+
+OCR Text from this document:
+"""
+
+
+def extract_facts_from_image(image_path: str, ocr_text: str) -> dict:
+    """
+    Sends the image + OCR text to Gemini.
+    Returns a dictionary of extracted administrative facts.
+    """
+    # Read the image file
+    with open(image_path, "rb") as f:
+        image_bytes = f.read()
+
+    # Determine image type
+    if image_path.lower().endswith(".png"):
+        mime = "image/png"
+    else:
+        mime = "image/jpeg"
+
+    # Build the prompt
+    full_prompt = EXTRACTION_PROMPT + ocr_text
+
+    try:
+        # Call Gemini with both image and text
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=[
+                types.Part.from_bytes(data=image_bytes, mime_type=mime),
+                types.Part.from_text(text=full_prompt),
+            ],
+        )
+
+        # Parse the JSON response
+        response_text = response.text.strip()
+
+        # Remove markdown code fences if present
+        if response_text.startswith("```"):
+            response_text = response_text.split("\n", 1)[1]
+            response_text = response_text.rsplit("```", 1)[0]
+
+        result = json.loads(response_text)
+
+        # Calculate confidence score
+        confidence = calculate_confidence(result, ocr_text)
+        result["_confidence"] = confidence
+
+        return result
+
+    except json.JSONDecodeError:
+        return {
+            "visit_date": None,
+            "facility_name": None,
+            "document_type": "Other",
+            "gestational_week": None,
+            "pending_items": [],
+            "provider_name": None,
+            "next_appointment": None,
+            "confidence_notes": "Failed to parse AI response",
+            "_confidence": 0.3,
+        }
+    except Exception as e:
+        return {
+            "visit_date": None,
+            "facility_name": None,
+            "document_type": "Other",
+            "gestational_week": None,
+            "pending_items": [],
+            "provider_name": None,
+            "next_appointment": None,
+            "confidence_notes": f"Error: {str(e)}",
+            "_confidence": 0.1,
+        }
+
+
+def calculate_confidence(result: dict, ocr_text: str) -> float:
+    """
+    Calculates a confidence score (0.0 to 1.0) based on:
+    - How many fields were extracted
+    - Whether the confidence_notes mention issues
+    """
+    score = 0.5  # base score
+
+    # Boost for each non-null field
+    fields = ["visit_date", "facility_name", "document_type", "gestational_week"]
+    for field in fields:
+        if result.get(field) is not None:
+            score += 0.1
+
+    # Boost if extracted text matches OCR text
+    if result.get("facility_name") and result["facility_name"].lower() in ocr_text.lower():
+        score += 0.05
+
+    # Penalty if confidence_notes has content (means something was unclear)
+    notes = result.get("confidence_notes", "")
+    if notes and notes != "null" and len(notes) > 5:
+        score -= 0.15
+
+    # Clamp between 0.1 and 0.98
+    return max(0.1, min(0.98, round(score, 2)))</pre>
+
+<h2 class="pb"><span class="num">12</span> Conflict Detection Service</h2>
+
+<div class="file-label">📄 backend/app/services/conflict_detector.py</div>
+<pre>from datetime import datetime, timedelta
+from typing import List
+from ..models import ExtractedFact
+
+
+def detect_conflicts(new_fact_data: dict, existing_facts: List[ExtractedFact]) -> List[dict]:
+    """
+    Compares a newly extracted fact against all existing facts for the same patient.
+    Returns a list of conflict descriptions.
+    """
+    conflicts = []
+
+    new_date = parse_date(new_fact_data.get("visit_date"))
+    new_facility = (new_fact_data.get("facility_name") or "").lower()
+    new_doc_type = (new_fact_data.get("document_type") or "").lower()
+    new_week = new_fact_data.get("gestational_week")
+
+    for existing in existing_facts:
+        ex_date = parse_date(existing.visit_date)
+        ex_facility = (existing.facility_name or "").lower()
+        ex_doc_type = (existing.document_type or "").lower()
+        ex_week = existing.gestational_week
+
+        # Rule 1: Date collision — same dates but different facilities
+        if new_date and ex_date:
+            day_diff = abs((new_date - ex_date).days)
+            if day_diff <= 2 and new_facility != ex_facility and new_facility and ex_facility:
+                conflicts.append({
+                    "type": "date_collision",
+                    "message": f"Visit on {new_fact_data['visit_date']} at '{new_fact_data['facility_name']}' "
+                               f"is within 2 days of visit on {existing.visit_date} at '{existing.facility_name}'",
+                    "existing_fact_id": existing.id,
+                })
+
+        # Rule 2: Gestational week goes backwards
+        if new_week and ex_week and new_date and ex_date:
+            if new_date > ex_date and new_week < ex_week:
+                conflicts.append({
+                    "type": "week_mismatch",
+                    "message": f"Gestational week went from {ex_week} to {new_week} "
+                               f"between {existing.visit_date} and {new_fact_data['visit_date']} — weeks should increase",
+                    "existing_fact_id": existing.id,
+                })
+
+        # Rule 3: Duplicate document
+        if (new_doc_type == ex_doc_type
+                and new_facility == ex_facility
+                and new_date and ex_date
+                and abs((new_date - ex_date).days) <= 3):
+            conflicts.append({
+                "type": "possible_duplicate",
+                "message": f"Possible duplicate: same document type '{new_fact_data['document_type']}' "
+                           f"from same facility within 3 days",
+                "existing_fact_id": existing.id,
+            })
+
+    return conflicts
+
+
+def parse_date(date_str):
+    """Safely parse a date string."""
+    if not date_str:
+        return None
+    try:
+        return datetime.strptime(date_str, "%Y-%m-%d")
+    except (ValueError, TypeError):
+        return None</pre>
+
+<h2><span class="num">13</span> Protocol Gap Detection</h2>
+
+<div class="file-label">📄 backend/app/data/anc_protocol.json</div>
+<pre>{
+  "protocol_name": "Indian ANC Protocol (MoHFW Guidelines)",
+  "visits": [
+    {
+      "visit_number": 1,
+      "label": "Registration and First ANC Visit",
+      "expected_by_week": 12,
+      "required_items": ["ANC registration", "Blood group test", "Haemoglobin test", "Urine test"]
+    },
+    {
+      "visit_number": 2,
+      "label": "Second ANC Visit",
+      "expected_by_week": 20,
+      "required_items": ["TT-1 vaccination", "Iron and Folic acid tablets"]
+    },
+    {
+      "visit_number": 3,
+      "label": "Third ANC Visit",
+      "expected_by_week": 30,
+      "required_items": ["TT-2 vaccination", "Haemoglobin retest", "Ultrasound if not done"]
+    },
+    {
+      "visit_number": 4,
+      "label": "Fourth ANC Visit",
+      "expected_by_week": 36,
+      "required_items": ["Birth preparedness plan", "Delivery plan counseling"]
+    }
+  ]
+}</pre>
+
+<div class="file-label">📄 backend/app/services/protocol_checker.py</div>
+<pre>import json
+import os
+from typing import List
+from ..models import ExtractedFact
+
+# Load the protocol file
+PROTOCOL_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "anc_protocol.json")
+
+with open(PROTOCOL_PATH, "r") as f:
+    ANC_PROTOCOL = json.load(f)
+
+
+def check_protocol_gaps(gestational_week: int, existing_facts: List[ExtractedFact]) -> List[dict]:
+    """
+    Compares the patient's records against the ANC protocol.
+    Returns a list of missing visits and missing items.
+    """
+    missing = []
+
+    # Collect all text from existing facts for searching
+    all_text = ""
+    for fact in existing_facts:
+        all_text += f" {fact.document_type or ''} {fact.pending_items or ''} {fact.facility_name or ''}"
+    all_text = all_text.lower()
+
+    visit_count = len([f for f in existing_facts if f.visit_date])
+
+    for visit in ANC_PROTOCOL["visits"]:
+        # Only check visits that should have happened by now
+        if gestational_week >= visit["expected_by_week"]:
+
+            # Check if this visit number exists
+            if visit["visit_number"] > visit_count:
+                missing.append({
+                    "type": "missing_visit",
+                    "label": visit["label"],
+                    "expected_by_week": visit["expected_by_week"],
+                    "message": f"{visit['label']} — expected by Week {visit['expected_by_week']}, no record found"
+                })
+
+            # Check each required item
+            for item in visit["required_items"]:
+                if item.lower() not in all_text:
+                    missing.append({
+                        "type": "missing_item",
+                        "label": item,
+                        "expected_by_week": visit["expected_by_week"],
+                        "message": f"{item} — expected by Week {visit['expected_by_week']}, not found in records"
+                    })
+
+    return missing</pre>
+
+<h2 class="pb"><span class="num">14</span> Create Empty __init__.py Files</h2>
+<p>Python needs these files to recognize folders as packages. They can be empty.</p>
+
+<div class="file-label">📄 backend/app/__init__.py</div>
+<pre># empty file</pre>
+
+<div class="file-label">📄 backend/app/routers/__init__.py</div>
+<pre># empty file</pre>
+
+<div class="file-label">📄 backend/app/services/__init__.py</div>
+<pre># empty file</pre>
+
+<h2><span class="num">15</span> API Routes — Patients</h2>
+
+<div class="file-label">📄 backend/app/routers/patients.py</div>
+<pre>import json
+import io
+import qrcode
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
+from sqlalchemy.orm import Session
+from ..database import get_db
+from ..models import Patient, ExtractedFact
+from ..schemas import PatientCreate, PatientResponse, JourneyResponse, FactResponse
+from ..services.protocol_checker import check_protocol_gaps
+
+router = APIRouter()
+
+
+@router.post("/", response_model=PatientResponse)
+def create_patient(patient: PatientCreate, db: Session = Depends(get_db)):
+    """Create a new patient."""
+    db_patient = Patient(
+        name=patient.name,
+        age=patient.age,
+        gestational_week=patient.gestational_week,
+    )
+    db.add(db_patient)
+    db.commit()
+    db.refresh(db_patient)
+    return db_patient
+
+
+@router.get("/", response_model=list[PatientResponse])
+def list_patients(db: Session = Depends(get_db)):
+    """List all patients."""
+    return db.query(Patient).all()
+
+
+@router.get("/{patient_id}", response_model=PatientResponse)
+def get_patient(patient_id: str, db: Session = Depends(get_db)):
+    """Get a single patient."""
+    patient = db.query(Patient).filter(Patient.id == patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return patient
+
+
+@router.get("/{patient_id}/journey")
+def get_journey(patient_id: str, db: Session = Depends(get_db)):
+    """
+    Get the full consultation-ready journey for a patient.
+    This is THE key endpoint — it powers the one-page consult view.
+    """
+    patient = db.query(Patient).filter(Patient.id == patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
+    # Get all facts, sorted by visit date
+    facts = (
+        db.query(ExtractedFact)
+        .filter(ExtractedFact.patient_id == patient_id)
+        .order_by(ExtractedFact.visit_date.asc())
+        .all()
+    )
+
+    # Add source image path to each fact
+    fact_responses = []
+    for fact in facts:
+        fr = FactResponse.model_validate(fact)
+        fr.source_image_path = fact.record.source_image_path if fact.record else None
+        fact_responses.append(fr)
+
+    # Check protocol gaps
+    missing = check_protocol_gaps(patient.gestational_week, facts)
+
+    # Collect conflicts
+    conflicts = [
+        {"fact_id": f.id, "details": f.conflict_details}
+        for f in facts
+        if f.status == "conflict"
+    ]
+
+    return {
+        "patient": PatientResponse.model_validate(patient),
+        "facts": fact_responses,
+        "missing_items": missing,
+        "conflicts": conflicts,
+    }
+
+
+@router.get("/{patient_id}/qr")
+def get_qr_code(patient_id: str, db: Session = Depends(get_db)):
+    """Generate a QR code image for this patient."""
+    patient = db.query(Patient).filter(Patient.id == patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
+    url = f"http://localhost:3000/patient/{patient_id}"
+    qr = qrcode.make(url)
+    buf = io.BytesIO()
+    qr.save(buf, format="PNG")
+    buf.seek(0)
+    return StreamingResponse(buf, media_type="image/png")</pre>
+
+<h2><span class="num">16</span> API Routes — Record Upload &amp; Extraction</h2>
+
+<div class="file-label">📄 backend/app/routers/records.py</div>
+<pre>import os
+import json
+import uuid
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+from sqlalchemy.orm import Session
+from ..database import get_db
+from ..models import Record, ExtractedFact
+from ..config import UPLOAD_DIR
+from ..services.ocr_service import extract_text_from_image
+from ..services.llm_extractor import extract_facts_from_image
+from ..services.conflict_detector import detect_conflicts
+
+router = APIRouter()
+
+
+@router.post("/upload/{patient_id}")
+async def upload_and_extract(
+    patient_id: str,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    """
+    Upload a record image → run OCR → run AI extraction → save facts → detect conflicts.
+    This is the main pipeline endpoint.
+    """
+
+    # Step 1: Save the uploaded image
+    patient_dir = os.path.join(UPLOAD_DIR, patient_id)
+    os.makedirs(patient_dir, exist_ok=True)
+
+    filename = f"{uuid.uuid4()}_{file.filename}"
+    file_path = os.path.join(patient_dir, filename)
+
+    with open(file_path, "wb") as f:
+        content = await file.read()
+        f.write(content)
+
+    # Step 2: Create a Record entry
+    record = Record(
+        patient_id=patient_id,
+        source_image_path=file_path,
+        original_filename=file.filename,
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+
+    # Step 3: Run OCR
+    ocr_text = extract_text_from_image(file_path)
+
+    # Step 4: Run AI extraction
+    extracted = extract_facts_from_image(file_path, ocr_text)
+
+    # Step 5: Save extracted fact to database
+    pending_items = extracted.get("pending_items", [])
+    if isinstance(pending_items, list):
+        pending_items = json.dumps(pending_items)
+
+    fact = ExtractedFact(
+        record_id=record.id,
+        patient_id=patient_id,
+        visit_date=extracted.get("visit_date"),
+        facility_name=extracted.get("facility_name"),
+        document_type=extracted.get("document_type"),
+        gestational_week=extracted.get("gestational_week"),
+        pending_items=pending_items,
+        provider_name=extracted.get("provider_name"),
+        next_appointment=extracted.get("next_appointment"),
+        confidence=extracted.get("_confidence", 0.5),
+        status="unverified",
+        verified_by='["document"]',
+        confidence_notes=extracted.get("confidence_notes"),
+    )
+    db.add(fact)
+    db.commit()
+    db.refresh(fact)
+
+    # Step 6: Check for conflicts with existing records
+    existing_facts = (
+        db.query(ExtractedFact)
+        .filter(ExtractedFact.patient_id == patient_id)
+        .filter(ExtractedFact.id != fact.id)
+        .all()
+    )
+
+    conflicts = detect_conflicts(extracted, existing_facts)
+
+    # If conflicts found, update status
+    if conflicts:
+        fact.status = "conflict"
+        fact.conflict_details = json.dumps(conflicts)
+        db.commit()
+
+    return {
+        "record_id": record.id,
+        "fact_id": fact.id,
+        "extracted_data": extracted,
+        "confidence": fact.confidence,
+        "status": fact.status,
+        "conflicts": conflicts,
+        "ocr_text": ocr_text,
+        "source_image": file_path,
+    }</pre>
+
+<h2><span class="num">17</span> API Routes — Verification</h2>
+
+<div class="file-label">📄 backend/app/routers/verification.py</div>
+<pre>import json
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+from ..database import get_db
+from ..models import ExtractedFact, Verification
+
+router = APIRouter()
+
+
+class VerifyRequest(BaseModel):
+    source_type: str = "health_worker"  # "health_worker" or "patient_voice"
+    value: str = ""
+
+
+@router.post("/{fact_id}/confirm")
+def confirm_fact(fact_id: str, req: VerifyRequest, db: Session = Depends(get_db)):
+    """Health worker confirms a fact as correct."""
+    fact = db.query(ExtractedFact).filter(ExtractedFact.id == fact_id).first()
+    if not fact:
+        raise HTTPException(status_code=404, detail="Fact not found")
+
+    # Update status
+    fact.status = "verified"
+
+    # Add to verified_by list
+    verified_list = json.loads(fact.verified_by or "[]")
+    if req.source_type not in verified_list:
+        verified_list.append(req.source_type)
+    fact.verified_by = json.dumps(verified_list)
+
+    # Boost confidence
+    fact.confidence = min(0.99, fact.confidence + 0.10)
+
+    # Log the verification
+    verification = Verification(
+        fact_id=fact_id,
+        source_type=req.source_type,
+        value=req.value,
+    )
+    db.add(verification)
+    db.commit()
+
+    return {"status": "verified", "confidence": fact.confidence}
+
+
+@router.post("/{fact_id}/reject")
+def reject_fact(fact_id: str, db: Session = Depends(get_db)):
+    """Health worker marks a fact as incorrect."""
+    fact = db.query(ExtractedFact).filter(ExtractedFact.id == fact_id).first()
+    if not fact:
+        raise HTTPException(status_code=404, detail="Fact not found")
+
+    fact.status = "unverified"
+    fact.confidence = max(0.1, fact.confidence - 0.20)
+    db.commit()
+
+    return {"status": "unverified", "confidence": fact.confidence}
+
+
+@router.post("/{fact_id}/resolve-conflict")
+def resolve_conflict(fact_id: str, db: Session = Depends(get_db)):
+    """Mark the chosen fact as correct, reject the conflicting one."""
+    fact = db.query(ExtractedFact).filter(ExtractedFact.id == fact_id).first()
+    if not fact:
+        raise HTTPException(status_code=404, detail="Fact not found")
+
+    # Mark this fact as verified
+    fact.status = "verified"
+    fact.conflict_details = None
+    fact.confidence = 0.95
+
+    # Mark conflicting facts as rejected
+    if fact.conflict_details:
+        conflicts = json.loads(fact.conflict_details)
+        for c in conflicts:
+            conflicting = db.query(ExtractedFact).filter(
+                ExtractedFact.id == c.get("existing_fact_id")
+            ).first()
+            if conflicting:
+                conflicting.status = "unverified"
+                conflicting.confidence = 0.3
+
+    db.commit()
+    return {"status": "resolved"}</pre>
+
+<h2><span class="num">18</span> Main Server File</h2>
+
+<div class="file-label">📄 backend/app/main.py</div>
+<pre>from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from .database import engine, Base
+from .routers import patients, records, verification
+
+# Create all database tables on startup
+Base.metadata.create_all(bind=engine)
+
+# Create the FastAPI app
+app = FastAPI(
+    title="CareLink Handoff API",
+    description="Consultation-ready patient journey with source-linked facts",
+    version="1.0.0",
+)
+
+# Allow the React frontend to talk to this backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Serve uploaded images as viewable files
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+# Register all API routes
+app.include_router(patients.router, prefix="/api/patients", tags=["Patients"])
+app.include_router(records.router,  prefix="/api/records",  tags=["Records"])
+app.include_router(verification.router, prefix="/api/verify", tags=["Verification"])
+
+
+@app.get("/")
+def root():
+    return {"message": "CareLink Handoff API is running", "docs": "/docs"}</pre>
+
+<h2><span class="num">19</span> Test the Backend</h2>
+
+<div class="cmd">cd "C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\carelink-handoff\backend"
+venv\Scripts\activate
+uvicorn app.main:app --reload --port 8000</div>
+
+<p>Open <strong>http://localhost:8000/docs</strong> in Chrome. You'll see a page where you can test every API endpoint. Try:</p>
+
+<ol>
+<li><strong>POST /api/patients/</strong> → body: <code>{"name": "Priya Devi", "age": 26, "gestational_week": 28}</code> → Click Execute → Copy the <code>id</code> from the response</li>
+<li><strong>POST /api/records/upload/{patient_id}</strong> → paste the patient id → upload any image of text → Click Execute → You should get extracted JSON back!</li>
+<li><strong>GET /api/patients/{patient_id}/journey</strong> → See the full journey with missing items</li>
+</ol>
+
+<div class="check"><h4>✅ Phase 2 Complete</h4><p>Upload an image → OCR reads text → Gemini extracts structured data → conflicts detected → protocol gaps flagged → journey API works. The brain is built!</p></div>
+
+<hr>
+
+<!-- ============================================== -->
+<h1 class="pb">PHASE 3: Build the Frontend (3–4 days)</h1>
+<p>The React web app that clinicians use on their phone.</p>
+<!-- ============================================== -->
+
+<h2><span class="num">20</span> Create the React App</h2>
+
+<div class="cmd">cd "C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\carelink-handoff\frontend"
+
+npx create-react-app carelink-app
+cd carelink-app
+
+npm install axios react-router-dom react-icons framer-motion</div>
+
+<p>Then start the dev server:</p>
+<div class="cmd">npm start
+# Opens http://localhost:3000</div>
+
+<h2><span class="num">21</span> API Connection Helper</h2>
+
+<div class="file-label">📄 frontend/carelink-app/src/api.js</div>
+<pre>import axios from "axios";
+
+const API = axios.create({
+  baseURL: "http://localhost:8000/api",
+});
+
+export default API;</pre>
+
+<h2><span class="num">22</span> Main App with Routing</h2>
+
+<div class="file-label">📄 frontend/carelink-app/src/App.js</div>
+<pre>import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import PatientJourney from "./pages/PatientJourney";
+import CameraCapture from "./pages/CameraCapture";
+import "./App.css";
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Dashboard /&gt;} /&gt;
+        &lt;Route path="/patient/:id" element={&lt;PatientJourney /&gt;} /&gt;
+        &lt;Route path="/capture/:id" element={&lt;CameraCapture /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+export default App;</pre>
+
+<h2><span class="num">23</span> Global Styles</h2>
+
+<div class="file-label">📄 frontend/carelink-app/src/App.css</div>
+<pre>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F8F9FA;
+  color: #1A1A2E;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary { background: #6C3CE1; color: #fff; }
+.btn-success { background: #2ED573; color: #fff; }
+.btn-danger  { background: #FF4757; color: #fff; }
+.btn-outline { background: transparent; border: 2px solid #6C3CE1; color: #6C3CE1; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge-verified  { background: #E0FFF5; color: #00795A; }
+.badge-unverified { background: #FFF3E0; color: #E65100; }
+.badge-conflict  { background: #FFE8EA; color: #C0392B; }
+.badge-missing   { background: #E8ECF4; color: #5C6B8A; }</pre>
+
+<h2><span class="num">24</span> Dashboard Page</h2>
+
+<div class="file-label">📄 frontend/carelink-app/src/pages/Dashboard.jsx</div>
+<pre>import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../api";
+
+function Dashboard() {
+  const [patients, setPatients] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [week, setWeek] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadPatients();
+  }, []);
+
+  const loadPatients = async () => {
+    const res = await API.get("/patients/");
+    setPatients(res.data);
+  };
+
+  const createPatient = async (e) => {
+    e.preventDefault();
+    await API.post("/patients/", {
+      name, age: parseInt(age), gestational_week: parseInt(week),
+    });
+    setShowForm(false);
+    setName(""); setAge(""); setWeek("");
+    loadPatients();
+  };
+
+  return (
+    &lt;div className="container"&gt;
+      &lt;div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}&gt;
+        &lt;div&gt;
+          &lt;h1 style={{ fontSize: 24, fontWeight: 900 }}&gt;CareLink&lt;/h1&gt;
+          &lt;p style={{ color: "#5C6B8A", fontSize: 13 }}&gt;Consultation-ready journeys&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button className="btn btn-primary" onClick={() =&gt; setShowForm(!showForm)}&gt;+ New&lt;/button&gt;
+      &lt;/div&gt;
+
+      {showForm &amp;&amp; (
+        &lt;form onSubmit={createPatient} style={{ background: "#fff", padding: 16, borderRadius: 12, marginBottom: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}&gt;
+          &lt;input placeholder="Patient Name" value={name} onChange={e =&gt; setName(e.target.value)} required
+            style={{ width: "100%", padding: 10, marginBottom: 8, borderRadius: 8, border: "1px solid #E8ECF4", fontSize: 14 }} /&gt;
+          &lt;div style={{ display: "flex", gap: 8 }}&gt;
+            &lt;input placeholder="Age" type="number" value={age} onChange={e =&gt; setAge(e.target.value)} required
+              style={{ flex: 1, padding: 10, borderRadius: 8, border: "1px solid #E8ECF4", fontSize: 14 }} /&gt;
+            &lt;input placeholder="Gest. Week" type="number" value={week} onChange={e =&gt; setWeek(e.target.value)} required
+              style={{ flex: 1, padding: 10, borderRadius: 8, border: "1px solid #E8ECF4", fontSize: 14 }} /&gt;
+          &lt;/div&gt;
+          &lt;button className="btn btn-primary" type="submit" style={{ width: "100%", marginTop: 10 }}&gt;Create Patient&lt;/button&gt;
+        &lt;/form&gt;
+      )}
+
+      {patients.map((p) =&gt; (
+        &lt;div key={p.id} onClick={() =&gt; navigate(`/patient/${p.id}`)}
+          style={{ background: "#fff", padding: 16, borderRadius: 12, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", display: "flex", justifyContent: "space-between", alignItems: "center" }}&gt;
+          &lt;div&gt;
+            &lt;div style={{ fontWeight: 700, fontSize: 15 }}&gt;{p.name}&lt;/div&gt;
+            &lt;div style={{ color: "#5C6B8A", fontSize: 12 }}&gt;Age {p.age} · Week {p.gestational_week}&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div style={{ fontSize: 20, color: "#A4B0CC" }}&gt;→&lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+
+      {patients.length === 0 &amp;&amp; !showForm &amp;&amp; (
+        &lt;div style={{ textAlign: "center", padding: 40, color: "#A4B0CC" }}&gt;
+          &lt;p style={{ fontSize: 16 }}&gt;No patients yet.&lt;/p&gt;
+          &lt;p style={{ fontSize: 13 }}&gt;Tap "+ New" to create one.&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+export default Dashboard;</pre>
+
+<h2 class="pb"><span class="num">25</span> Patient Journey Page (THE Key Page)</h2>
+
+<div class="file-label">📄 frontend/carelink-app/src/pages/PatientJourney.jsx</div>
+<pre>import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import API from "../api";
+
+const STATUS_COLORS = {
+  verified: { bg: "#E0FFF5", dot: "#2ED573", text: "#00795A", label: "✓ Verified" },
+  unverified: { bg: "#FFF3E0", dot: "#FFA502", text: "#E65100", label: "⏳ Confirm" },
+  conflict: { bg: "#FFE8EA", dot: "#FF4757", text: "#C0392B", label: "⚡ Conflict" },
+  missing: { bg: "#F0F0F5", dot: "#A4B0CC", text: "#5C6B8A", label: "? Missing" },
+};
+
+function PatientJourney() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [journey, setJourney] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => { loadJourney(); }, [id]);
+
+  const loadJourney = async () => {
+    const res = await API.get(`/patients/${id}/journey`);
+    setJourney(res.data);
+    // Cache for offline
+    localStorage.setItem(`journey-${id}`, JSON.stringify(res.data));
+  };
+
+  const confirmFact = async (factId) => {
+    await API.post(`/verify/${factId}/confirm`, { source_type: "health_worker", value: "confirmed" });
+    loadJourney();
+  };
+
+  if (!journey) {
+    // Try offline cache
+    const cached = localStorage.getItem(`journey-${id}`);
+    if (cached) {
+      return renderJourney(JSON.parse(cached), true);
+    }
+    return &lt;div className="container" style={{ textAlign: "center", paddingTop: 60 }}&gt;Loading...&lt;/div&gt;;
+  }
+
+  function renderJourney(data, offline = false) {
+    const p = data.patient;
+    return (
+      &lt;div className="container"&gt;
+        {/* Header */}
+        &lt;div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}&gt;
+          &lt;span onClick={() =&gt; navigate("/")} style={{ cursor: "pointer", fontSize: 18, color: "#6C3CE1" }}&gt;← Back&lt;/span&gt;
+          &lt;span style={{ fontSize: 12, color: "#A4B0CC" }}&gt;{offline &amp;&amp; "📴 Offline"}&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div style={{ background: "#fff", padding: 16, borderRadius: 12, marginBottom: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}&gt;
+          &lt;h2 style={{ fontSize: 20, fontWeight: 800 }}&gt;{p.name}&lt;/h2&gt;
+          &lt;p style={{ color: "#5C6B8A", fontSize: 13 }}&gt;Age {p.age} · Week {p.gestational_week} · ID: {p.id.slice(0, 8)}&lt;/p&gt;
+        &lt;/div&gt;
+
+        {/* Missing Items Alerts */}
+        {data.missing_items.map((m, i) =&gt; (
+          &lt;div key={i} style={{ background: "#FFF3E0", border: "1px solid #FFD93D", borderRadius: 10, padding: 10, marginBottom: 8, fontSize: 12, color: "#E65100" }}&gt;
+            ⚠️ {m.message}
+          &lt;/div&gt;
+        ))}
+
+        {/* Timeline */}
+        &lt;div style={{ position: "relative", paddingLeft: 36, borderLeft: "3px solid #E8ECF4", marginLeft: 14, marginTop: 10 }}&gt;
+          {data.facts.map((fact, i) =&gt; {
+            const s = STATUS_COLORS[fact.status] || STATUS_COLORS.unverified;
+            return (
+              &lt;div key={fact.id} style={{ marginBottom: 16, position: "relative" }}&gt;
+                {/* Dot */}
+                &lt;div style={{ position: "absolute", left: -45, top: 6, width: 16, height: 16, borderRadius: "50%", background: s.dot, border: "3px solid #fff", boxShadow: `0 0 0 2px ${s.dot}` }} /&gt;
+
+                {/* Card */}
+                &lt;div style={{ background: s.bg, border: `1px solid ${s.dot}30`, borderRadius: 10, padding: 14 }}&gt;
+                  &lt;div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}&gt;
+                    &lt;span style={{ fontWeight: 700, fontSize: 13, color: s.text }}&gt;
+                      {fact.visit_date || "Date unclear"} — {fact.facility_name || "Unknown facility"}
+                    &lt;/span&gt;
+                    &lt;span className={`badge badge-${fact.status}`}&gt;{s.label}&lt;/span&gt;
+                  &lt;/div&gt;
+
+                  &lt;div style={{ fontSize: 12, color: "#5C6B8A", marginBottom: 6 }}&gt;
+                    {fact.document_type} {fact.gestational_week &amp;&amp; `· Week ${fact.gestational_week}`}
+                  &lt;/div&gt;
+
+                  {/* Confidence Bar */}
+                  &lt;div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}&gt;
+                    &lt;div style={{ flex: 1, height: 6, background: "#E8ECF4", borderRadius: 3, overflow: "hidden" }}&gt;
+                      &lt;div style={{ width: `${fact.confidence * 100}%`, height: "100%", background: fact.confidence &gt; 0.8 ? "#2ED573" : fact.confidence &gt; 0.6 ? "#FFA502" : "#FF4757", borderRadius: 3 }} /&gt;
+                    &lt;/div&gt;
+                    &lt;span style={{ fontSize: 11, fontWeight: 700, color: "#5C6B8A" }}&gt;{Math.round(fact.confidence * 100)}%&lt;/span&gt;
+                  &lt;/div&gt;
+
+                  {/* Pending Items */}
+                  {fact.pending_items &amp;&amp; (() =&gt; {
+                    try {
+                      const items = JSON.parse(fact.pending_items);
+                      return items.length &gt; 0 &amp;&amp; (
+                        &lt;div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 8 }}&gt;
+                          {items.map((item, j) =&gt; (
+                            &lt;span key={j} style={{ background: "#EDE5FF", color: "#6C3CE1", padding: "2px 8px", borderRadius: 50, fontSize: 10, fontWeight: 600 }}&gt;{item}&lt;/span&gt;
+                          ))}
+                        &lt;/div&gt;
+                      );
+                    } catch { return null; }
+                  })()}
+
+                  {/* Conflict Details */}
+                  {fact.status === "conflict" &amp;&amp; fact.conflict_details &amp;&amp; (
+                    &lt;div style={{ background: "#FFE8EA", padding: 8, borderRadius: 6, fontSize: 11, color: "#C0392B", marginBottom: 8 }}&gt;
+                      ⚡ {JSON.parse(fact.conflict_details)[0]?.message}
+                    &lt;/div&gt;
+                  )}
+
+                  {/* Action Buttons */}
+                  &lt;div style={{ display: "flex", gap: 6 }}&gt;
+                    {fact.source_image_path &amp;&amp; (
+                      &lt;button onClick={() =&gt; setSelectedImage(`http://localhost:8000/${fact.source_image_path}`)}
+                        style={{ background: "none", border: "1px solid #6C3CE1", color: "#6C3CE1", padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: "pointer" }}&gt;
+                        📎 View Source
+                      &lt;/button&gt;
+                    )}
+                    {fact.status !== "verified" &amp;&amp; (
+                      &lt;button onClick={() =&gt; confirmFact(fact.id)}
+                        style={{ background: "#2ED573", color: "#fff", border: "none", padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: "pointer" }}&gt;
+                        ✅ Verify
+                      &lt;/button&gt;
+                    )}
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            );
+          })}
+        &lt;/div&gt;
+
+        {/* Bottom Actions */}
+        &lt;div style={{ display: "flex", gap: 8, marginTop: 16, marginBottom: 40 }}&gt;
+          &lt;button className="btn btn-primary" style={{ flex: 1 }} onClick={() =&gt; navigate(`/capture/${id}`)}&gt;📸 Add Record&lt;/button&gt;
+          &lt;button className="btn btn-outline" style={{ flex: 1 }} onClick={() =&gt; window.open(`http://localhost:8000/api/patients/${id}/qr`)}&gt;🖨️ QR Code&lt;/button&gt;
+        &lt;/div&gt;
+
+        {/* Source Image Modal */}
+        {selectedImage &amp;&amp; (
+          &lt;div onClick={() =&gt; setSelectedImage(null)}
+            style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, cursor: "pointer" }}&gt;
+            &lt;div style={{ position: "relative", maxWidth: "90%", maxHeight: "90%" }}&gt;
+              &lt;img src={selectedImage} alt="Source" style={{ maxWidth: "100%", maxHeight: "85vh", borderRadius: 8 }} /&gt;
+              &lt;div style={{ textAlign: "center", color: "#fff", marginTop: 10, fontSize: 13 }}&gt;📎 Source Image — tap anywhere to close&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    );
+  }
+
+  return renderJourney(journey);
+}
+
+export default PatientJourney;</pre>
+
+<h2 class="pb"><span class="num">26</span> Camera Capture Page</h2>
+
+<div class="file-label">📄 frontend/carelink-app/src/pages/CameraCapture.jsx</div>
+<pre>import React, { useRef, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import API from "../api";
+
+function CameraCapture() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const videoRef = useRef(null);
+  const [streaming, setStreaming] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [visibleFields, setVisibleFields] = useState([]);
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },  // back camera
+      });
+      videoRef.current.srcObject = stream;
+      setStreaming(true);
+    } catch (err) {
+      alert("Camera access denied. Please allow camera permission.");
+    }
+  };
+
+  const captureAndExtract = async () => {
+    setLoading(true);
+    setResult(null);
+    setVisibleFields([]);
+
+    // Capture frame from video
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    canvas.getContext("2d").drawImage(videoRef.current, 0, 0);
+
+    canvas.toBlob(async (blob) => {
+      const formData = new FormData();
+      formData.append("file", blob, "capture.jpg");
+
+      try {
+        const res = await API.post(`/records/upload/${id}`, formData);
+        setResult(res.data);
+        setLoading(false);
+
+        // Animate fields appearing one by one
+        const fields = Object.entries(res.data.extracted_data).filter(
+          ([key]) => !key.startsWith("_")
+        );
+        for (let i = 0; i &lt; fields.length; i++) {
+          await new Promise((r) => setTimeout(r, 350));
+          setVisibleFields((prev) => [...prev, fields[i]]);
+        }
+      } catch (err) {
+        alert("Extraction failed: " + err.message);
+        setLoading(false);
+      }
+    }, "image/jpeg");
+  };
+
+  return (
+    &lt;div className="container"&gt;
+      &lt;div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}&gt;
+        &lt;span onClick={() =&gt; navigate(`/patient/${id}`)} style={{ cursor: "pointer", fontSize: 18, color: "#6C3CE1" }}&gt;← Back&lt;/span&gt;
+        &lt;h2 style={{ fontSize: 16, fontWeight: 800 }}&gt;📸 Scan Record&lt;/h2&gt;
+      &lt;/div&gt;
+
+      {/* Camera View */}
+      &lt;div style={{ borderRadius: 12, overflow: "hidden", background: "#000", marginBottom: 12 }}&gt;
+        &lt;video ref={videoRef} autoPlay playsInline style={{ width: "100%", display: streaming ? "block" : "none" }} /&gt;
+        {!streaming &amp;&amp; (
+          &lt;div style={{ padding: 60, textAlign: "center", color: "#666" }}&gt;
+            &lt;p style={{ fontSize: 14 }}&gt;Tap "Start Camera" to begin&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+
+      {!streaming &amp;&amp; (
+        &lt;button className="btn btn-primary" onClick={startCamera} style={{ width: "100%" }}&gt;📷 Start Camera&lt;/button&gt;
+      )}
+
+      {streaming &amp;&amp; !loading &amp;&amp; (
+        &lt;button className="btn btn-success" onClick={captureAndExtract} style={{ width: "100%", fontSize: 16, padding: 14 }}&gt;
+          📸 Capture &amp; Extract
+        &lt;/button&gt;
+      )}
+
+      {loading &amp;&amp; (
+        &lt;div style={{ textAlign: "center", padding: 20 }}&gt;
+          &lt;div style={{ fontSize: 24, marginBottom: 8 }}&gt;🔍&lt;/div&gt;
+          &lt;p style={{ color: "#6C3CE1", fontWeight: 600 }}&gt;Reading document...&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+
+      {/* Extracted Fields (animated) */}
+      {visibleFields.length &gt; 0 &amp;&amp; (
+        &lt;div style={{ marginTop: 16 }}&gt;
+          &lt;h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}&gt;Extracted Data&lt;/h3&gt;
+          {visibleFields.map(([key, value], i) =&gt; (
+            &lt;div key={i} style={{
+              background: "#fff", padding: 10, borderRadius: 8, marginBottom: 6,
+              boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+              animation: "fadeIn 0.4s ease-out",
+              display: "flex", justifyContent: "space-between",
+            }}&gt;
+              &lt;span style={{ fontWeight: 600, color: "#5C6B8A", fontSize: 12 }}&gt;{key.replace(/_/g, " ")}&lt;/span&gt;
+              &lt;span style={{ fontWeight: 700, fontSize: 12, maxWidth: "60%", textAlign: "right" }}&gt;
+                {Array.isArray(value) ? value.join(", ") : String(value || "—")}
+              &lt;/span&gt;
+            &lt;/div&gt;
+          ))}
+
+          {result &amp;&amp; (
+            &lt;div style={{ marginTop: 12, display: "flex", gap: 8 }}&gt;
+              &lt;div style={{ flex: 1, textAlign: "center", padding: 10, background: "#E0FFF5", borderRadius: 8 }}&gt;
+                &lt;div style={{ fontSize: 20, fontWeight: 900, color: "#00795A" }}&gt;{Math.round(result.confidence * 100)}%&lt;/div&gt;
+                &lt;div style={{ fontSize: 10, color: "#00795A" }}&gt;Confidence&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div style={{ flex: 1, textAlign: "center", padding: 10, background: result.conflicts.length ? "#FFE8EA" : "#EDE5FF", borderRadius: 8 }}&gt;
+                &lt;div style={{ fontSize: 20, fontWeight: 900, color: result.conflicts.length ? "#C0392B" : "#6C3CE1" }}&gt;
+                  {result.conflicts.length ? "⚡" : "✓"}
+                &lt;/div&gt;
+                &lt;div style={{ fontSize: 10, color: "#5C6B8A" }}&gt;{result.conflicts.length ? "Conflicts" : "No conflicts"}&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          )}
+
+          &lt;button className="btn btn-primary" style={{ width: "100%", marginTop: 12 }}
+            onClick={() =&gt; navigate(`/patient/${id}`)}&gt;
+            View Full Journey →
+          &lt;/button&gt;
+        &lt;/div&gt;
+      )}
+
+      &lt;style&gt;{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}&lt;/style&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default CameraCapture;</pre>
+
+<div class="check"><h4>✅ Phase 3 Complete</h4><p>Open http://localhost:3000 → create patient → upload records → see timeline with colored nodes → tap "View Source" → see original image → camera extraction works with animation. Frontend is done!</p></div>
+
+<hr>
+
+<!-- ============================================== -->
+<h1 class="pb">PHASE 4: Hardware (2–3 days)</h1>
+<p>Wire the ESP32, NFC reader, and thermal printer. This is what makes you unforgettable.</p>
+<!-- ============================================== -->
+
+<h2><span class="num">27</span> ESP32 NFC Wristband Writer</h2>
+<p>This code writes a patient URL to an NFC wristband. You do this BEFORE the demo.</p>
+
+<div class="file-label">📄 hardware/esp32_firmware/nfc_writer.ino</div>
+<pre>#include &lt;SPI.h&gt;
+#include &lt;MFRC522.h&gt;
+
+#define SS_PIN  5
+#define RST_PIN 22
+
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+MFRC522::MIFARE_Key key;
+
+// Change this to your patient's URL
+String patientURL = "http://localhost:3000/patient/YOUR_PATIENT_ID_HERE";
+
+void setup() {
+  Serial.begin(115200);
+  SPI.begin();
+  mfrc522.PCD_Init();
+
+  // Default key for NTAG
+  for (byte i = 0; i &lt; 6; i++) key.keyByte[i] = 0xFF;
+
+  Serial.println("=================================");
+  Serial.println("  CareLink NFC Wristband Writer");
+  Serial.println("=================================");
+  Serial.println("Hold an NFC wristband near the reader...");
+}
+
+void loop() {
+  // Look for new cards
+  if (!mfrc522.PICC_IsNewCardPresent()) return;
+  if (!mfrc522.PICC_ReadCardSerial()) return;
+
+  Serial.print("Tag detected! UID: ");
+  for (byte i = 0; i &lt; mfrc522.uid.size; i++) {
+    Serial.print(mfrc522.uid.uidByte[i] &lt; 0x10 ? " 0" : " ");
+    Serial.print(mfrc522.uid.uidByte[i], HEX);
+  }
+  Serial.println();
+
+  // Write the URL to the tag (simplified — writes raw bytes)
+  // For NTAG215, data starts at page 4
+  byte pageData[4];
+  byte urlBytes[48];
+  int len = patientURL.length();
+
+  // Copy URL to byte array
+  for (int i = 0; i &lt; len &amp;&amp; i &lt; 48; i++) {
+    urlBytes[i] = patientURL[i];
+  }
+
+  // Write 4 bytes at a time to NTAG pages
+  for (int page = 4; page &lt; 4 + (len / 4) + 1 &amp;&amp; page &lt; 40; page++) {
+    int offset = (page - 4) * 4;
+    for (int i = 0; i &lt; 4; i++) {
+      pageData[i] = (offset + i &lt; len) ? urlBytes[offset + i] : 0;
+    }
+    mfrc522.MIFARE_Ultralight_Write(page, pageData, 4);
+  }
+
+  Serial.println("✅ URL written to wristband!");
+  Serial.println("URL: " + patientURL);
+  Serial.println("Hold a different wristband or reset...");
+
+  mfrc522.PICC_HaltA();
+  delay(3000);
+}</pre>
+
+<div class="tip"><strong>💡 Simpler alternative:</strong> Download the free <strong>"NFC Tools"</strong> app on your Android phone. Tap "Write" → "Add a record" → "URL" → paste your patient URL → hold wristband on phone. Done in 10 seconds, no ESP32 needed for writing!</div>
+
+<h2><span class="num">28</span> ESP32 Thermal Printer</h2>
+
+<div class="file-label">📄 hardware/esp32_firmware/thermal_printer.ino</div>
+<pre>#include "Adafruit_Thermal.h"
+#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+
+// Printer connected to Serial2 (GPIO 16 = RX, GPIO 17 = TX)
+Adafruit_Thermal printer(&amp;Serial2);
+
+// Your WiFi credentials
+const char* ssid = "YOUR_WIFI_NAME";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+// Your backend URL
+const char* serverURL = "http://YOUR_LAPTOP_IP:8000/api/patients/";
+
+// Button pin (optional — press to print)
+#define BUTTON_PIN 0  // ESP32 built-in BOOT button
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(9600, SERIAL_8N1, 16, 17);  // RX=16, TX=17
+  printer.begin();
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  // Connect to WiFi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\n✅ WiFi connected! IP: " + WiFi.localIP().toString());
+
+  Serial.println("=================================");
+  Serial.println("  CareLink Thermal Printer Ready");
+  Serial.println("=================================");
+  Serial.println("Press BOOT button to print patient card...");
+}
+
+void printPatientCard() {
+  printer.wake();
+  printer.setDefault();
+
+  // Header
+  printer.boldOn();
+  printer.setSize('L');
+  printer.justify('C');
+  printer.println("CARELINK");
+  printer.println("HANDOFF");
+  printer.setSize('S');
+  printer.boldOff();
+  printer.println("========================");
+
+  // Patient Info (hardcoded for demo — you can fetch from API)
+  printer.justify('L');
+  printer.boldOn();
+  printer.println("Patient: Priya Devi");
+  printer.boldOff();
+  printer.println("ID: P-0417  |  28 weeks");
+  printer.println("------------------------");
+
+  // Journey Summary
+  printer.println("Visit 1  PHC     12 Aug  [OK]");
+  printer.println("Visit 2  SC      09 Sep  [OK]");
+  printer.println("Visit 3  DH      15 Oct  [!!]");
+  printer.println("Hb test          ------  [??]");
+  printer.println("------------------------");
+
+  printer.boldOn();
+  printer.println("Pending:");
+  printer.boldOff();
+  printer.println("  - TT Booster");
+  printer.println("  - Haemoglobin retest");
+  printer.println("------------------------");
+
+  // QR Code placeholder
+  printer.justify('C');
+  printer.println("");
+  printer.println("Scan QR for full journey:");
+  printer.println("[QR CODE PLACEHOLDER]");
+  // For actual QR: use printer.printBitmap() with a QR image
+
+  printer.println("");
+  printer.println("========================");
+  printer.setSize('S');
+  printer.println("CareLink Handoff v1.0");
+  printer.println("SYNTHETIC DATA ONLY");
+  printer.println("========================");
+
+  printer.feed(4);  // Feed paper for tear-off
+  printer.sleep();
+
+  Serial.println("✅ Card printed!");
+}
+
+void loop() {
+  // Print when BOOT button is pressed
+  if (digitalRead(BUTTON_PIN) == LOW) {
+    Serial.println("Button pressed — printing...");
+    printPatientCard();
+    delay(3000);  // Debounce
+  }
+}</pre>
+
+<div class="warn"><strong>⚠️ Remember:</strong> The thermal printer needs a SEPARATE 5V/2A power supply (a phone charger works). DO NOT try to power it from the ESP32 — it won't work and could damage the board.</div>
+
+<div class="check"><h4>✅ Phase 4 Complete</h4><p>NFC wristband stores patient URL → phone tap opens journey. Button press → thermal printer prints handoff card. Hardware is ready!</p></div>
+
+<hr>
+
+<!-- ============================================== -->
+<h1 class="pb">PHASE 5: Run Everything Together</h1>
+<!-- ============================================== -->
+
+<h2><span class="num">29</span> Start All Services</h2>
+
+<p>You need <strong>2 terminal windows</strong> running simultaneously:</p>
+
+<h4>Terminal 1 — Backend</h4>
+<div class="cmd">cd "C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\carelink-handoff\backend"
+venv\Scripts\activate
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000</div>
+
+<h4>Terminal 2 — Frontend</h4>
+<div class="cmd">cd "C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\carelink-handoff\frontend\carelink-app"
+npm start</div>
+
+<p>Now open <strong>http://localhost:3000</strong> on your phone (same WiFi) or laptop. The app is running!</p>
+
+<h2><span class="num">30</span> Full Demo Walkthrough</h2>
+
+<table>
+<thead><tr><th>Time</th><th>Action</th><th>What You Say</th></tr></thead>
+<tbody>
+<tr><td><strong>0:00</strong></td><td>Place paper pile on table</td><td>"This is what a clinician sees. 4 documents, 3 facilities."</td></tr>
+<tr><td><strong>0:30</strong></td><td>Point camera at ANC card → capture</td><td>"CareLink reads it. Visit date, facility, confidence — all extracted."</td></tr>
+<tr><td><strong>1:30</strong></td><td>Show conflict on journey page</td><td>"These records disagree. CareLink flags it, waits for a human."</td></tr>
+<tr><td><strong>2:00</strong></td><td>Tap ✅ Verify on a confirmed fact</td><td>"Health worker confirms. Status upgrades to verified."</td></tr>
+<tr><td><strong>2:30</strong></td><td>Show missing item banner</td><td>"28 weeks. No Hb test. CareLink flags: MISSING."</td></tr>
+<tr><td><strong>3:00</strong></td><td>Show the full journey timeline</td><td>"One page. Every fact verified. Every gap visible."</td></tr>
+<tr><td><strong>3:20</strong></td><td>Tap NFC wristband with phone</td><td>"Patient wears this. Any health worker taps — journey opens."</td></tr>
+<tr><td><strong>3:50</strong></td><td>Press button → printer prints card</td><td>"Or we print this. No phone, no internet. Verified data in her pocket."</td></tr>
+</tbody>
+</table>
+
+<div class="warn"><strong>🛡️ If a judge asks "Can it detect risk?"</strong><br>Answer: <em>"That's a clinical decision. CareLink ensures the clinician has the complete, verified picture to make that call. We don't replace clinical judgment — we make it faster."</em></div>
+
+<div style="text-align:center;padding:40px 0 20px">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#5C6B8A;margin-bottom:16px">The Untouchable Summary</div>
+<div style="font-size:22px;font-weight:900;line-height:1.5;color:#1A1A2E;max-width:420px;margin:0 auto">
+Other teams show judges a screen.<br><br>
+You hand them a <span style="color:#6C3CE1">wristband</span>,
+tap it with a phone,
+<span style="color:#00B894">print a card</span>,
+and turn a paper record into verified data — <span style="color:#6C3CE1">live on camera</span>.<br><br>
+<span style="color:#FF4757">Nobody forgets that.</span>
+</div>
+<div style="width:60px;height:3px;background:linear-gradient(90deg,#6C3CE1,#00D4AA);border-radius:2px;margin:24px auto"></div>
+<p style="font-size:12px;color:#5C6B8A">CareLink Handoff · Health-A-Thon 2026 · Siddharth Balu Jamdhade · YCCE Nagpur</p>
+</div>
+
+</div><!-- /content -->
+</body>
+</html>
