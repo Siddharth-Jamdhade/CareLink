@@ -1,6 +1,12 @@
+import asyncio
+from fastapi.responses import StreamingResponse
+from starlette.concurrency import run_in_threadpool
 import os
 import json
 import uuid
+import io
+from pathlib import Path
+from PIL import Image, UnidentifiedImageError
 
 from fastapi import (
     APIRouter,
@@ -14,6 +20,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models import Patient, Record, ExtractedFact
 from ..config import UPLOAD_DIR
+from .. import config
 
 from ..services.ocr_service import extract_text_from_image
 from ..services.llm_extractor import extract_facts_from_image
@@ -30,8 +37,7 @@ ALLOWED_IMAGE_TYPES = {
 }
 
 
-@router.post("/upload/{patient_id}")
-async def upload_and_extract(
+async def extraction_events(
     patient_id: str,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -77,6 +83,14 @@ async def upload_and_extract(
             detail="Uploaded image is empty"
         )
 
+    try:
+        with Image.open(io.BytesIO(content)) as image:
+            if image.format not in ("JPEG", "PNG"):
+                raise ValueError("Unsupported image")
+            image.verify()
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise HTTPException(status_code=400, detail="This file is not a readable JPEG or PNG. Export it as an image and retry.")
+
     # Step 3: Save the uploaded image
 
     patient_dir = os.path.join(
@@ -90,113 +104,165 @@ async def upload_and_extract(
     filename = f"{uuid.uuid4().hex}{extension}"
 
     file_path = os.path.join(patient_dir, filename)
+    source_url = "uploads/" + Path(file_path).resolve().relative_to(
+        Path(config.UPLOAD_DIR).resolve()
+    ).as_posix()
 
     with open(file_path, "wb") as output:
         output.write(content)
 
-    # Step 4: Run OCR
-
+    saved = False
     try:
-        ocr_text = extract_text_from_image(file_path)
-    except Exception:
-        raise HTTPException(
-            status_code=500,
-            detail="OCR processing failed"
+        # Step 4: Run OCR
+
+        try:
+            yield ("status", {"step": "ocr", "message": "Reading text from image..."})
+            ocr_text = await run_in_threadpool(extract_text_from_image, file_path)
+        except Exception:
+            Path(file_path).unlink(missing_ok=True)
+            raise HTTPException(
+                status_code=500,
+                detail="Text recognition failed. Try a clear, upright photo of one paper."
+            )
+
+        # Step 5: Run Gemini extraction
+
+        yield ("status", {"step": "extract", "message": "AI extracting facts..."})
+        extracted = await run_in_threadpool(extract_facts_from_image, file_path, ocr_text)
+
+        # The extraction service returns a low confidence
+        # and an error note when extraction fails.
+
+        if (
+            not isinstance(extracted, dict)
+            or extracted.get("_confidence", 0) <= 0.1
+        ):
+            Path(file_path).unlink(missing_ok=True)
+            raise HTTPException(
+                status_code=502,
+                detail=(extracted.get("_error") if isinstance(extracted, dict) else None) or "AI returned no usable facts. Try a clearer image. No facts were saved."
+            )
+
+        for field, value in extracted.items():
+            if not field.startswith("_"):
+                yield ("field", {"field": field, "value": value})
+        yield ("status", {"step": "conflict", "message": "Checking for conflicts..."})
+
+        # Step 6: Create the Record entry
+
+        record = Record(
+            patient_id=patient_id,
+            source_image_path=source_url,
+            original_filename=file.filename,
         )
 
-    # Step 5: Run Gemini extraction
+        db.add(record)
+        db.flush()
 
-    extracted = extract_facts_from_image(
-        file_path,
-        ocr_text
-    )
+        # Step 7: Prepare pending items
 
-    # The extraction service returns a low confidence
-    # and an error note when extraction fails.
+        pending_items = extracted.get("pending_items", [])
 
-    if (
-        not isinstance(extracted, dict)
-        or extracted.get("_confidence", 0) <= 0.1
-    ):
-        raise HTTPException(
-            status_code=502,
-            detail="AI extraction failed; no facts were saved"
+        if isinstance(pending_items, list):
+            pending_items = json.dumps(pending_items)
+
+        # Step 8: Save extracted facts
+
+        fact = ExtractedFact(
+            record_id=record.id,
+            patient_id=patient_id,
+            visit_date=extracted.get("visit_date"),
+            facility_name=extracted.get("facility_name"),
+            document_type=extracted.get("document_type"),
+            gestational_week=extracted.get("gestational_week"),
+            pending_items=pending_items,
+            provider_name=extracted.get("provider_name"),
+            next_appointment=extracted.get("next_appointment"),
+            documented_diagnosis=extracted.get("documented_diagnosis"),
+            documented_symptoms=extracted.get("documented_symptoms"),
+            documented_medications=extracted.get("documented_medications"),
+            confidence=extracted.get("_confidence", 0.5),
+            status="unverified",
+            verified_by='["document"]',
+            confidence_notes=extracted.get("confidence_notes"),
         )
 
-    # Step 6: Create the Record entry
+        db.add(fact)
+        db.flush()
 
-    record = Record(
-        patient_id=patient_id,
-        source_image_path=file_path,
-        original_filename=file.filename,
-    )
+        # Step 9: Check existing records for conflicts
 
-    db.add(record)
-    db.flush()
+        existing_facts = (
+            db.query(ExtractedFact)
+            .filter(ExtractedFact.patient_id == patient_id)
+            .filter(ExtractedFact.id != fact.id)
+            .all()
+        )
 
-    # Step 7: Prepare pending items
+        conflicts = detect_conflicts(
+            extracted,
+            existing_facts
+        )
 
-    pending_items = extracted.get("pending_items", [])
+        # Step 10: Update status if conflicts exist
 
-    if isinstance(pending_items, list):
-        pending_items = json.dumps(pending_items)
+        if conflicts:
+            fact.status = "conflict"
+            fact.conflict_details = json.dumps(conflicts)
 
-    # Step 8: Save extracted facts
+        # Step 11: Commit database changes
 
-    fact = ExtractedFact(
-        record_id=record.id,
-        patient_id=patient_id,
-        visit_date=extracted.get("visit_date"),
-        facility_name=extracted.get("facility_name"),
-        document_type=extracted.get("document_type"),
-        gestational_week=extracted.get("gestational_week"),
-        pending_items=pending_items,
-        provider_name=extracted.get("provider_name"),
-        next_appointment=extracted.get("next_appointment"),
-        confidence=extracted.get("_confidence", 0.5),
-        status="unverified",
-        verified_by='["document"]',
-        confidence_notes=extracted.get("confidence_notes"),
-    )
+        db.commit()
+        saved = True
+        db.refresh(record)
+        db.refresh(fact)
 
-    db.add(fact)
-    db.flush()
+        # Step 12: Return API response
 
-    # Step 9: Check existing records for conflicts
+        yield ("done", {
+            "record_id": record.id,
+            "fact_id": fact.id,
+            "extracted_data": extracted,
+            "confidence": fact.confidence,
+            "status": fact.status,
+            "conflicts": conflicts,
+            "ocr_text": ocr_text,
+            "source_image": source_url,
+        })
+    finally:
+        if not saved:
+            db.rollback()
+            Path(file_path).unlink(missing_ok=True)
 
-    existing_facts = (
-        db.query(ExtractedFact)
-        .filter(ExtractedFact.patient_id == patient_id)
-        .filter(ExtractedFact.id != fact.id)
-        .all()
-    )
 
-    conflicts = detect_conflicts(
-        extracted,
-        existing_facts
-    )
+@router.post("/upload/{patient_id}")
+async def upload_and_extract(patient_id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    async for event, data in extraction_events(patient_id, file, db):
+        if event == "done":
+            return data
 
-    # Step 10: Update status if conflicts exist
 
-    if conflicts:
-        fact.status = "conflict"
-        fact.conflict_details = json.dumps(conflicts)
+@router.post("/upload-stream/{patient_id}")
+async def upload_stream(patient_id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    # Validate and read the upload before returning a streaming HTTP response.
+    events = extraction_events(patient_id, file, db)
+    first = await anext(events)
 
-    # Step 11: Commit database changes
+    async def stream():
+        try:
+            yield encode_event(*first)
+            async for event, data in events:
+                yield encode_event(event, data)
+                if event == "field":
+                    await asyncio.sleep(0.3)
+        except Exception as error:
+            db.rollback()
+            yield encode_event("error", {"detail": error.detail if isinstance(error, HTTPException) else "Extraction failed. Check the journey before retrying."})
+        finally:
+            await events.aclose()
 
-    db.commit()
-    db.refresh(record)
-    db.refresh(fact)
+    return StreamingResponse(stream(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
-    # Step 12: Return API response
 
-    return {
-        "record_id": record.id,
-        "fact_id": fact.id,
-        "extracted_data": extracted,
-        "confidence": fact.confidence,
-        "status": fact.status,
-        "conflicts": conflicts,
-        "ocr_text": ocr_text,
-        "source_image": file_path,
-    }
+def encode_event(event, data):
+    return f"event: {event}\ndata: {json.dumps(data)}\n\n"

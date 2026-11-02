@@ -38,8 +38,7 @@ def confirm_fact(
     """
     Record a confirmation of an extracted fact.
 
-    Authentication and reviewer authorization
-    must be added before real-world use.
+    The shared API router requires an authenticated, assigned staff reviewer.
     """
 
     fact = (
@@ -69,11 +68,11 @@ def confirm_fact(
     fact.verified_by = json.dumps(verified_list)
 
     # Increase the prototype confidence score
-    current_confidence = fact.confidence or 0.5
+    current_confidence = fact.confidence if fact.confidence is not None else 0.5
 
     fact.confidence = min(
         0.99,
-        current_confidence + 0.10
+        current_confidence + (0.15 if req.source_type == "patient_voice" else 0.10)
     )
 
     # Save verification history
@@ -121,7 +120,7 @@ def reject_fact(
 
     fact.status = "unverified"
 
-    current_confidence = fact.confidence or 0.5
+    current_confidence = fact.confidence if fact.confidence is not None else 0.5
 
     fact.confidence = max(
         0.1,
@@ -210,7 +209,7 @@ def resolve_conflict(
             .first()
         )
 
-        if conflicting and conflicting.id != fact.id:
+        if conflicting and conflicting.id != fact.id and conflicting.patient_id == fact.patient_id:
             conflicting.status = "unverified"
 
     # Clear the selected fact's conflict details

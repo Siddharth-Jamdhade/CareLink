@@ -1,15 +1,17 @@
-from paddleocr import PaddleOCR
+from threading import Lock
 
-# Initialize once
-print("Loading OCR engine...")
+# Do not load heavyweight OCR models for sign-in, profiles or read-only records.
+ocr_engine = None
+_lock = Lock()
 
-ocr_engine = PaddleOCR(
-    use_angle_cls=True,
-    lang="en",
-    show_log=False
-)
 
-print("OCR engine ready!")
+def get_engine():
+    global ocr_engine
+    with _lock:
+        if ocr_engine is None:
+            from paddleocr import PaddleOCR
+            ocr_engine = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
+    return ocr_engine
 
 
 def extract_text_from_image(image_path: str) -> str:
@@ -18,7 +20,12 @@ def extract_text_from_image(image_path: str) -> str:
     Returns all text found in the image as a single string.
     """
 
-    result = ocr_engine.ocr(image_path, cls=True)
+    with _lock:
+        engine = ocr_engine
+    if engine is None:
+        engine = get_engine()
+    with _lock:
+        result = engine.ocr(image_path, cls=True)
 
     lines = []
 

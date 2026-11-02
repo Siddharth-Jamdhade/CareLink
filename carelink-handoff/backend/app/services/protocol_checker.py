@@ -30,6 +30,8 @@ def check_protocol_gaps(
     """
 
     missing = []
+    if gestational_week is None:
+        return missing
 
     # Collect available text from existing facts
     all_text = ""

@@ -14,9 +14,16 @@ class Patient(Base):
 
     id = Column(String, primary_key=True, default=generate_uuid)
     name = Column(String, nullable=False)
+    phone_number = Column(String, nullable=True)
     age = Column(Integer)
     gestational_week = Column(Integer)
     created_at = Column(DateTime, default=datetime.utcnow)
+    emergency_contact = Column(String)
+    lmp = Column(String)
+    revised_edd = Column(String)
+    edd_source = Column(String)
+    edd_reason = Column(Text)
+    profile_version = Column(Integer, nullable=False, default=0)
 
     # Relationships
     records = relationship("Record", back_populates="patient")
@@ -51,6 +58,9 @@ class ExtractedFact(Base):
     pending_items = Column(Text, nullable=True)
     provider_name = Column(String, nullable=True)
     next_appointment = Column(String, nullable=True)
+    documented_diagnosis = Column(Text, nullable=True)
+    documented_symptoms = Column(Text, nullable=True)
+    documented_medications = Column(Text, nullable=True)
 
     confidence = Column(Float, default=0.0)
     status = Column(String, default="unverified")
@@ -73,3 +83,44 @@ class Verification(Base):
     source_type = Column(String, nullable=False)
     value = Column(String)
     verified_at = Column(DateTime, default=datetime.utcnow)
+
+
+class WhatsAppReceipt(Base):
+    __tablename__ = "whatsapp_receipts"
+    id = Column(String, primary_key=True)
+    patient_id = Column(String, nullable=False)
+    record_id = Column(String, nullable=True)
+    status = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Account(Base):
+    __tablename__ = "mobile_accounts"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    username = Column(String, unique=True, nullable=False)
+    password_hash = Column(String, nullable=False)
+    role = Column(String, nullable=False)
+    patient_id = Column(String, ForeignKey("patients.id"))
+
+
+class Assignment(Base):
+    __tablename__ = "mobile_assignments"
+    account_id = Column(String, ForeignKey("mobile_accounts.id"), primary_key=True)
+    patient_id = Column(String, ForeignKey("patients.id"), primary_key=True)
+
+
+class LoginSession(Base):
+    __tablename__ = "mobile_sessions"
+    token_hash = Column(String, primary_key=True)
+    account_id = Column(String, ForeignKey("mobile_accounts.id"), nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+
+
+class DatingAudit(Base):
+    __tablename__ = "pregnancy_dating_audit"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    patient_id = Column(String, ForeignKey("patients.id"), nullable=False)
+    account_id = Column(String, nullable=False)
+    before_json = Column(Text, nullable=False)
+    after_json = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

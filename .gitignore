@@ -6,3 +6,21 @@ venv/
 node_modules/
 __pycache__/
 *.pyc
+carelink-handoff/backend/.mobile-demo/
+
+# Local records, secrets, generated artifacts and repository backup
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.jks
+*.keystore
+.git-backups/
+.arduino-build/
+.video-inspection/
+video-inspection-frames/
+carelink-handoff/backend/uploads/
+carelink-handoff/hardware/card_patients.json
+carelink-handoff/mobile-delivery/
+carelink-handoff/frontend/carelink-ap/
+tmp/carelink-feature-baseline/

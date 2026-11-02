@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 from .config import DATABASE_URL
 
@@ -18,6 +18,14 @@ SessionLocal = sessionmaker(
 # Base class for all database models
 Base = declarative_base()
 
+def upgrade_record_details(bind):
+    """Add nullable transcription fields without changing existing records."""
+    columns = {column["name"] for column in inspect(bind).get_columns("extracted_facts")}
+    with bind.begin() as connection:
+        for name in ("documented_diagnosis", "documented_symptoms", "documented_medications"):
+            if name not in columns:
+                connection.execute(text(f"ALTER TABLE extracted_facts ADD COLUMN {name} TEXT"))
+
 
 def get_db():
     """
@@ -29,3 +37,21 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def upgrade_patient_phone(bind):
+    columns = {column["name"] for column in inspect(bind).get_columns("patients")}
+    if "phone_number" not in columns:
+        with bind.begin() as connection:
+            connection.execute(text("ALTER TABLE patients ADD COLUMN phone_number VARCHAR"))
+
+
+def upgrade_mobile_profile(bind):
+    """Idempotent additive migration; existing profiles remain unknown, not inferred."""
+    columns = {c["name"] for c in inspect(bind).get_columns("patients")}
+    additions = {"emergency_contact": "VARCHAR", "lmp": "VARCHAR", "revised_edd": "VARCHAR",
+                 "edd_source": "VARCHAR", "edd_reason": "TEXT", "profile_version": "INTEGER NOT NULL DEFAULT 0"}
+    with bind.begin() as connection:
+        for name, kind in additions.items():
+            if name not in columns:
+                connection.execute(text(f"ALTER TABLE patients ADD COLUMN {name} {kind}"))

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List
 from datetime import datetime
 
@@ -6,9 +6,11 @@ from datetime import datetime
 # ----- Patient -----
 
 class PatientCreate(BaseModel):
-    name: str
-    age: int
-    gestational_week: int
+    model_config = ConfigDict(str_strip_whitespace=True)
+    name: str = Field(min_length=1, max_length=200)
+    age: int | None = Field(default=None, ge=0, le=120)
+    gestational_week: int | None = Field(default=None, ge=0, le=45)
+    phone_number: str | None = Field(default=None, max_length=40)
 
 
 class PatientResponse(BaseModel):
@@ -16,9 +18,13 @@ class PatientResponse(BaseModel):
 
     id: str
     name: str
-    age: int
-    gestational_week: int
+    age: int | None = None
+    gestational_week: int | None = None
+    phone_number: str | None = None
     created_at: datetime
+    record_count: int = 0
+    conflict_count: int = 0
+    pending_count: int = 0
 
 
 # ----- Extracted Fact -----
@@ -37,6 +43,9 @@ class FactResponse(BaseModel):
     pending_items: Optional[str] = None
     provider_name: Optional[str] = None
     next_appointment: Optional[str] = None
+    documented_diagnosis: Optional[str] = None
+    documented_symptoms: Optional[str] = None
+    documented_medications: Optional[str] = None
 
     confidence: float
     status: str

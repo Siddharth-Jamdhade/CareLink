@@ -1,17 +1,39 @@
 import io
+import os
+from pathlib import Path
+from urllib.parse import urlsplit
+from ..config import UPLOAD_DIR
 import qrcode
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import Patient, ExtractedFact
+from ..models import Patient, ExtractedFact, Record, Verification
 from ..schemas import PatientCreate, PatientResponse, FactResponse
 from ..services.protocol_checker import check_protocol_gaps
+from ..security import current_account, allowed_ids
+from ..models import Assignment
+from ..services.journey_links import journey_url
 
 
 router = APIRouter()
+
+
+@router.get("/{patient_id}/nfc-link")
+def nfc_link(patient_id: str, request: Request, db: Session = Depends(get_db), account=Depends(current_account)):
+    if account.role not in ('staff', 'clinician'):
+        raise HTTPException(403, 'Assigned staff must prepare NFC bands')
+    if not db.get(Patient, patient_id):
+        raise HTTPException(404, 'Patient not found')
+    cloud = os.getenv('CARELINK_CLOUD_MODE') == '1'
+    origin = os.getenv('FRONTEND_URL') or str(request.base_url).rstrip('/')
+    if cloud and not origin.startswith('https://'):
+        raise HTTPException(503, 'The cloud HTTPS origin is not configured')
+    return {'url': journey_url(patient_id, origin), 'requires_sign_in': True,
+            'local_esp32_available': not cloud,
+            'instructions': 'Write this URL as an NDEF URL record using an NFC-capable phone or a nearby NFC writer. Scanning requires sign-in and patient authorisation.'}
 
 
 # --------------------------------------
@@ -21,17 +43,21 @@ router = APIRouter()
 @router.post("/", response_model=PatientResponse)
 def create_patient(
     patient: PatientCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    account=Depends(current_account),
 ):
     """Create a new patient."""
 
     db_patient = Patient(
         name=patient.name,
+        phone_number=patient.phone_number,
         age=patient.age,
         gestational_week=patient.gestational_week,
     )
 
     db.add(db_patient)
+    db.flush()
+    db.add(Assignment(account_id=account.id, patient_id=db_patient.id))
     db.commit()
     db.refresh(db_patient)
 
@@ -43,10 +69,14 @@ def create_patient(
 # --------------------------------------
 
 @router.get("/", response_model=list[PatientResponse])
-def list_patients(db: Session = Depends(get_db)):
+def list_patients(db: Session = Depends(get_db), account=Depends(current_account)):
     """List all patients."""
 
-    return db.query(Patient).all()
+    patients = db.query(Patient).filter(Patient.id.in_(allowed_ids(account, db))).all()
+    return [dict(PatientResponse.model_validate(p).model_dump(),
+                 record_count=len(p.records),
+                 conflict_count=sum(f.status == "conflict" for f in p.facts),
+                 pending_count=sum(f.status == "unverified" for f in p.facts)) for p in patients]
 
 
 # --------------------------------------
@@ -118,7 +148,7 @@ def get_journey(
         fr = FactResponse.model_validate(fact)
 
         fr.source_image_path = (
-            fact.record.source_image_path
+            fact.record.source_image_path.replace("\\", "/")
             if fact.record
             else None
         )
@@ -156,6 +186,8 @@ def get_journey(
 @router.get("/{patient_id}/qr")
 def get_qr_code(
     patient_id: str,
+    request: Request,
+    frontend_origin: str | None = None,
     db: Session = Depends(get_db)
 ):
     """Generate a QR code for a patient's page."""
@@ -173,7 +205,11 @@ def get_qr_code(
         )
 
     # Frontend patient page URL
-    url = f"http://localhost:3000/patient/{patient_id}"
+    origin = frontend_origin or os.getenv("FRONTEND_URL") or str(request.base_url).rstrip("/")
+    parsed = urlsplit(origin)
+    if parsed.scheme not in ("http", "https") or not parsed.netloc or parsed.username or parsed.password or parsed.path not in ("", "/") or parsed.query or parsed.fragment:
+        raise HTTPException(status_code=400, detail="Invalid frontend origin")
+    url = f"{origin.rstrip('/')}/patient/{patient_id}"
 
     # Generate QR image
     qr = qrcode.make(url)
@@ -187,3 +223,21 @@ def get_qr_code(
         buf,
         media_type="image/png"
     )
+
+
+@router.delete("/{patient_id}", status_code=204)
+def delete_patient(patient_id: str, db: Session = Depends(get_db)):
+    patient = db.get(Patient, patient_id)
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    root = Path(UPLOAD_DIR).resolve()
+    paths = [(root / r.source_image_path.replace('\\', '/').removeprefix('uploads/')).resolve() for r in patient.records]
+    fact_ids = db.query(ExtractedFact.id).filter(ExtractedFact.patient_id == patient_id)
+    db.query(Verification).filter(Verification.fact_id.in_(fact_ids)).delete(synchronize_session=False)
+    db.query(ExtractedFact).filter(ExtractedFact.patient_id == patient_id).delete(synchronize_session=False)
+    db.query(Record).filter(Record.patient_id == patient_id).delete(synchronize_session=False)
+    db.query(Patient).filter(Patient.id == patient_id).delete(synchronize_session=False)
+    db.commit()
+    for path in paths:
+        if path.is_relative_to(root) and path.is_file():
+            path.unlink(missing_ok=True)

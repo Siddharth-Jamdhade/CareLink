@@ -1,0 +1,7 @@
+{
+  "appId": "in.carelink.mobile",
+  "appName": "CareLink",
+  "webDir": "build",
+  "server": { "androidScheme": "https" },
+  "android": { "backgroundColor": "#fafbf7" }
+}

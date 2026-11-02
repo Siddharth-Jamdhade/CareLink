@@ -1,0 +1,28 @@
+# Review Render's current price before creating these resources.
+services:
+  - type: web
+    name: carelink-cloud
+    runtime: docker
+    plan: standard
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    numInstances: 1
+    disk:
+      name: carelink-records
+      mountPath: /var/data
+      sizeGB: 10
+    envVars:
+      - key: CARELINK_CLOUD_MODE
+        value: "1"
+      - key: CARELINK_DATABASE_URL
+        value: sqlite:////var/data/carelink.db
+      - key: CARELINK_UPLOAD_DIR
+        value: /var/data/uploads
+      - key: CARELINK_COOKIE_SECURE
+        value: "1"
+      - key: CARELINK_ENABLE_WHATSAPP
+        value: "0"
+      - key: GEMINI_API_KEY
+        sync: false
