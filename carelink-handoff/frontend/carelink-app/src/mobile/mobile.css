@@ -4,3 +4,41 @@
 @media(max-width:359px){.cl-main{padding:24px 16px 110px}.cl-header{padding:20px 16px}.cl-app h1{font-size:31px}.cl-hero-copy{padding-left:16px}.cl-hero h2 b{font-size:46px}.cl-hero .cl-light{font-size:10px;padding:10px}.cl-hero{min-height:255px}.cl-card{padding:18px}.cl-brand{font-size:24px}.cl-brand small{font-size:8px}.cl-section-title>span{display:none}.cl-scene-controls button{font-size:10px!important;padding:8px}.cl-app .cl-bottom button{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.cl-app *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .cl-source-dialog{position:fixed;inset:0;width:min(94vw,720px);max-height:90dvh;margin:auto;padding:18px;border:1px solid #d9e5dc;border-radius:18px;background:#fafbf7;color:#173f39;overflow:auto}.cl-source-dialog::backdrop{background:#123c35b8;backdrop-filter:blur(4px)}.cl-source-dialog h2{font-size:18px}.cl-source-dialog img{display:block;max-width:100%;height:auto;margin:16px auto}.cl-source-dialog p{font-size:14px}
+
+/* =========================================================
+   Movement Diary — CareLink Mobile enhanced 2026-11-05
+   ========================================================= */
+.cl-movement-diary{margin-top:20px}
+.cl-movement-disclaimer{background:#fff8f0;border:1px solid #f0d9bb;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.6;margin:14px 0}
+.cl-movement-disclaimer strong{color:#7a4a1e}
+.cl-movement-form{margin:16px 0 0}
+.cl-movement-form textarea{min-height:90px;resize:vertical;font-size:14px}
+.cl-movement-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap}
+.cl-movement-meta .cl-primary{width:auto;min-width:120px;min-height:46px;font-size:14px}
+.cl-counter-warn{color:#9b4d12;font-weight:600}
+.cl-movement-saved{background:#e5f1e7;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:10px}
+.cl-movement-list{margin-top:18px;border-top:1px solid var(--cl-border);padding-top:16px}
+.cl-movement-list-title{font-size:13px;font-weight:650;color:#4a6557;margin:0 0 12px}
+.cl-movement-entries{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
+.cl-movement-entry{background:#fafbf7;border:1px solid var(--cl-border);border-radius:12px;padding:12px 14px}
+.cl-movement-time{display:block;font-size:11px;color:#5f7169;font-weight:600;margin-bottom:5px}
+.cl-movement-text{font-size:14px;margin:0;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.cl-app .cl-movement-clear{color:#8c3a2c;font-size:12px;margin-top:14px;border-color:#f0c8c0}
+.cl-movement-footer{margin-top:16px;border-top:1px solid var(--cl-border);padding-top:12px}
+.cl-local-badge{font-size:10px;font-weight:700;letter-spacing:.8px;color:#5f6f65;background:#eff5ed;border:1px solid #d7e4d2;border-radius:8px;padding:3px 8px;white-space:nowrap}
+
+/* Week size badge on My Baby tab */
+.cl-size-badge{display:inline-flex;align-items:center;gap:5px;background:#fff3e9;border:1px solid #f0d9c0;border-radius:30px;padding:5px 12px;font-size:11px;font-weight:700;color:#7a4a1e;letter-spacing:.6px;margin:10px 0 0}
+
+/* Baby stage richer visual */
+.cl-baby-stage{background:linear-gradient(135deg,#f5e3d1 0%,#ecd1be 100%);border:1px solid #e3c9b2}
+.cl-baby-stage-title{font-family:Georgia,serif;font-size:22px;padding:4px 7px 0;font-weight:400;color:#5a3a28}
+
+/* Womb background overlay inside BabyScene — radial rings, no WebGL */
+.cl-womb-bg{position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;background:radial-gradient(ellipse 72% 80% at 50% 44%,#ffe8d5cc 0%,#f7c9a880 38%,#e8a07440 65%,transparent 100%)}
+.cl-womb-bg::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse 55% 62% at 50% 48%,transparent 50%,#c97a5520 70%,#b8603816 100%)}
+
+/* Week info card — slightly warmer background */
+.cl-week-info{background:linear-gradient(160deg,#fffdf8 0%,#fff8f0 100%);border-color:#f0dcc8}
+.cl-week-info h2{color:#5a3a28}
+.cl-week-info a{display:inline-flex;align-items:center;gap:5px;font-size:13px;margin:10px 0 4px}

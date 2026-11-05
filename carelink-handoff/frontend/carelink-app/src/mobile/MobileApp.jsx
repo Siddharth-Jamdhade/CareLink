@@ -1,3 +1,4 @@
+// CareLink Mobile - MobileApp.jsx - enhanced 2026-11-05
 import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { FiHome, FiFolder, FiHeart, FiCalendar, FiUser, FiArrowRight, FiUpload, FiCheckCircle, FiRefreshCw, FiShield, FiLogOut, FiSearch } from 'react-icons/fi';
 import API, { backendOrigin, errorMessage } from '../api';
@@ -5,6 +6,8 @@ import { clearPatientCache, getConsent, saveConsent, withdrawConsent } from '../
 import RecordDetails from '../RecordDetails';
 import { CloudNfcLink } from '../HardwareActions';
 import { calculateEDD, displayDate, EDD_HELP } from './dates';
+import { getWeekInfo } from './weekInfo';
+import MovementDiary from './MovementDiary';
 import './mobile.css';
 
 const BabyScene = lazy(() => import('./BabyScene'));
@@ -89,13 +92,14 @@ export default function MobileApp({ account }) {
           {!!pending && <button className="cl-action-card" onClick={() => go('records')}><span className="cl-icon"><FiShield /></span><span><strong>{pending} records need review</strong><small>Pending information is clearly marked.</small></span><FiArrowRight /></button>}
           <aside className="cl-note"><FiHeart /><p>A connected journey, at your pace.<br /><small>CareLink organises your records. Your care team guides your care.</small></p></aside>
         </>}
-        {tab === 'baby' && <>
-          <section className="cl-baby-stage"><div className="cl-row"><span className="cl-pill">{previewing ? 'PREVIEW · NOT YOUR CURRENT WEEK' : 'YOUR CURRENT WEEK'}</span><span>Trimester {previewWeek < 14 ? 1 : previewWeek < 28 ? 2 : 3}</span></div><h2>Week {previewWeek}</h2><Model week={previewWeek} /><p className="cl-gesture">Drag to rotate · pinch to zoom</p></section>
+        {tab === 'baby' && (() => { const weekInfo = getWeekInfo(previewWeek); return <>
+          <section className="cl-baby-stage"><div className="cl-row"><span className="cl-pill">{previewing ? 'PREVIEW · NOT YOUR CURRENT WEEK' : 'YOUR CURRENT WEEK'}</span><span>Trimester {previewWeek < 14 ? 1 : previewWeek < 28 ? 2 : 3}</span></div><h2>Week {previewWeek} &mdash; {weekInfo.title}</h2><span className="cl-size-badge" aria-label={`Baby size: ${weekInfo.size}`}>{weekInfo.size}</span><Model week={previewWeek} /><p className="cl-gesture">Drag to rotate · pinch to zoom</p></section>
           <p className="cl-illustration-label">{ILLUSTRATION}</p>
           <section className="cl-card"><label>Explore pregnancy stages<input aria-label="Preview pregnancy week" type="range" min="12" max="40" value={previewWeek} onChange={e => setWeekPreview(Number(e.target.value))} /></label><div className="cl-row"><span>12 weeks</span><span>40 weeks</span></div>{canIllustrate && <button className="cl-text" onClick={() => setWeekPreview(null)}>Return to current week ({currentWeek})</button>}<p className="cl-muted">Stylised stages from 12–40 weeks. Body proportions change between early, middle and later pregnancy; this model does not show clinical measurements.</p></section>
-          <section className="cl-card"><p className="cl-eyebrow">GROWING, IN THEIR OWN TIME</p><h2>{previewWeek < 16 ? 'Small beginnings' : previewWeek < 28 ? 'Discovering movements' : 'Getting ready to meet'}</h2><p>{previewWeek < 16 ? 'Around week 12, internal organs and muscles have grown and the skeleton is beginning to harden into bone.' : previewWeek < 28 ? 'During middle pregnancy, your baby continues to develop. Around week 20, a protective coating called vernix covers the skin.' : 'In later pregnancy, your baby continues to grow and put on weight. Movements should continue until birth.'}</p><a href={`https://www.nhs.uk/best-start-in-life/pregnancy/week-by-week-guide-to-pregnancy/${previewWeek < 16 ? '1st-trimester/week-12' : previewWeek < 28 ? '2nd-trimester/week-20' : '3rd-trimester/week-32'}/`} target="_blank" rel="noreferrer">NHS stage information</a><p>Movements are commonly first felt between 16 and 24 weeks, usually in the second trimester. Timing varies from person to person.</p><p>Illustrative movements are not observations of your baby and cannot tell you about their health.</p><a href="https://www.nhs.uk/pregnancy/keeping-well/your-babys-movements/" target="_blank" rel="noreferrer">Read the NHS movement guidance ↗</a></section>
+          <section className="cl-card cl-week-info"><p className="cl-eyebrow">GROWING, IN THEIR OWN TIME</p><h2>{weekInfo.title}</h2><p>{weekInfo.body}</p><a href={weekInfo.nhs_url} target="_blank" rel="noreferrer">NHS week {previewWeek} guide ↗</a><p>Movements are commonly first felt between 16 and 24 weeks, usually in the second trimester. Timing varies from person to person.</p><p>Illustrative movements are not observations of your baby and cannot tell you about their health.</p><a href="https://www.nhs.uk/pregnancy/keeping-well/your-babys-movements/" target="_blank" rel="noreferrer">Read the NHS movement guidance ↗</a></section>
+          <MovementDiary week={previewWeek} />
           <aside className="cl-care-alert"><strong>Know when to get support</strong><p>Contact your maternity care team promptly if movements are reduced, absent or have changed. Do not wait until the next day. If you have never felt movement by 24 weeks, contact your care team.</p><p className="cl-muted">Educational content and model require local clinical review before patient rollout.</p></aside>
-        </>}
+        </>; })()}
         {tab === 'records' && <>
           {staff && <section className="cl-card"><CloudNfcLink key={selected} patientId={selected} /></section>}
           <div className="cl-quick-grid"><button onClick={capture}><FiUpload /><strong>{t.upload}</strong><small>Capture or choose a photo</small></button><button onClick={() => window.location.assign(`/patient/${selected}`)}><FiCheckCircle /><strong>Consultation summary</strong><small>Full source-linked journey</small></button></div>

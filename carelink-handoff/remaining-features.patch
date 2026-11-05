@@ -1,0 +1,893 @@
+--- a/backend/app/routers/verification.py
++++ b/backend/app/routers/verification.py
+@@ -62,25 +62,25 @@
+         fact.verified_by or "[]"
+     )
+ 
+     # Add the new verification source
+     if req.source_type not in verified_list:
+         verified_list.append(req.source_type)
+ 
+     fact.verified_by = json.dumps(verified_list)
+ 
+     # Increase the prototype confidence score
+-    current_confidence = fact.confidence or 0.5
++    current_confidence = fact.confidence if fact.confidence is not None else 0.5
+ 
+     fact.confidence = min(
+         0.99,
+-        current_confidence + 0.10
++        current_confidence + (0.15 if req.source_type == "patient_voice" else 0.10)
+     )
+ 
+     # Save verification history
+     verification = Verification(
+         fact_id=fact_id,
+         source_type=req.source_type,
+         value=req.value,
+     )
+ 
+     db.add(verification)
+@@ -114,21 +114,21 @@
+     )
+ 
+     if not fact:
+         raise HTTPException(
+             status_code=404,
+             detail="Fact not found"
+         )
+ 
+     fact.status = "unverified"
+ 
+-    current_confidence = fact.confidence or 0.5
++    current_confidence = fact.confidence if fact.confidence is not None else 0.5
+ 
+     fact.confidence = max(
+         0.1,
+         current_confidence - 0.20
+     )
+ 
+     db.commit()
+     db.refresh(fact)
+ 
+     return {
+--- a/frontend/carelink-app/src/pages/PatientJourney.jsx
++++ b/frontend/carelink-app/src/pages/PatientJourney.jsx
+@@ -1,14 +1,17 @@
+ import React, { useState, useEffect, useCallback } from "react";
+ import { useParams, useNavigate } from "react-router-dom";
+ import API, { backendOrigin, readCache, writeCache, removeCache, errorMessage } from "../api";
+ import RecordDetails from "../RecordDetails";
++
++import HardwareActions from "../HardwareActions";
++import VoiceVerification from "../VoiceVerification";
+ 
+ const STATUS_COLORS = {
+   verified: { bg: "#E0FFF5", dot: "#2ED573", text: "#00795A", label: "✓ Verified" },
+   unverified: { bg: "#FFF3E0", dot: "#FFA502", text: "#E65100", label: "⏳ Confirm" },
+   conflict: { bg: "#FFE8EA", dot: "#FF4757", text: "#C0392B", label: "⚡ Conflict" },
+   missing: { bg: "#F0F0F5", dot: "#A4B0CC", text: "#5C6B8A", label: "? Missing" },
+ };
+ 
+ function PatientJourney() {
+   const { id } = useParams();
+@@ -114,20 +117,21 @@
+                     } catch { return null; }
+                   })()}
+ 
+                   {/* Conflict Details */}
+                   {fact.status === "conflict" && fact.conflict_details && (
+                     <div style={{ background: "#FFE8EA", padding: 8, borderRadius: 6, fontSize: 11, color: "#C0392B", marginBottom: 8 }}>
+                       ⚡ {parseList(fact.conflict_details).map(c => c.message).filter(Boolean).join("; ")}
+                     </div>
+                   )}
+ 
++                  {fact.status !== "verified" && <VoiceVerification fact={fact} disabled={offline || busy} onVerified={loadJourney} />}
+                   {/* Action Buttons */}
+                   <div style={{ display: "flex", gap: 6 }}>
+                     {fact.source_image_path && (
+                       <button onClick={() => setSelectedImage(`${backendOrigin()}/${fact.source_image_path.replace(/^\//, "")}`)}
+                         style={{ background: "none", border: "1px solid #6C3CE1", color: "#6C3CE1", padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                         📎 View Source
+                       </button>
+                     )}
+                     {fact.status !== "verified" && (
+                       <button disabled={offline || busy} onClick={() => confirmFact(fact.id, fact.status === "conflict")}
+@@ -135,24 +139,25 @@
+                         {fact.status === "conflict" ? "Resolve conflict" : "Verify"}
+                       </button>
+                     )}
+                   </div>
+                 </div>
+               </div>
+             );
+           })}
+         </div>
+ 
++        <HardwareActions patientId={id} disabled={offline || busy} />
+         {/* Bottom Actions */}
+         <div style={{ display: "flex", gap: 8, marginTop: 16, marginBottom: 40 }}>
+           <button className="btn btn-primary" style={{ flex: 1 }} disabled={offline} onClick={() => navigate(`/capture/${id}`)}>📸 Add Record</button>
+-          <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => window.open(`${backendOrigin()}/api/patients/${id}/qr?frontend_origin=${encodeURIComponent(window.location.origin)}`, "_blank", "noopener,noreferrer")}>🖨️ QR Code</button>
++          <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => window.open(`${backendOrigin()}/api/patients/${id}/qr?frontend_origin=${encodeURIComponent(window.location.origin)}`, "_blank", "noopener,noreferrer")}>📱 QR Code</button>
+         </div>
+ 
+         {/* Source Image Modal */}
+         {selectedImage && (
+           <div role="dialog" aria-modal="true" aria-label="Source image" onClick={() => setSelectedImage(null)}
+             style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, cursor: "pointer" }}>
+             <div style={{ position: "relative", maxWidth: "90%", maxHeight: "90%" }}>
+               <button className="btn btn-ghost" onClick={() => setSelectedImage(null)}>Close source</button><img src={selectedImage} alt="Source" style={{ maxWidth: "100%", maxHeight: "85vh", borderRadius: 8 }} />
+               <div style={{ textAlign: "center", color: "#fff", marginTop: 10, fontSize: 13 }}>📎 Source Image — tap anywhere to close</div>
+             </div>
+--- a/frontend/carelink-app/src/App.css
++++ b/frontend/carelink-app/src/App.css
+@@ -244,10 +244,18 @@
+ .record-review-note { padding: 12px; background: #fff8e8; border-radius: 10px; color: #785016; font-size: 12px; line-height: 1.6; }
+ .record-details-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 12px 0; }
+ .record-details-grid > div { padding: 12px; background: #fff; overflow-wrap: anywhere; }
+ .record-details-grid dt { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+ .record-details-grid dd { font-size: 13px; font-weight: 600; line-height: 1.6; white-space: pre-wrap; }
+ @media (max-width: 400px) { .record-details-grid { grid-template-columns: 1fr; } }
+ .capture-actions label:has(input:disabled) { opacity: .55; cursor: not-allowed; }
+ :focus-visible { outline-color: #15796f; }
+ @media (min-width: 850px) { .welcome { display: grid; grid-template-columns: 1fr 1fr; column-gap: 70px; } .welcome-brand { grid-column: 1 / -1; margin-bottom: 52px; } .welcome-hero { padding-top: 36px; } }
+ @media (max-width: 380px) { .welcome { padding-left: 16px; padding-right: 16px; } .consent-card { padding: 20px; } .mobile-nav { padding-left: 6px; padding-right: 6px; } }
++
++@keyframes voicePulse { 50% { opacity: .45; } }
++.voice-listening { animation: voicePulse 1s infinite; color: #6C3CE1; }
++@keyframes fieldReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
++.live-field { animation: fieldReveal .3s ease-out; margin: 8px 0; }
++@media (prefers-reduced-motion: reduce) { .voice-listening, .live-field { animation: none; } }
++
++.hardware-modal { position: fixed; inset: 0; background: #0009; display: grid; place-items: center; padding: 24px; z-index: 1000; }
+--- a/backend/app/routers/records.py
++++ b/backend/app/routers/records.py
+@@ -1,10 +1,13 @@
++import asyncio
++from fastapi.responses import StreamingResponse
++from starlette.concurrency import run_in_threadpool
+ import os
+ import json
+ import uuid
+ import io
+ from pathlib import Path
+ from PIL import Image, UnidentifiedImageError
+ 
+ from fastapi import (
+     APIRouter,
+     Depends,
+@@ -27,22 +30,21 @@
+ router = APIRouter()
+ 
+ MAX_UPLOAD_SIZE = 10 * 1024 * 1024
+ 
+ ALLOWED_IMAGE_TYPES = {
+     "image/jpeg": ".jpg",
+     "image/png": ".png",
+ }
+ 
+ 
+-@router.post("/upload/{patient_id}")
+-async def upload_and_extract(
++async def extraction_events(
+     patient_id: str,
+     file: UploadFile = File(...),
+     db: Session = Depends(get_db),
+ ):
+     """
+     Upload an image, run OCR, extract administrative
+     facts with Gemini, save facts, and detect conflicts.
+     """
+ 
+     # Step 1: Verify patient exists
+@@ -102,121 +104,165 @@
+     filename = f"{uuid.uuid4().hex}{extension}"
+ 
+     file_path = os.path.join(patient_dir, filename)
+     source_url = "uploads/" + Path(file_path).resolve().relative_to(
+         Path(config.UPLOAD_DIR).resolve()
+     ).as_posix()
+ 
+     with open(file_path, "wb") as output:
+         output.write(content)
+ 
+-    # Step 4: Run OCR
+-
++    saved = False
+     try:
+-        ocr_text = extract_text_from_image(file_path)
+-    except Exception:
+-        Path(file_path).unlink(missing_ok=True)
+-        raise HTTPException(
+-            status_code=500,
+-            detail="Text recognition failed. Try a clear, upright photo of one paper."
+-        )
+-
+-    # Step 5: Run Gemini extraction
+-
+-    extracted = extract_facts_from_image(
+-        file_path,
+-        ocr_text
+-    )
+-
+-    # The extraction service returns a low confidence
+-    # and an error note when extraction fails.
+-
+-    if (
+-        not isinstance(extracted, dict)
+-        or extracted.get("_confidence", 0) <= 0.1
+-    ):
+-        Path(file_path).unlink(missing_ok=True)
+-        raise HTTPException(
+-            status_code=502,
+-            detail=(extracted.get("_error") if isinstance(extracted, dict) else None) or "AI returned no usable facts. Try a clearer image. No facts were saved."
+-        )
+-
+-    # Step 6: Create the Record entry
+-
+-    record = Record(
+-        patient_id=patient_id,
+-        source_image_path=source_url,
+-        original_filename=file.filename,
+-    )
+-
+-    db.add(record)
+-    db.flush()
+-
+-    # Step 7: Prepare pending items
+-
+-    pending_items = extracted.get("pending_items", [])
+-
+-    if isinstance(pending_items, list):
+-        pending_items = json.dumps(pending_items)
+-
+-    # Step 8: Save extracted facts
+-
+-    fact = ExtractedFact(
+-        record_id=record.id,
+-        patient_id=patient_id,
+-        visit_date=extracted.get("visit_date"),
+-        facility_name=extracted.get("facility_name"),
+-        document_type=extracted.get("document_type"),
+-        gestational_week=extracted.get("gestational_week"),
+-        pending_items=pending_items,
+-        provider_name=extracted.get("provider_name"),
+-        next_appointment=extracted.get("next_appointment"),
+-        documented_diagnosis=extracted.get("documented_diagnosis"),
+-        documented_symptoms=extracted.get("documented_symptoms"),
+-        documented_medications=extracted.get("documented_medications"),
+-        confidence=extracted.get("_confidence", 0.5),
+-        status="unverified",
+-        verified_by='["document"]',
+-        confidence_notes=extracted.get("confidence_notes"),
+-    )
+-
+-    db.add(fact)
+-    db.flush()
+-
+-    # Step 9: Check existing records for conflicts
+-
+-    existing_facts = (
+-        db.query(ExtractedFact)
+-        .filter(ExtractedFact.patient_id == patient_id)
+-        .filter(ExtractedFact.id != fact.id)
+-        .all()
+-    )
+-
+-    conflicts = detect_conflicts(
+-        extracted,
+-        existing_facts
+-    )
+-
+-    # Step 10: Update status if conflicts exist
+-
+-    if conflicts:
+-        fact.status = "conflict"
+-        fact.conflict_details = json.dumps(conflicts)
+-
+-    # Step 11: Commit database changes
+-
+-    db.commit()
+-    db.refresh(record)
+-    db.refresh(fact)
+-
+-    # Step 12: Return API response
+-
+-    return {
+-        "record_id": record.id,
+-        "fact_id": fact.id,
+-        "extracted_data": extracted,
+-        "confidence": fact.confidence,
+-        "status": fact.status,
+-        "conflicts": conflicts,
+-        "ocr_text": ocr_text,
+-        "source_image": source_url,
+-    }
++        # Step 4: Run OCR
++
++        try:
++            yield ("status", {"step": "ocr", "message": "Reading text from image..."})
++            ocr_text = await run_in_threadpool(extract_text_from_image, file_path)
++        except Exception:
++            Path(file_path).unlink(missing_ok=True)
++            raise HTTPException(
++                status_code=500,
++                detail="Text recognition failed. Try a clear, upright photo of one paper."
++            )
++
++        # Step 5: Run Gemini extraction
++
++        yield ("status", {"step": "extract", "message": "AI extracting facts..."})
++        extracted = await run_in_threadpool(extract_facts_from_image, file_path, ocr_text)
++
++        # The extraction service returns a low confidence
++        # and an error note when extraction fails.
++
++        if (
++            not isinstance(extracted, dict)
++            or extracted.get("_confidence", 0) <= 0.1
++        ):
++            Path(file_path).unlink(missing_ok=True)
++            raise HTTPException(
++                status_code=502,
++                detail=(extracted.get("_error") if isinstance(extracted, dict) else None) or "AI returned no usable facts. Try a clearer image. No facts were saved."
++            )
++
++        for field, value in extracted.items():
++            if not field.startswith("_"):
++                yield ("field", {"field": field, "value": value})
++        yield ("status", {"step": "conflict", "message": "Checking for conflicts..."})
++
++        # Step 6: Create the Record entry
++
++        record = Record(
++            patient_id=patient_id,
++            source_image_path=source_url,
++            original_filename=file.filename,
++        )
++
++        db.add(record)
++        db.flush()
++
++        # Step 7: Prepare pending items
++
++        pending_items = extracted.get("pending_items", [])
++
++        if isinstance(pending_items, list):
++            pending_items = json.dumps(pending_items)
++
++        # Step 8: Save extracted facts
++
++        fact = ExtractedFact(
++            record_id=record.id,
++            patient_id=patient_id,
++            visit_date=extracted.get("visit_date"),
++            facility_name=extracted.get("facility_name"),
++            document_type=extracted.get("document_type"),
++            gestational_week=extracted.get("gestational_week"),
++            pending_items=pending_items,
++            provider_name=extracted.get("provider_name"),
++            next_appointment=extracted.get("next_appointment"),
++            documented_diagnosis=extracted.get("documented_diagnosis"),
++            documented_symptoms=extracted.get("documented_symptoms"),
++            documented_medications=extracted.get("documented_medications"),
++            confidence=extracted.get("_confidence", 0.5),
++            status="unverified",
++            verified_by='["document"]',
++            confidence_notes=extracted.get("confidence_notes"),
++        )
++
++        db.add(fact)
++        db.flush()
++
++        # Step 9: Check existing records for conflicts
++
++        existing_facts = (
++            db.query(ExtractedFact)
++            .filter(ExtractedFact.patient_id == patient_id)
++            .filter(ExtractedFact.id != fact.id)
++            .all()
++        )
++
++        conflicts = detect_conflicts(
++            extracted,
++            existing_facts
++        )
++
++        # Step 10: Update status if conflicts exist
++
++        if conflicts:
++            fact.status = "conflict"
++            fact.conflict_details = json.dumps(conflicts)
++
++        # Step 11: Commit database changes
++
++        db.commit()
++        saved = True
++        db.refresh(record)
++        db.refresh(fact)
++
++        # Step 12: Return API response
++
++        yield ("done", {
++            "record_id": record.id,
++            "fact_id": fact.id,
++            "extracted_data": extracted,
++            "confidence": fact.confidence,
++            "status": fact.status,
++            "conflicts": conflicts,
++            "ocr_text": ocr_text,
++            "source_image": source_url,
++        })
++    finally:
++        if not saved:
++            db.rollback()
++            Path(file_path).unlink(missing_ok=True)
++
++
++@router.post("/upload/{patient_id}")
++async def upload_and_extract(patient_id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):
++    async for event, data in extraction_events(patient_id, file, db):
++        if event == "done":
++            return data
++
++
++@router.post("/upload-stream/{patient_id}")
++async def upload_stream(patient_id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):
++    # Validate and read the upload before returning a streaming HTTP response.
++    events = extraction_events(patient_id, file, db)
++    first = await anext(events)
++
++    async def stream():
++        try:
++            yield encode_event(*first)
++            async for event, data in events:
++                yield encode_event(event, data)
++                if event == "field":
++                    await asyncio.sleep(0.3)
++        except Exception as error:
++            db.rollback()
++            yield encode_event("error", {"detail": error.detail if isinstance(error, HTTPException) else "Extraction failed. Check the journey before retrying."})
++        finally:
++            await events.aclose()
++
++    return StreamingResponse(stream(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
++
++
++def encode_event(event, data):
++    return f"event: {event}\ndata: {json.dumps(data)}\n\n"
+--- a/frontend/carelink-app/src/pages/CameraCapture.jsx
++++ b/frontend/carelink-app/src/pages/CameraCapture.jsx
+@@ -1,40 +1,53 @@
+ import React, { useEffect, useRef, useState } from "react";
+ import { useParams, useNavigate } from "react-router-dom";
+-import API, { errorMessage } from "../api";
++import { errorMessage } from "../api";
+ import RecordDetails from "../RecordDetails";
++import { streamExtraction } from "../streamExtraction";
++const FIELD_LABELS = { visit_date: "Visit Date", facility_name: "Facility", document_type: "Document", gestational_week: "Week" };
++function fieldValue(field, value) {
++  if (field === "visit_date" && /^\d{4}-\d{2}-\d{2}$/.test(value || "")) return new Date(`${value}T12:00:00`).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
++  return Array.isArray(value) ? value.join(", ") : String(value ?? "Not found");
++}
+ export default function CameraCapture() {
+   const { id } = useParams();
+   const navigate = useNavigate();
+   const video = useRef(null), stream = useRef(null), active = useRef(true), request = useRef(null), locked = useRef(false);
+   const [streaming, setStreaming] = useState(false), [loading, setLoading] = useState(false), [result, setResult] = useState(null), [error, setError] = useState("");
++  const [progress, setProgress] = useState({ message: "Uploading image...", fields: {} });
++  function onProgress(event, data) {
++    if (!active.current) return;
++    if (event === "status") setProgress(p => ({ ...p, message: data.message }));
++    if (event === "field") setProgress(p => ({ ...p, fields: { ...p.fields, [data.field]: data.value } }));
++  }
+   const [authorized, setAuthorized] = useState(false);
+   const [papers, setPapers] = useState([]);
+   function selectPapers(files) {
+     if (files.length > 10) { setError("Select up to 10 papers at a time."); return; }
+     setError("");
+     setPapers(Array.from(files, (file, index) => ({
+       id: index, file, status: "ready",
+       error: !["image/jpeg", "image/png"].includes(file.type) ? "Choose a JPEG or PNG image." : file.size > 10 * 1024 * 1024 ? "Image must be 10 MB or smaller." : "",
+     })));
+   }
+   async function extractPapers() {
+     if (!authorized || locked.current) return;
+     locked.current = true; setLoading(true); setError(""); stop(); setStreaming(false);
+     try {
+       for (const paper of papers.filter(p => ["ready", "failed"].includes(p.status) && (!p.error || p.status === "failed"))) {
+         if (!active.current) break;
+         setPapers(current => current.map(p => p.id === paper.id ? { ...p, status: "processing", error: "" } : p));
+         const form = new FormData(); form.append("file", paper.file);
++        setProgress({ message: "Uploading image...", fields: {} });
+         request.current = new AbortController();
+         try {
+-          const response = await API.post(`/records/upload/${id}`, form, { timeout: 180000, signal: request.current.signal });
++          const response = await streamExtraction(id, form, request.current.signal, onProgress);
+           if (active.current) setPapers(current => current.map(p => p.id === paper.id ? { ...p, status: "saved", result: response.data } : p));
+         } catch (err) {
+           if (active.current) setPapers(current => current.map(p => p.id === paper.id ? { ...p, status: err.response ? "failed" : "unknown", error: err.response ? errorMessage(err) : "Connection interrupted. This paper may have been saved. Check the journey before selecting it again." } : p));
+         }
+       }
+     } finally { locked.current = false; if (active.current) setLoading(false); }
+   }
+   function stop() { stream.current?.getTracks().forEach(t => t.stop()); stream.current = null; }
+   useEffect(() => { active.current = true; return () => { active.current = false; stop(); request.current?.abort(); }; }, []);
+   async function startCamera() {
+@@ -46,31 +59,32 @@
+       stop(); stream.current = camera; video.current.srcObject = camera; await video.current.play(); setStreaming(true);
+     } catch (err) { stop(); setError(err.name === "NotAllowedError" ? "Camera permission was denied. Allow it in browser settings or choose an image below." : err.message); }
+   }
+   async function upload(file) {
+     if (!authorized) { setError("Confirm permission to process this record before uploading."); return; }
+     if (!file || locked.current) return;
+     if (!["image/jpeg", "image/png"].includes(file.type)) { setError("Choose a JPEG or PNG image."); return; }
+     if (file.size > 10 * 1024 * 1024) { setError("Choose an image smaller than 10 MB."); return; }
+     locked.current = true; setLoading(true); setResult(null); setError(""); stop(); setStreaming(false);
+     const form = new FormData(); form.append("file", file, file.name || "capture.jpg");
+-    request.current = new AbortController();
+-    try { const response = await API.post(`/records/upload/${id}`, form, { timeout: 180000, signal: request.current.signal }); if (active.current) setResult(response.data); }
+-    catch (err) { if (active.current) setError(errorMessage(err)); }
++    setProgress({ message: "Uploading image...", fields: {} });
++        request.current = new AbortController();
++    try { const response = await streamExtraction(id, form, request.current.signal, onProgress); if (active.current) setResult(response.data); }
++    catch (err) { if (active.current) setError(err.message || errorMessage(err)); }
+     finally { locked.current = false; if (active.current) setLoading(false); }
+   }
+   function capture() {
+     if (!video.current?.videoWidth) { setError("Wait for the camera preview before capturing."); return; }
+     const canvas = document.createElement("canvas"); canvas.width = video.current.videoWidth; canvas.height = video.current.videoHeight;
+     canvas.getContext("2d").drawImage(video.current, 0, 0);
+     canvas.toBlob(blob => { if (blob) upload(blob); else setError("Could not capture this frame. Please try again."); }, "image/jpeg", 0.9);
+   }
+   return <main className="container capture-page"><header className="capture-header"><button className="btn btn-ghost" onClick={() => navigate(`/patient/${id}`)}>← Journey</button><h1>Scan a record</h1></header>
+     {error && <div className="alert alert-danger" role="alert">{error}</div>}
+     {!result && <section className="card upload-consent"><h2>Before you add a record</h2><p>The image will be stored on the care server and sent to Google Gemini for AI extraction. Start camera requests camera access only. Use synthetic records for this demo.</p><label className="consent-choice"><input type="checkbox" checked={authorized} disabled={loading} onChange={e => { setAuthorized(e.target.checked); if (!e.target.checked) { stop(); setStreaming(false); } }} /><span>I have permission to upload and process this record.</span></label></section>}
+     {!result && <><div className="camera-stage"><video ref={video} autoPlay muted playsInline hidden={!streaming} />{!streaming && <div className="camera-placeholder"><div className="scan-icon">▤</div><h2>Bring the record into focus</h2><p>Use good light and keep all four corners visible.</p></div>}{streaming && <div className="camera-guide" />}</div>
+     <div className="capture-actions"><button className="btn btn-primary" disabled={loading || !authorized} onClick={streaming ? capture : startCamera}>{streaming ? "Capture and extract" : "Start camera"}</button><label className="btn btn-outline">Select papers<input aria-label="Upload record from gallery" type="file" multiple accept="image/jpeg,image/png" disabled={loading || !authorized} onChange={e => { selectPapers(e.target.files); e.target.value = ""; }} /></label></div><p className="capture-hint">Select up to 10 JPEG or PNG images, 10 MB each. Photograph one paper per image. Each paper becomes a separate record for this patient.</p></>}
+     {papers.length > 0 && <section className="card paper-queue" aria-label="Selected papers"><h2>Your papers <span>{papers.filter(p => p.status === "saved").length}/{papers.length} saved</span></h2><div aria-live="polite">{papers.map(p => <article className="paper-row" key={p.id}><strong>{p.file.name}</strong><span>{p.error ? (p.status === "unknown" ? "Check journey" : "Needs attention") : ({ ready: "Ready to extract", processing: "Extracting…", saved: "Saved · review required", failed: "Failed" })[p.status]}</span>{p.error && <p role="alert">{p.error}</p>}{p.result && <><p>{p.result.extracted_data?.document_type || "Record"} · {p.result.conflicts?.length || 0} conflicts</p><RecordDetails data={p.result.extracted_data} /></>}</article>)}</div><div className="capture-actions"><button className="btn btn-primary" disabled={loading || !authorized || !papers.some(p => (p.status === "ready" && !p.error) || p.status === "failed")} onClick={extractPapers}>{loading ? "Processing papers…" : papers.some(p => p.status === "failed") ? "Retry failed papers" : "Extract selected papers"}</button><button className="btn btn-ghost" disabled={loading} onClick={() => navigate(`/patient/${id}`)}>View journey</button></div><p>Keep this page open until processing finishes. Successful papers will not be uploaded again when you retry.</p></section>}
+-    {loading && <section className="processing card" role="status"><div className="spinner" /><h2>AI reading your record…</h2><p>Uploading image → Reading text → Checking records</p><small>This may take a minute. Keep this page open.</small></section>}
++    {loading && <section className="processing card" role="status"><div className="spinner" /><h2>{progress.message}</h2><div aria-live="polite">{Object.entries(progress.fields).map(([field, value]) => <p className="live-field" key={field}><strong>{FIELD_LABELS[field] || field.replaceAll("_", " ")}: </strong>{fieldValue(field, value)} ✓</p>)}</div><small>This may take a minute. Keep this page open.</small></section>}
+     {result && <section className="animate-in"><div className="section-heading"><span className="badge badge-unverified">Review required</span><h2>Record added to the journey</h2><p>Check the extracted fields against the source document.</p></div><RecordDetails data={result.extracted_data} /><div className="stats-row"><div className="stat-card"><div className="num">{Math.round((result.confidence || 0) * 100)}%</div><div className="label">Extraction confidence</div></div><div className="stat-card"><div className="num">{result.conflicts?.length || 0}</div><div className="label">Conflicts to review</div></div></div><div className="capture-actions"><button className="btn btn-primary" onClick={() => navigate(`/patient/${id}`)}>View full journey</button><button className="btn btn-ghost" onClick={() => { setResult(null); setAuthorized(false); }}>Add another record</button></div></section>}
+   </main>;
+ }
+--- a/frontend/carelink-app/src/pages/Settings.jsx
++++ b/frontend/carelink-app/src/pages/Settings.jsx
+@@ -1,20 +1,24 @@
+ import React, { useState } from "react";
+ import { Link } from "react-router-dom";
+ import axios from "axios";
+ import { normalizeBackend, errorMessage } from "../api";
+ import { getConsent, saveConsent, withdrawConsent, clearPatientCache } from "../consent";
+ 
++import { hardwareSetting } from "../HardwareActions";
++
+ const SERVER_LAN_IP = "10.171.182.204";
+ const SERVER_URL = `http://${SERVER_LAN_IP}:8000`;
+ 
+ export default function Settings({ onWithdraw }) {
++  const [nfc, setNfc] = useState(() => hardwareSetting("nfc_writer"));
++  const [hardwareMessage, setHardwareMessage] = useState("");
+   const [offline, setOffline] = useState(() => !!getConsent()?.offline);
+   const [host, setHost] = useState(() => {
+     try { return localStorage.getItem("carelink_backend_host") || ""; }
+     catch { return ""; }
+   });
+   const [message, setMessage] = useState("");
+   const [busy, setBusy] = useState(false);
+ 
+   async function save(e) {
+     e.preventDefault(); setBusy(true);
+@@ -45,20 +49,27 @@
+             Tap to use {SERVER_LAN_IP}
+           </button>
+         </div>
+         <label htmlFor="backend">Server address</label>
+         <input id="backend" className="input" value={host} onChange={e => setHost(e.target.value)} placeholder={`e.g. ${SERVER_URL}`} style={{marginBottom:8}} />
+         <p style={{fontSize:13,color:"#666",margin:"0 0 12px"}}>Leave blank when accessing from this PC. On mobile, tap the green button above.</p>
+         <button className="btn btn-primary" disabled={busy}>{busy ? "Checking..." : "Save and test connection"}</button>
+         {message && <p role="status" style={{marginTop:10,fontWeight:600,color:message.includes("successfully")?"#2e7d32":"#c62828"}}>{message}</p>}
+       </form>
+ 
++      <form className="card settings-card" onSubmit={e => {
++        e.preventDefault();
++        const valid = value => !value.trim() || (/^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(value.trim()) && value.trim().split(".").length === 4 && value.trim().split(".").every(part => /^\d{1,3}$/.test(part) && Number(part) <= 255));
++        if (!valid(nfc)) { setHardwareMessage("Enter private LAN IPv4 addresses without ports."); return; }
++        try { localStorage.setItem("carelink_nfc_writer_ip", nfc.trim()); setHardwareMessage("Hardware settings saved."); } catch { setHardwareMessage("Unable to save browser settings."); }
++      }}><h2>Hardware</h2><label htmlFor="nfc-ip">ESP32 NFC Writer IP</label><input className="input" id="nfc-ip" value={nfc} onChange={e => setNfc(e.target.value)} placeholder="192.168.1.51" /><button className="btn btn-primary">Save hardware</button><p role="status">{hardwareMessage}</p></form>
++
+       <section className="card settings-card">
+         <span className="eyebrow">YOU'RE IN CONTROL</span>
+         <h2>Privacy &amp; consent</h2>
+         <p>Free to use, with no subscription or payment details.</p>
+         <label className="consent-choice">
+           <input type="checkbox" checked={offline} onChange={e => { try { saveConsent(e.target.checked); setOffline(e.target.checked); setMessage(e.target.checked ? "Offline saving enabled." : "Offline saving disabled."); } catch { setMessage("Unable to save preference."); } }} />
+           <span>Save patient journeys on this device</span>
+         </label>
+         <p>Uploads are processed by your care server, OCR and Google Gemini. Use synthetic records only in this prototype.</p>
+         <button className="btn btn-ghost" onClick={() => { try { clearPatientCache(); setMessage("Saved patient data cleared."); } catch { setMessage("Unable to clear browser storage."); } }}>Clear offline patient data</button>
+--- a/backend/app/main.py
++++ b/backend/app/main.py
+@@ -1,33 +1,34 @@
+ import os
+ from pathlib import Path
+ from fastapi.responses import FileResponse
+ from fastapi import HTTPException
+ 
+ from fastapi import FastAPI
+ from fastapi.middleware.cors import CORSMiddleware
+ from fastapi.staticfiles import StaticFiles
+ 
+ from .config import UPLOAD_DIR
+-from .database import engine, Base, upgrade_record_details
+-from .routers import patients, records, verification
++from .database import engine, Base, upgrade_record_details, upgrade_patient_phone
++from .routers import patients, records, verification, esp32_bridge, whatsapp_webhook
+ 
+ # Import models so SQLAlchemy knows about all tables
+ from . import models
+ 
+ 
+ # --------------------------------------
+ # 1. Create database tables
+ # --------------------------------------
+ 
+ Base.metadata.create_all(bind=engine)
+ upgrade_record_details(engine)
++upgrade_patient_phone(engine)
+ 
+ 
+ # --------------------------------------
+ # 2. Create FastAPI application
+ # --------------------------------------
+ 
+ app = FastAPI(
+     title="CareLink Handoff API",
+     description=(
+         "Consultation-ready patient journey "
+@@ -88,20 +89,23 @@
+     verification.router,
+     prefix="/api/verify",
+     tags=["Verification"],
+ )
+ 
+ 
+ # --------------------------------------
+ # 7. Root endpoint
+ # --------------------------------------
+ 
++app.include_router(esp32_bridge.router, prefix="/api/esp32", tags=["ESP32"])
++app.include_router(whatsapp_webhook.router, prefix="/api/webhook", tags=["WhatsApp"])
++
+ @app.get("/api/health")
+ def root():
+     return {
+         "message": "CareLink Handoff API is running",
+         "docs": "/docs",
+     }
+ 
+ BUILD_DIR = Path(__file__).resolve().parents[2] / "frontend" / "carelink-app" / "build"
+ 
+ @app.get("/{path:path}", include_in_schema=False)
+--- a/backend/app/models.py
++++ b/backend/app/models.py
+@@ -7,20 +7,21 @@
+ 
+ def generate_uuid():
+     return str(uuid.uuid4())
+ 
+ 
+ class Patient(Base):
+     __tablename__ = "patients"
+ 
+     id = Column(String, primary_key=True, default=generate_uuid)
+     name = Column(String, nullable=False)
++    phone_number = Column(String, nullable=True)
+     age = Column(Integer)
+     gestational_week = Column(Integer)
+     created_at = Column(DateTime, default=datetime.utcnow)
+ 
+     # Relationships
+     records = relationship("Record", back_populates="patient")
+     facts = relationship("ExtractedFact", back_populates="patient")
+ 
+ 
+ class Record(Base):
+@@ -69,10 +70,19 @@
+ 
+ 
+ class Verification(Base):
+     __tablename__ = "verifications"
+ 
+     id = Column(String, primary_key=True, default=generate_uuid)
+     fact_id = Column(String, ForeignKey("extracted_facts.id"), nullable=False)
+     source_type = Column(String, nullable=False)
+     value = Column(String)
+     verified_at = Column(DateTime, default=datetime.utcnow)
++
++
++class WhatsAppReceipt(Base):
++    __tablename__ = "whatsapp_receipts"
++    id = Column(String, primary_key=True)
++    patient_id = Column(String, nullable=False)
++    record_id = Column(String, nullable=True)
++    status = Column(String, nullable=False)
++    created_at = Column(DateTime, default=datetime.utcnow)
+--- a/backend/app/database.py
++++ b/backend/app/database.py
+@@ -30,10 +30,17 @@
+ def get_db():
+     """
+     Creates a database session for each API request.
+     FastAPI calls this automatically.
+     """
+     db = SessionLocal()
+     try:
+         yield db
+     finally:
+         db.close()
++
++
++def upgrade_patient_phone(bind):
++    columns = {column["name"] for column in inspect(bind).get_columns("patients")}
++    if "phone_number" not in columns:
++        with bind.begin() as connection:
++            connection.execute(text("ALTER TABLE patients ADD COLUMN phone_number VARCHAR"))
+--- a/backend/app/schemas.py
++++ b/backend/app/schemas.py
+@@ -2,29 +2,31 @@
+ from typing import Optional, List
+ from datetime import datetime
+ 
+ 
+ # ----- Patient -----
+ 
+ class PatientCreate(BaseModel):
+     name: str
+     age: int
+     gestational_week: int
++    phone_number: str | None = None
+ 
+ 
+ class PatientResponse(BaseModel):
+     model_config = ConfigDict(from_attributes=True)
+ 
+     id: str
+     name: str
+     age: int
+     gestational_week: int
++    phone_number: str | None = None
+     created_at: datetime
+     record_count: int = 0
+     conflict_count: int = 0
+     pending_count: int = 0
+ 
+ 
+ # ----- Extracted Fact -----
+ 
+ class FactResponse(BaseModel):
+     model_config = ConfigDict(from_attributes=True)
+--- a/backend/app/routers/patients.py
++++ b/backend/app/routers/patients.py
+@@ -24,20 +24,21 @@
+ 
+ @router.post("/", response_model=PatientResponse)
+ def create_patient(
+     patient: PatientCreate,
+     db: Session = Depends(get_db)
+ ):
+     """Create a new patient."""
+ 
+     db_patient = Patient(
+         name=patient.name,
++        phone_number=patient.phone_number,
+         age=patient.age,
+         gestational_week=patient.gestational_week,
+     )
+ 
+     db.add(db_patient)
+     db.commit()
+     db.refresh(db_patient)
+ 
+     return db_patient
+ 
+--- a/frontend/carelink-app/src/pages/Dashboard.jsx
++++ b/frontend/carelink-app/src/pages/Dashboard.jsx
+@@ -3,20 +3,21 @@
+ import API, { readCache, writeCache, removeCache, errorMessage } from "../api";
+ 
+ function Dashboard() {
+   const [patients, setPatients]   = useState([]);
+   const [loading, setLoading]     = useState(true);
+   const [showForm, setShowForm]   = useState(false);
+   const [search, setSearch]       = useState("");
+   const [name, setName]           = useState("");
+   const [age, setAge]             = useState("");
+   const [week, setWeek]           = useState("");
++  const [phone, setPhone] = useState("");
+   const [creating, setCreating]   = useState(false);
+   const [error, setError]         = useState(null);
+   const navigate = useNavigate();
+   const touchStart = useRef(null);
+ 
+   const loadPatients = useCallback(async () => {
+     try {
+       setLoading(true);
+       setError(null);
+       const res = await API.get("/patients/");
+@@ -31,24 +32,24 @@
+     }
+   }, []);
+ 
+   useEffect(() => { loadPatients(); }, [loadPatients]);
+ 
+   const createPatient = async (e) => {
+     e.preventDefault();
+     setCreating(true);
+     try {
+       await API.post("/patients/", {
+-        name: name.trim(), age: parseInt(age), gestational_week: parseInt(week),
++        ...(phone.trim() ? { phone_number: phone.trim() } : {}), name: name.trim(), age: parseInt(age), gestational_week: parseInt(week),
+       });
+       setShowForm(false);
+-      setName(""); setAge(""); setWeek("");
++      setName(""); setAge(""); setWeek(""); setPhone("");
+       loadPatients();
+     } catch (err) {
+       setError(errorMessage(err));
+     } finally {
+       setCreating(false);
+     }
+   };
+ 
+   const deletePatient = async (e, patientId) => {
+     e.stopPropagation();
+@@ -155,20 +156,21 @@
+               />
+               <input
+                 className="input"
+                 aria-label="Gest. Week" placeholder="Gest. Week"
+                 type="number" min="1" max="42"
+                 value={week}
+                 onChange={e => setWeek(e.target.value)}
+                 required
+               />
+             </div>
++            <label htmlFor="whatsapp-number">WhatsApp number (optional)</label><input id="whatsapp-number" type="tel" className="input" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 98765 43210" />
+             <div style={{ display: "flex", gap: 8 }}>
+               <button type="button" className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setShowForm(false)}>Cancel</button>
+               <button type="submit" className="btn btn-primary" style={{ flex: 2 }} disabled={creating}>
+                 {creating ? "Creating..." : "✓ Create Patient"}
+               </button>
+             </div>
+           </form>
+         </div>
+       )}
+ 
+--- a/backend/requirements.txt
++++ b/backend/requirements.txt
+@@ -3,10 +3,12 @@
+ SQLAlchemy==2.1.4
+ pydantic==2.14.1
+ python-dotenv==1.2.4
+ python-multipart==0.0.32
+ Pillow==12.3.0
+ qrcode[pil]==8.2
+ paddleocr==2.10.0
+ paddlepaddle==3.1.1
+ google-genai==2.30.1
+ httpx==0.28.1
++requests>=2.32.3,<3
++twilio>=9,<10
+--- a/backend/.env.example
++++ b/backend/.env.example
+@@ -1,2 +1,8 @@
+ GEMINI_API_KEY=paste_your_actual_key_here
+ GEMINI_MODEL=gemini-3.8-flash
++TWILIO_ACCOUNT_SID=
++TWILIO_AUTH_TOKEN=
++TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
++FRONTEND_URL=http://localhost:3000
++# Exact public HTTPS webhook URL, required behind a tunnel/reverse proxy:
++TWILIO_WEBHOOK_URL=
