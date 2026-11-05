@@ -2,11 +2,19 @@ from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 from .config import DATABASE_URL
 
+# Normalize URL and force psycopg2 driver (not psycopg3) for PostgreSQL URLs
+_db_url = DATABASE_URL
+
+if _db_url.startswith("postgres://"):
+    _db_url = _db_url.replace("postgres://", "postgresql+psycopg2://", 1)
+elif _db_url.startswith("postgresql://"):
+    _db_url = _db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+
+# check_same_thread is SQLite-only
+_connect_args = {"check_same_thread": False} if _db_url.startswith("sqlite") else {}
+
 # Create the database engine
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
+engine = create_engine(_db_url, connect_args=_connect_args)
 
 # Create a session factory
 SessionLocal = sessionmaker(
