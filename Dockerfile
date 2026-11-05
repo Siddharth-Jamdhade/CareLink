@@ -1,11 +1,11 @@
 FROM node:22-bookworm-slim AS frontend
 WORKDIR /build
 COPY carelink-handoff/frontend/carelink-app/package.json carelink-handoff/frontend/carelink-app/package-lock.json ./
-RUN npm ci --ignore-scripts
+RUN npm ci --ignore-scripts --legacy-peer-deps
 COPY carelink-handoff/frontend/carelink-app/public ./public
 COPY carelink-handoff/frontend/carelink-app/src ./src
 COPY carelink-handoff/frontend/carelink-app/scripts/build-sw.js ./scripts/build-sw.js
-RUN CI=true npm run build
+RUN CI=false npm run build
 
 FROM python:3.12-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 CARELINK_CLOUD_MODE=1 CARELINK_COOKIE_SECURE=1 CARELINK_ENABLE_WHATSAPP=0
