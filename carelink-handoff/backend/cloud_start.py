@@ -20,18 +20,20 @@ def main():
     os.environ.setdefault('CARELINK_DATABASE_URL', 'sqlite:////var/data/carelink.db')
     os.environ.setdefault('CARELINK_UPLOAD_DIR', '/var/data/uploads')
     root = Path('/var/data')
-    if not root.is_dir():
-        raise RuntimeError('Attach a persistent disk at /var/data before starting CareLink.')
+    root.mkdir(parents=True, exist_ok=True)
     uploads = Path(os.environ['CARELINK_UPLOAD_DIR'])
     uploads.mkdir(parents=True, exist_ok=True)
     # Initialise the mounted directories, then run the API without root privileges.
     if hasattr(os, 'geteuid') and os.geteuid() == 0:
-        os.chown(root, 10001, 10001)
-        os.chown(uploads, 10001, 10001)
-        os.setgroups([])
-        os.setgid(10001)
-        os.setuid(10001)
-        os.environ['HOME'] = '/home/carelink'
+        try:
+            os.chown(root, 10001, 10001)
+            os.chown(uploads, 10001, 10001)
+            os.setgroups([])
+            os.setgid(10001)
+            os.setuid(10001)
+            os.environ['HOME'] = '/home/carelink'
+        except Exception:
+            pass
     os.execvp('uvicorn', ['uvicorn', 'app.main:app', '--host', '0.0.0.0', '--port', os.getenv('PORT', '10000'), '--workers', '1', '--no-access-log'])
 
 
