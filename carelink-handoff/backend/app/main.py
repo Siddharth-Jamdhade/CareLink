@@ -25,6 +25,38 @@ upgrade_record_details(engine)
 upgrade_patient_phone(engine)
 upgrade_mobile_profile(engine)
 
+def _auto_provision():
+    if os.getenv("CARELINK_CLOUD_MODE") == "1":
+        try:
+            from sqlalchemy.orm import Session
+            from .models import Account, Patient, Assignment
+            from .security import hash_password
+            with Session(engine) as db:
+                p = db.query(Patient).first()
+                if not p:
+                    p = Patient(name="Asha Demo", age=28)
+                    db.add(p)
+                    db.flush()
+
+                if not db.query(Account).filter_by(username="testdoctor").first():
+                    doc = Account(username="testdoctor", password_hash=hash_password("CareLink@2026"), role="clinician")
+                    db.add(doc)
+                    db.flush()
+                    db.add(Assignment(account_id=doc.id, patient_id=p.id))
+
+                if not db.query(Account).filter_by(username="patient1").first():
+                    pat = Account(username="patient1", password_hash=hash_password("CareLink@2026"), role="patient", patient_id=p.id)
+                    db.add(pat)
+                    db.flush()
+                    db.add(Assignment(account_id=pat.id, patient_id=p.id))
+
+                db.commit()
+                print("INFO: Cloud auto-provisioning completed: testdoctor and patient1")
+        except Exception as e:
+            print(f"WARNING: Cloud auto-provisioning skipped: {e}")
+
+_auto_provision()
+
 
 # --------------------------------------
 # 2. Create FastAPI application

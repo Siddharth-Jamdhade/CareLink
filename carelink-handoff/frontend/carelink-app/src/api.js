@@ -1,7 +1,14 @@
 import axios from "axios";
 
 export function normalizeBackend(value) {
-  if (!value.trim()) return window.location.port === "3000" ? `${window.location.protocol}//${window.location.hostname}:8000` : window.location.origin;
+  if (!value.trim()) {
+    if (window.location.port === "3000") return `${window.location.protocol}//${window.location.hostname}:8000`;
+    // In native Capacitor Android APK (where origin is https://localhost or localhost:80), default to the cloud deployment
+    if (window.location.hostname === "localhost" && window.location.port !== "8000" && window.location.port !== "8011") {
+      return "https://carelink-app.onrender.com";
+    }
+    return window.location.origin;
+  }
   const raw = value.trim();
   const url = new URL(raw.includes("://") ? raw : `${window.location.protocol}//${raw}`);
   if (!["http:", "https:"].includes(url.protocol) || url.username || url.password || url.search || url.hash || !["/", "/api"].includes(url.pathname)) throw new Error("Enter a host or HTTP(S) server URL without a path.");
