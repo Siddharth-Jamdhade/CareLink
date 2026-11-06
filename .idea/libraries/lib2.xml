@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/.android-tools/jdk-21.0.13.0.2+1/lib/src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/.android-tools/jdk-21.0.13.0.2+1/lib/jrt-fs.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

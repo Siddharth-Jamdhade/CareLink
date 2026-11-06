@@ -1,0 +1,433 @@
+FDR Sentinel: Coverage-Aware Security
+Deposit and FDR Management for AICTE
+Smart India Hackathon 2026 | PS SIH26265 | AICTE, Regulation Bureau | Software, Smart
+Automation
+0. Read this first (honest flags)
+Confirm on the SIH portal whether your team can still change its problem statement
+and what the exact deadline is. Your saved notes show SIH26261 as your current entry
+with a 28 October deadline, and today is 28 October.
+The statement does not define AICTE's deposit amounts or continuity rules. Every rule
+in this design (required amount, effective dates, continuity, release conditions) must
+be a configurable setting, labelled as a demo assumption, and described as something
+you would validate with AICTE.
+Real bank verification APIs and real AICTE systems are not available to you. Use a
+clearly labelled bank-verification simulator and synthetic documents.
+Nobody can promise a win. This design is a stronger central idea than a plain upload
+portal, but execution and presentation decide the result.
+1. One-line pitch
+Every deposit has a document. FDR Sentinel makes sure every required obligation has
+traceable, verified coverage, and every gap has an owner.
+2. Problem understanding
+What the statement asks for: a central portal to hold institution-wise and instrument-
+wise records of security deposits and FDRs; digital submission and storage of documents;
+verification through authorised bank sources where possible; discrepancy detection;
+maturity and validity tracking with reminders; renewal and replacement tracking; release
+and refund workflow; dashboards and reports; role-based access, audit trails and
+encryption; and a clear distinction between information submitted by the institution and
+information independently confirmed.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 1 of 14
+The gap most solutions will leave: they store FDRs and send expiry reminders. But
+officials do not really need to know that a document is expiring. They need to know
+whether the institution still has the required, verified coverage after it expires, what
+evidence supports that, and what happens if they release an instrument.
+Core insight: model the institution's obligation, not the document.
+Institution, then required deposit obligation, then supporting FDRs, then verification
+evidence.
+3. Solution overview
+Module
+What it does
+Why it matters
+M1 Obligation and
+coverage timeline
+Computes documented,
+confirmed and uncovered
+amounts over time against a
+configurable requirement
+Finds gaps before they happen,
+even when a replacement has
+been uploaded
+M2 Evidence passport
+Per-field view of what the
+institution said, what the
+document shows and what the
+bank confirmed
+Separates known from
+uncertain; no hidden AI score
+M3 Reuse and overlap
+screening
+Flags the same instrument or
+document appearing in
+multiple records
+Review leads for suspicious or
+accidental reuse
+M4 Release impact
+preview
+Shows the coverage
+consequence before an officer
+approves a release
+Prevents an administrative
+action from silently creating a
+gap
+M5 Accountable case
+workflow
+Turns every alert into a case
+with owner, due date,
+escalation and resolution
+Alerts become work that gets
+closed
+M6 Decision record
+Downloadable case packet
+plus tamper-evident audit
+chain
+Complete, defensible history
+for every renewal or release
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 2 of 14
+Baseline requirements from the statement are all covered by these modules plus the
+repository, roles, reminders, renewal history, release workflow, dashboards and reports
+described below.
+4. Users and journeys
+5. System architecture
+Flow: Institution portal and document upload, then Extraction service (reads fields from
+the document), then Evidence passport builder, then Verification service (bank
+simulator), then Coverage engine, then Screening engine, then Case engine and
+notifications, then Dashboards and Decision records. The audit chain is written at every
+step.
+Components:
+1. Frontend: role-based web app with institution, officer and management views.
+2. API layer with authentication, RBAC and rate limiting.
+Role
+Main journeys
+Institution user
+Submit FDR with documents; see status and
+required corrections; upload replacements;
+request release or refund; receive reminders
+Scrutiny officer
+Review submissions; compare evidence; raise
+discrepancies; request bank confirmation; resolve
+cases
+Verification officer
+Record bank confirmation results (simulator in
+prototype); attach evidence to the exact
+instrument version
+Approving authority
+Review the release impact preview and case
+packet; approve or reject with reasons
+Senior management
+Portfolio dashboards; ageing and risk reports;
+regional performance
+Auditor
+Read-only access; audit chain integrity check
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 3 of 14
+3. Document service: secure upload, virus scan, hashing, encrypted storage, page
+rendering for highlights.
+4. Extraction service: OCR and field parsing with bounding boxes (section 7.2).
+5. Verification service: interface to bank confirmation; simulator in the prototype.
+6. Coverage engine: timeline and gap computation (section 7.1).
+7. Screening engine: cross-record reuse detection (section 7.3).
+8. Release engine: what-if impact assessment (section 7.4).
+9. Case engine: case creation, prioritisation, escalation (section 7.5).
+10. Notification service: email, SMS and in-app reminders (mocked in the demo).
+11. Audit service: append-only hash-chained log (section 7.6).
+12. Datastore: PostgreSQL; object storage for documents; Redis and a scheduler for
+reminders and escalation jobs.
+6. Data model (core tables)
+institutions: institution_id (AICTE ID), name, region, state.
+obligations: obligation_id, institution_id, rule_id, required_amount, effective_from,
+effective_to, continuity_required (boolean), status. Values come from configurable
+rules, not code.
+rules: rule_id, name, parameters (JSON: amount, continuity, grace days, release
+conditions), version, effective dates.
+instruments: instrument_id, obligation_id, bank_code, instrument_reference, amount,
+issue_date, maturity_date, status, supersedes_id (nullable), version_no,
+current_version_hash.
+instrument_versions: version_id, instrument_id, fields snapshot, document_id,
+created_by, created_at.
+documents: document_id, file hash (SHA-256), perceptual hash for images, storage
+path, uploaded_by, page count.
+field_evidence: evidence_id, instrument_version_id, field_name, institution_value,
+extracted_value, extraction_box (page, coordinates), confirmed_value,
+confirmation_source, confirmed_at, status (matches, mismatch, awaiting, confirmed,
+unresolved).
+verifications: verification_id, instrument_version_id, fields_checked, result, source,
+timestamp, officer_id.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 4 of 14
+screening_matches: match_id, instrument_ids, match_type (same_reference,
+same_document, near_duplicate, conflicting_details, double_counted_replacement),
+explanation, status (open, legitimate, confirmed_issue), resolved_by, remarks.
+cases: case_id, obligation_id, type, explanation, evidence links, owner_id, due_date,
+priority_score, priority_factors (JSON), status, escalation_level, resolution.
+release_requests: request_id, instrument_id, requested_by, reason, impact_snapshot
+(JSON), status, approver_id, decision, decision_reason.
+audit_chain: seq, actor, action, object, timestamp, prev_hash, entry_hash.
+7. Core modules in detail
+7.1 Obligation and coverage timeline
+Inputs: an obligation (required amount R, effective period, continuity flag) and all its
+instruments, each with start date, maturity date, amount and evidence status.
+Three coverage tracks:
+1. Documented coverage: sum of amounts from instruments whose documents are
+accepted and which are active on that date.
+2. Confirmed coverage: sum of amounts for instruments where the key fields (amount,
+maturity, reference) are independently confirmed for the current version.
+3. Uncovered or unresolved: required minus the relevant coverage; also shows
+instruments with open discrepancies.
+Algorithm (sweep line):
+Convert each instrument into an interval from its start date to its maturity date. State
+the date convention explicitly (for example, an instrument covers its start date through
+its maturity date inclusive) and make it a rule setting.
+Collect all start and end boundary dates, sort them and walk through the segments
+between boundaries.
+For each segment, compute the three coverage values using only the instruments
+active in it.
+Superseded instruments: if instrument B supersedes A, the overlap is counted once (B
+only from B's start date, per rule). An overlap with no supersession link is flagged for
+review, not silently summed.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 5 of 14
+Any segment where coverage is below R (documented or confirmed, depending on the
+rule) becomes a gap. Report the gap start, end, duration and shortfall amount.
+Optional grace period from the rule is applied and shown, never hidden.
+Worked example (fictional): R is ₹10 lakh. FDR-1 of ₹10 lakh matures on 30 November.
+Replacement FDR-2 of ₹10 lakh starts on 3 December. With the inclusive convention, 1 and
+2 December form a two-day gap. The timeline shows it in red even though the
+replacement is already uploaded, and a case is created with the specific fix needed.
+Forward look: run the engine daily and on every change, projecting 90 days (configurable)
+ahead so that gaps are found before they occur.
+7.2 Evidence passport and extraction
+Passport layout: for every instrument version and every material field (amount, maturity
+date, issue date, bank, instrument reference, holder name), three columns: what the
+institution entered, what extraction read from the document, and what an authorised
+source confirmed. Each field gets a status and shows who provided each value and when.
+Extraction approach (scoped honestly):
+Prototype documents are synthetic FDRs generated from three or four fictional bank
+templates, so template-aware extraction is realistic.
+Pipeline: render page, OCR (Tesseract or PaddleOCR), then field parsing using
+keyword anchors and regular expressions per template, output with bounding boxes
+for highlighting.
+Optional: a vision or language model as a fallback parser; its output must still pass
+format checks and officer confirmation.
+Clicking a field in the passport highlights its location on the document image.
+Do not claim general accuracy on real-world scans. Report accuracy on your synthetic
+test set and say so.
+Version binding: a bank confirmation is attached to the exact instrument version and the
+fields checked. If a material field changes, the version number increases, earlier
+confirmations no longer apply, and a new review task is created.
+No single confidence score: show per-field status instead. If you display any extraction
+confidence, show it per field with its meaning, not as an overall trust number.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 6 of 14
+7.3 Reuse and overlap screening
+Checks run on every new or changed instrument:
+Same bank and normalised instrument reference appearing in more than one record.
+Same file hash (exact document reuse), and perceptual hash similarity (near-identical
+images, such as re-scanned or lightly edited copies).
+Similar instrument references (small edit distance) with different amounts or dates.
+A replacement counted alongside the instrument it supersedes.
+Each match gets an explanation in plain language, for example: Reference ABC123 at Bank
+X is also recorded for Institution B, with a different amount. An officer marks it legitimate
+(with reason) or confirmed issue. A match is a review lead, not proof of fraud; the wording
+in the interface must say so.
+Note the difference between this and the passport: a one-character difference between
+the entered and extracted reference (ABC123 vs ABC128) is a discrepancy within one
+record, while screening compares across records.
+7.4 Release impact preview
+When release or refund is requested, the release engine recomputes the coverage
+timeline with the instrument removed and compares before and after.
+Preview contents:
+Documented and confirmed coverage before and after, by date.
+Any new gap and its size.
+Pending replacements and their verification status.
+Configured release conditions and whether each is met (for example no open cases, no
+unresolved discrepancies, required approvals present).
+Required reviewer action, such as resolving the replacement's verification status.
+The tool informs; it never releases automatically. The approving authority records a
+decision and reason, and the impact snapshot is stored with the decision.
+7.5 Accountable case workflow
+Every alert creates a case containing: plain-language explanation, supporting evidence
+links, assigned owner, due date, the exact correction or confirmation needed, escalation
+path, and a recorded resolution.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 7 of 14
+Example: Replacement uploaded, but amount mismatch remains unresolved. Assigned to
+scrutiny officer. Verification request pending.
+Escalation: when the configured due date passes, the case escalates to the next role and
+the notification and audit record show it.
+Transparent prioritisation: priority score = weighted sum of visible factors, for example
+days to deadline, potential uncovered amount, count of unresolved discrepancies and
+case age. Weights are configurable and the case view shows each factor's contribution, so
+officials understand why a case is first.
+7.6 Decision record and audit chain
+Append-only audit log. Each entry stores the SHA-256 of the previous entry combined
+with its own content.
+An integrity check on the auditor screen recomputes the chain and reports valid or the
+first broken position.
+Be precise in the pitch: this detects alteration; it does not guarantee records cannot be
+altered. Optionally publish the latest chain head to a second location.
+Case packet: one-click PDF containing the documents, field comparisons, verification
+sources, screening results, observations, approvals and chronological history, with the
+audit chain head included.
+7.7 Dashboards and reports
+Portfolio: active, expiring, matured, renewed, released and pending instruments (as in
+the statement).
+Coverage health: institutions with current or projected gaps, ranked by shortfall and
+deadline.
+Work: open cases by owner, ageing, overdue and escalated.
+Verification: pending confirmations, turnaround time.
+Reports: upcoming maturities, missing documents, pending verifications and releases;
+export to PDF and CSV.
+8. Lifecycle and state model
+Instrument: Submitted, Under scrutiny, Discrepancy raised or Accepted, Verified, Active,
+Expiring, Matured, Renewed or Replaced, Release requested, Released or Rejected.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 8 of 14
+Case: Open, Assigned, In progress, Awaiting institution, Awaiting verification, Resolved,
+Escalated, Closed.
+Every transition is permission-checked, reason-recorded and audit-logged.
+9. Technology stack (suggested)
+Frontend: React or Next.js, Tailwind; timeline chart with D3 or ECharts; PDF viewer
+with highlight overlays (PDF.js or an image overlay).
+Backend: Python FastAPI; PostgreSQL; Redis; Celery or APScheduler for daily coverage
+runs, reminders and escalations.
+Extraction: Tesseract or PaddleOCR; OpenCV; python regular expressions; imagehash
+for perceptual hashes.
+Documents: ReportLab for generating synthetic FDRs and case packets.
+Security: hashing and signing with the Python cryptography library; encrypted storage;
+TLS.
+Deployment: Docker Compose for the demo; mention production hosting on
+government-approved infrastructure.
+10. Security and privacy
+Role-based access with least privilege; institutions see only their own records.
+Encryption in transit and at rest; documents in encrypted storage; access logged.
+Separation of submitted and confirmed information throughout the data model.
+Controlled access to financial details; masking of account and reference numbers for
+roles that do not need them.
+Upload validation, malware scanning, file-type and size limits.
+Threat model slide: forged or edited documents, reused instruments, insider
+tampering, replay of confirmations (mitigated by version binding), unauthorised
+release.
+Human oversight: all decisions are made by authorised officials; the system supports,
+never replaces, them.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 9 of 14
+11. Synthetic data and the bank simulator
+Synthetic documents: generate 100 to 200 FDR PDFs and image scans from 3 or 4
+fictional bank templates, with realistic variation (fonts, layouts) and added noise, rotation
+and compression on some for the extraction test. Do not use real bank names or logos;
+use fictional banks and say so.
+Seeded scenarios (with an answer key):
+Amount mismatch between the institution's entry and the document.
+Reference typo (ABC123 vs ABC128).
+Same instrument reference used by two institutions.
+Same file uploaded twice for different institutions.
+Replacement that creates a two-day gap.
+Replacement counted alongside the instrument it supersedes.
+Release request that would drop coverage below the requirement.
+Overdue case that must escalate.
+Bank-verification simulator: a small service with a clearly visible Simulator badge. It
+returns confirmed, mismatch or not found for a given bank and reference, with
+configurable delays. The interface to it mirrors what a real integration would need, so
+swapping it later is simple.
+12. Evaluation metrics (what you will report)
+Extraction field accuracy on the synthetic test set (per field).
+Seeded discrepancies detected, with precision and recall against the answer key.
+Coverage gaps detected versus seeded.
+Reuse matches found versus seeded.
+Time for an officer to complete a renewal or release review in the tool versus a manual
+baseline. Run this with a few teammates or volunteers on a fixed task set, report the
+sample size honestly and do not extrapolate.
+Alert timeliness: reminders and escalations fired at the configured times in a simulated
+clock.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 10 of 14
+13. Build plan and priorities
+Build first (the three differentiators): coverage timeline, evidence passport and release
+impact preview.
+Support with the essentials: repository, roles, reminders, renewal history, approval
+workflow, audit chain.
+Then add: reuse and overlap screening, accountable case workflow with prioritisation,
+case packet PDF.
+If time allows: perceptual-hash near-duplicate detection, language-model fallback for
+extraction, mobile-friendly institution view.
+Suggested sequence: (1) data model, rules and synthetic data; (2) instrument submission
+and the passport; (3) coverage engine and timeline; (4) simulator and verification binding;
+(5) release preview and approval; (6) cases, prioritisation and escalation; (7) screening;
+(8) dashboards, reports, case packet; (9) tests and demo rehearsal.
+Team split: backend and rules engine; extraction and document handling; frontend and
+timeline visualisation; data, simulator and testing; pitch, documentation and demo.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 11 of 14
+14. Demo script (about 4 minutes)
+Close with the metrics from section 12.
+15. Idea submission outline
+1. Title and team.
+2. The problem: documents are tracked, but coverage is not.
+3. Why simple portals fall short.
+4. Core idea: obligations, not documents.
+5. The six modules in one picture.
+6. Mapping to each requirement in the statement.
+7. The three differentiators with mock screens.
+8. Architecture and technology.
+9. Security, privacy and human oversight.
+10. Prototype plan, synthetic data and simulator (stated openly).
+11. Metrics and expected impact.
+Step
+What judges see
+1. Upload an FDR
+Fields extracted; clicking a value highlights it on
+the document
+2. Submit a conflicting amount
+Passport shows an explainable discrepancy
+3. Upload a reused instrument
+Screening finds the overlap with another
+submission and explains it
+4. Add a replacement
+Timeline reveals a potential two-day coverage gap
+5. Attempt release
+Impact preview shows pending verification and
+coverage after release
+6. Resolve the case
+Authorised approval, then a downloadable
+evidence packet
+7. Integrity check
+Alter a record in the database, then show the audit
+chain reporting the exact broken point
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 12 of 14
+12. Adoption path: pilot with one region, configurable rules agreed with AICTE, later
+integration with bank verification services and existing AICTE systems.
+13. Risks and roadmap.
+16. How this maps to likely judging criteria
+Innovation: coverage-aware obligation model, per-field evidence passport, release
+impact preview, accountable cases with transparent prioritisation.
+Feasibility: standard technology, simulator behind a clean interface, configurable rules.
+Impact: fewer missed expiries and gaps, faster and better-evidenced renewals and
+releases, less manual follow-up.
+Completeness: every item in the statement's expected solution has a module and a
+demo moment.
+Responsible design: human decisions, clear separation of submitted and confirmed
+data, honest limits.
+17. Risks and honest limitations
+Rules are assumptions: validate with AICTE; keep them configurable and visible.
+Extraction on real documents: harder than synthetic ones; scope claims accordingly.
+Bank verification: simulator only; real integration needs formal authorisation and bank
+cooperation.
+Innovation perception: much of this is strong product design on rules and workflow;
+some judges may want more AI. Use the extraction, perceptual-hash screening and
+transparent prioritisation to show technical depth, but do not oversell them.
+False positives in screening: always human-reviewed and clearly worded as leads.
+Scope creep: protect the three differentiators first.
+18. Future scope
+Live integration with bank confirmation services and AICTE approval systems.
+Risk forecasting: predict which institutions are likely to miss renewals from past
+behaviour.
+Multi-instrument types (bank guarantees, other deposit forms) through the same
+obligation model.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 13 of 14
+Mobile alerts for institutions and officers.
+Shared coverage view with other regulators where authorised.
+SIH26265 - FDR Sentinel: Full Project Solution
+Page 14 of 14

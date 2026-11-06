@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/main.c8c628e0.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/712.86bbd341.chunk.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/205.405a30c9.chunk.js.map.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/712.86bbd341.chunk.js.LICENSE.txt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/453.f63e5df5.chunk.js.map.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/main.c8c628e0.js.LICENSE.txt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/main.c8c628e0.js.map.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/712.86bbd341.chunk.js.map.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/453.f63e5df5.chunk.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/static/js/205.405a30c9.chunk.js.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

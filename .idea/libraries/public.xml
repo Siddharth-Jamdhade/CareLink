@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="public">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/service-worker.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/index.html.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/cordova.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/cordova_plugins.js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/asset-manifest.json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/favicon.ico.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/manifest.json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/logo192.png.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/robots.txt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/android/app/build/intermediates/compressed_assets/debug/compressDebugAssets/out/assets/public/logo512.png.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

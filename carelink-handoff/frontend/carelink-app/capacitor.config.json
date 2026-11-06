@@ -2,6 +2,9 @@
   "appId": "in.carelink.mobile",
   "appName": "CareLink",
   "webDir": "build",
-  "server": { "androidScheme": "https" },
+  "server": {
+    "url": "https://carelink-app.onrender.com",
+    "androidScheme": "https"
+  },
   "android": { "backgroundColor": "#fafbf7" }
 }

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name=".android-tools">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/.android-tools/jdk21.zip!/" />
+      <root url="jar://$PROJECT_DIR$/carelink-handoff/frontend/carelink-app/.android-tools/gradle-8.14.3-bin.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

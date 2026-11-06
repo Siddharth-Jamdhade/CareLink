@@ -1,0 +1,376 @@
+AcadTrust: A Verifiable, Privacy-Preserving
+APAAR Student Data Platform for AICTE
+Smart India Hackathon 2026 | PS SIH26263 | AICTE, Regulation Bureau | Software, Smart
+Automation
+0. Read this first (honest flags)
+Your saved notes list 28 October 2026 as the idea submission deadline for SIH26261,
+and today is 28 October. Before investing in 26263, confirm on the SIH portal whether
+your team can still change its problem statement and what the exact deadline is. If you
+are locked into 26261, use the ideas below (signed records, explainable flags, hash-
+chained audit) as differentiators there instead.
+You will not get real APAAR data or live APAAR APIs. The prototype must use a realistic
+synthetic dataset and a mock APAAR verification service. Say this openly in the pitch;
+judges expect it.
+A 10/10 outcome depends on execution. A polished version of the core five layers beats
+a half-working version of ten.
+1. One-line pitch
+AcadTrust turns every AICTE-approved institution's student data into a signed, consent-
+controlled, tamper-evident record linked to the student's APAAR ID, so AICTE can detect
+excess or duplicate enrolment automatically and employers can verify a student in
+seconds without calling the college.
+2. Problem understanding
+What the statement says. PGDM institutions submit student-level data yearly, but most
+other AICTE-approved institutions only report total enrolment during approval. AICTE
+therefore cannot verify who is actually enrolled. APAAR ID (the national academic
+identity) can be the unique key.
+What is actually hard (the real gaps):
+1. Trust: a CSV upload only proves what the institution claims. Nothing proves the record
+is genuine or unaltered later.
+SIH26263 - AcadTrust: Full Project Solution
+Page 1 of 11
+2. Cross-institution duplicates: a student can appear at two institutions. Detecting this
+needs matching across institutions, which creates a privacy risk.
+3. Over-enrolment: institutions can exceed approved intake, or misuse supernumerary,
+NRI, OCI and foreign-national quotas, and manual checks cannot scale.
+4. Verification: employers and regulators have no quick, trustworthy way to check a
+student record.
+5. Consent and privacy: student data is sensitive. The statement explicitly asks for
+consent, RBAC and audit trails.
+6. Adoption: institutions use different systems, so the platform needs a simple upload
+path and an API path.
+3. Solution overview
+AcadTrust has five innovation layers on top of a standard data platform:
+Baseline features the statement requires (all covered): student-level upload keyed on
+APAAR ID, fields for approved intake, actual enrolment, supernumerary seats, NRI, OCI
+and foreign-national status, automated validation, real-time dashboards for AICTE and
+Layer
+What it does
+Why it matters
+L1 Verifiable records
+Each student record
+becomes a digitally signed
+credential with a QR code
+Instant, tamper-proof
+verification for employers and
+regulators
+L2 Privacy-preserving
+duplicate detection
+Cross-institution matching
+on keyed hashes of APAAR
+IDs
+Finds double enrolment
+without exposing raw
+identities in the matching step
+L3 Explainable anomaly
+detection
+Rules plus statistics plus ML
+flag suspicious intake and
+quota patterns, each with a
+reason
+Officials can trust and act on
+flags
+L4 Student consent
+ledger
+Students approve or revoke
+who may verify their record;
+every access is logged
+Meets the consent
+requirement; privacy by
+design
+L5 Tamper-evident audit
+trail
+Hash-chained logs of every
+action
+Any edit to history is
+detectable
+SIH26263 - AcadTrust: Full Project Solution
+Page 2 of 11
+institutions, secure verification for authorised stakeholders, API integration, reports, and
+APAAR ID printing on certificates.
+4. Users and journeys
+5. System architecture
+Flow: Institution upload or API, then Ingestion and schema check, then APAAR validation
+(mock service), then Rule and statistical validation, then Duplicate matching (keyed
+hashes), then Anomaly engine, then Central repository (AICTE), then Credential issuer
+(signs records), then Verification service, then Dashboards and reports. The audit ledger
+and consent ledger sit alongside and are written to at every step.
+Components:
+1. Web frontend: role-based dashboards (React or Next.js).
+2. API gateway and auth: JWT or OAuth2, RBAC, rate limiting.
+3. Ingestion service: CSV/Excel upload and REST API; schema validation; error report with
+row-level reasons.
+Role
+Main journeys
+Institution admin
+Upload or sync student data after admissions; fix
+validation errors; view own dashboard; download
+compliance report
+AICTE officer (regional)
+Monitor institutions in the region; review flagged
+anomalies; request clarification; record
+disposition
+AICTE senior management
+National dashboards; trend and policy analytics;
+exportable reports
+Student
+See which institution holds their record; approve
+or revoke verification access; view access history
+Verifier (employer, regulator, other
+body)
+Scan QR or enter a reference; receive a signed
+verified or not-verified result, limited to the fields
+the student consented to share
+System auditor
+Check audit chain integrity; read-only
+SIH26263 - AcadTrust: Full Project Solution
+Page 3 of 11
+4. Validation engine: deterministic rules (section 7.1).
+5. Matching service: keyed-hash duplicate detection (section 7.2).
+6. Anomaly engine: statistical and ML detectors with explanations (section 7.3).
+7. Credential service: signing, QR generation, revocation (section 7.4).
+8. Consent service: ledger of grants and revocations (section 7.5).
+9. Audit service: hash-chained log (section 7.6).
+10. Mock APAAR service: simulates APAAR lookup for the prototype; swapped for the real
+integration later.
+11. Datastore: PostgreSQL (relational data), Redis (queues, caching); object storage for
+generated reports.
+6. Data model (core tables)
+institutions: institution_id (AICTE permanent ID), name, region, state, programme list,
+approved_intake per programme per year, academic_year.
+students: student_ref (internal UUID), apaar_hash (keyed hash, never the raw ID in
+matching tables), institution_id, programme_id, admission_year, category fields
+(supernumerary flag, NRI flag, OCI flag, foreign_national flag, other category), status
+(active, withdrawn, transferred, graduated), created_at, updated_at.
+apaar_vault: encrypted raw APAAR ID mapped to student_ref; accessible only to the
+verification service, not to analytics.
+submissions: submission_id, institution_id, academic_year, file hash, row count,
+validation summary.
+validation_issues: issue_id, submission_id, row, rule_code, severity, message.
+flags: flag_id, institution_id or student_ref, type (duplicate, over_intake,
+quota_anomaly, inconsistency), score, reason_codes, status (open, under review,
+cleared, confirmed), reviewer, remarks.
+credentials: credential_id, student_ref, payload hash, signature, issued_at, expires_at,
+revoked_at, key_id.
+consents: consent_id, student_ref, verifier_type or verifier_id, fields_allowed,
+granted_at, expires_at, revoked_at.
+access_log: verifier, credential_id, result, timestamp.
+audit_chain: seq, actor, action, object, timestamp, prev_hash, entry_hash.
+SIH26263 - AcadTrust: Full Project Solution
+Page 4 of 11
+7. Core modules in detail
+7.1 Ingestion and rule-based validation
+Checks run per row and per institution:
+APAAR ID format and checksum rules (12 digits; confirm exact format against official
+guidance); missing or invalid IDs rejected with reason.
+APAAR existence check against the mock service (in production, the official service).
+Duplicate APAAR ID within the same upload.
+Enrolment greater than approved intake, computed per programme and per year;
+supernumerary seats treated separately according to the approved rules.
+Category consistency: for example, a student flagged both OCI and foreign national, or
+NRI with inconsistent supporting fields.
+Required fields present; date logic (admission date before graduation date; age
+plausibility).
+Programme must exist in the institution's approved programme list.
+Output: an accepted set, a rejected set with row-level reasons, and a downloadable error
+report so institutions can fix and resubmit quickly.
+7.2 Privacy-preserving duplicate enrolment detection
+Goal: find a student enrolled at two institutions in the same period without AICTE
+analysts handling raw IDs.
+Method: compute apaar_hash = HMAC-SHA256(secret_key, APAAR_ID). Matching runs
+only on these hashes. Same hash at two institutions with overlapping active periods
+creates a duplicate flag.
+Important detail (and a point judges may probe): a plain hash of a 12-digit number can be
+brute-forced, so use a keyed hash (HMAC) with the key held in a secrets manager or HSM.
+The raw ID stays encrypted in the vault.
+Fuzzy cases: when APAAR is missing or doubtful, a secondary match uses normalised
+name, date of birth and guardian name with similarity scoring; such matches are lower
+confidence and always routed to human review.
+Human in the loop: a flag is a prompt for review, never an automatic penalty.
+SIH26263 - AcadTrust: Full Project Solution
+Page 5 of 11
+7.3 Explainable anomaly detection
+Three detector types, combined into one risk score per institution-programme:
+1. Rules: enrolment over intake; unexpected jump in supernumerary, NRI, OCI or foreign-
+national counts.
+2. Statistics: compare each institution against its own history and against peer
+institutions (same programme, state, size band) using robust z-scores or median
+absolute deviation; flag sharp year-over-year changes.
+3. ML (optional, only if time allows): Isolation Forest on the numeric feature set for
+unknown patterns.
+Explainability: every flag carries reason codes and the numbers behind them, for
+example: Enrolment 312 vs approved intake 240 (130 percent); NRI share 4.1x its three-
+year average; 18 students share hashes with another institution. The dashboard shows
+these reasons in plain language. No black-box score is shown without them.
+7.4 Verifiable student credentials
+On accepted data, the credential service builds a minimal payload: credential_id,
+institution_id, programme, admission year, status, and the apaar_hash (not the raw ID).
+It signs the payload with Ed25519; keys are rotated and identified by key_id. The
+structure follows the W3C Verifiable Credentials idea so it is standards-aligned.
+A QR code carries a short verification URL plus the credential_id. Scanning it calls the
+verification service, which checks the signature, expiry, revocation and the student's
+consent, and returns verified or not verified with only the consented fields.
+Revocation: if a record is corrected, withdrawn or found fraudulent, the credential is
+revoked and verification fails immediately.
+Certificates: the QR and APAAR ID can be printed on certificates issued by degree-
+awarding bodies, as the statement requires (requirement 10). Provide a printable
+certificate footer template.
+7.5 Student consent ledger
+A student logs in (mock login in the prototype; the real design would use an existing
+national identity or APAAR authentication route) and sees who can verify their record.
+They approve verifier categories (for example a named employer) and which fields are
+shared, with an expiry.
+SIH26263 - AcadTrust: Full Project Solution
+Page 6 of 11
+Revoking consent takes effect immediately; the verification service checks consent on
+every request.
+Every verification attempt is logged and visible to the student.
+Design aligns with the principles of India's Digital Personal Data Protection Act, 2023:
+purpose limitation, data minimisation, consent and the right to withdraw. State this as
+alignment, not as certified compliance.
+7.6 Tamper-evident audit trail
+Every significant action (upload, validation result, flag raised or cleared, credential
+issued or revoked, consent granted or revoked, verification) is appended to the
+audit_chain.
+entry_hash = SHA-256(prev_hash + serialised entry). Changing any past entry breaks
+every later hash.
+A one-click integrity check on the auditor screen recomputes the chain and reports
+valid or the first broken position.
+Optional extra: publish the latest chain head hash periodically to a second location, so
+even an administrator cannot silently rewrite history.
+7.7 Dashboards and reports
+Institution view: intake vs enrolment per programme, validation status, open flags,
+submission history.
+AICTE regional view: map or table of institutions by risk score; filters by state, region,
+programme; flagged items queue; review workflow with remarks.
+National view: total enrolment, utilisation of approved intake, quota-category trends,
+duplicate-enrolment counts, year-over-year change.
+Reports: institution compliance report, regional summary, policy brief with trends;
+exportable as PDF and CSV.
+Real-time: use WebSocket or short polling so new uploads and flags appear without
+refresh.
+8. Technology stack (suggested)
+Frontend: React or Next.js, Tailwind, charts with Recharts or ECharts.
+Backend: Python FastAPI (good fit for validation and ML) or Node.js; PostgreSQL;
+Redis; Celery or a simple queue for batch jobs.
+SIH26263 - AcadTrust: Full Project Solution
+Page 7 of 11
+ML: scikit-learn (Isolation Forest, robust statistics); pandas.
+Crypto: Python cryptography library (Ed25519, HMAC); qrcode library for QR.
+Deployment: Docker Compose for the demo; cloud-ready design. Mention that a
+government deployment would use NIC or MeitY-empanelled infrastructure.
+Dev tooling: GitHub, GitHub Actions for tests.
+9. Security and privacy design
+Authentication and RBAC with least privilege; separate roles for institution, regional
+officer, senior management, auditor and verifier.
+Encryption in transit (TLS) and at rest (database and object storage); raw APAAR IDs
+only in the vault.
+Data minimisation: analytics and matching use hashes and aggregates; verifiers only
+see consented fields.
+Secrets and signing keys held in a secrets manager (for the demo, environment
+variables with a clear note that production uses an HSM or KMS).
+Rate limiting and anomaly alerts on the verification endpoint to block scraping.
+Input validation and upload scanning; row-level audit of who changed what.
+Threat model slide: insider misuse, forged uploads, replay of QR codes (mitigated by
+expiry and server-side checks), enumeration attacks on the verification URL
+(mitigated by random credential IDs and rate limits).
+10. Synthetic dataset design (critical for the demo)
+Generate with Python (Faker plus custom logic):
+40 to 60 institutions across several states and regions; 3 to 5 programmes each;
+approved intake per programme; 3 academic years of history.
+5,000 to 20,000 synthetic students with plausible fields and category distributions.
+Planted faults so the demo is deterministic and every detector fires:
+1 institution enrolling 130 percent of approved intake.
+15 to 30 students appearing at two institutions with overlapping periods.
+10 rows with invalid or missing APAAR IDs; 5 duplicates inside one file.
+1 institution whose NRI or foreign-national share jumps several times above its
+history.
+SIH26263 - AcadTrust: Full Project Solution
+Page 8 of 11
+5 rows with inconsistent category combinations.
+Keep a separate answer key listing every planted fault so you can show precision and
+recall of the detectors.
+11. Optional hardware angle (only if it helps)
+The statement is software-category, so hardware is not needed. If your team still wants a
+physical element within the Rs 4,000 to 10,000 budget, a small ESP32-based offline
+verification kiosk (camera or QR reader plus a display) that checks the signature against a
+cached public key could show verification at campus gates or placement desks. Treat it as
+a bonus; do not let it delay the core platform.
+12. Build plan and priorities
+Must have (this is your 10/10 core): ingestion and validation; keyed-hash duplicate
+detection; anomaly flags with reason codes; signed credential with QR and verification
+page; consent grant and revoke; audit chain with integrity check; institution and AICTE
+dashboards.
+Should have: PDF reports; certificate footer template; mock APAAR service with a clean
+interface; precision and recall chart against the planted faults.
+Nice to have: Isolation Forest detector; offline kiosk; multi-language UI.
+Suggested team split (you said you have expertise in every domain): one person on
+backend and validation, one on crypto, consent and audit, one on data and ML plus
+synthetic data, one on frontend and dashboards, one on pitch, documentation and
+testing.
+Suggested sequence: (1) data model and synthetic data; (2) ingestion and validation; (3)
+duplicates and anomalies; (4) credentials and verification; (5) consent and audit; (6)
+dashboards; (7) polish, tests, demo rehearsal.
+13. Demo script (about 3 minutes)
+1. An institution uploads the planted-fault file. The system instantly shows accepted and
+rejected rows with reasons.
+2. The AICTE dashboard lights up: over-intake institution, duplicate-enrolment flags,
+quota anomaly. Open one flag and show the plain-language reasons.
+SIH26263 - AcadTrust: Full Project Solution
+Page 9 of 11
+3. Show duplicate detection working on hashes, with no raw IDs visible to the analyst.
+4. Issue a credential, show the certificate with the QR code, and scan it with a phone.
+Verified result appears with only consented fields.
+5. As the student, revoke consent. Scan again: verification is denied, and the access
+attempt shows in the student's history.
+6. Tamper with a record in the database. Run the audit integrity check: it reports the
+exact broken position.
+7. Close with the numbers: detection precision and recall on the planted faults, time to
+verify a record, and the reduction in manual checking.
+14. Idea submission outline (slides or document)
+1. Title and team.
+2. Problem and who suffers from it.
+3. Why existing approaches fall short (claims without proof, no cross-checks, no
+verification).
+4. Our solution in one picture (the flow in section 5).
+5. The five innovation layers.
+6. Key features mapped to each of the ten requirements in the statement.
+7. Architecture and technology stack.
+8. Privacy, security and consent (DPDP alignment).
+9. Prototype plan and the synthetic data approach.
+10. Impact, scalability and adoption path (pilot with a few regions, API for institution ERPs,
+integration with the AICTE portal and APAAR).
+11. Risks and mitigations.
+12. Roadmap and team roles.
+15. How this maps to likely judging criteria
+Innovation: signed verifiable records, privacy-preserving matching, explainable
+anomalies, consent ledger, hash-chained audit.
+Feasibility: standard open technologies; mock integrations clearly separated behind
+interfaces.
+SIH26263 - AcadTrust: Full Project Solution
+Page 10 of 11
+Impact: authentic student records, excess-enrolment detection, faster verification for
+employers and regulators.
+Scalability: stateless services, queue-based batch processing, indexed hash matching
+that scales to millions of records.
+Completeness: each of the ten statement requirements has a named module and a
+demo moment.
+16. Risks and honest limitations
+No real APAAR access: mitigated by a mock service with the same interface; stated
+openly.
+False positives: mitigated by human review and confidence tiers; flags never trigger
+automatic penalties.
+Legal and policy approval: real deployment needs AICTE and Ministry authorisation
+and a formal data-protection assessment; present the design as ready for that
+process, not as already approved.
+Credential trust anchor: AICTE must own and protect the signing keys; the prototype
+uses demo keys.
+Scope creep: protect the must-have list.
+17. Future scope
+Live integration with APAAR and the AICTE portal.
+Zero-knowledge or selective-disclosure credentials (for example proving enrolment
+without revealing programme).
+Federated analytics across states without centralising raw data.
+Integration with placement and scholarship systems.
+Mobile app for students.
+SIH26263 - AcadTrust: Full Project Solution
+Page 11 of 11
