@@ -1,0 +1,12 @@
+{"kind":"deck","id":"pr/c1gu5z","name":"Deck"}
+{"kind":"layout","id":"ly/g7atkr6p","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/wnet0byt","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/fat0jyp0","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/gri14fi1","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/ridcrep0","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/9g3idgvi","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/1sry1oj2","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/yjrcxd","slideIndex":0,"layout":{"id":"ly/1sry1oj2","name":"Blank"},"title":"TEAM NAME  WildFire","textShapes":2,"backgroundColor":"rgba(255,255,255,1)"}
+{"kind":"textbox","id":"sh/6pwb6tcz","slideIndex":0,"position":{"left":150,"top":548,"width":615,"height":40},"name":"CareLink team name","text":"TEAM NAME  WildFire","geometry":"rect","lineWidth":0,"style":{"fontSize":23,"typeface":"Calibri","color":"#0D8743","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/tsnah8ba","slideIndex":0,"position":{"left":780,"top":548,"width":270,"height":40},"name":"CareLink team code","text":"TEAM CODE  O2S22M","geometry":"rect","lineWidth":0,"style":{"fontSize":23,"typeface":"Calibri","color":"#1F3DA9","bold":true,"alignment":"left"}}
+{"kind":"notes","id":"nt/yjrcxd","slideIndex":0,"text":""}

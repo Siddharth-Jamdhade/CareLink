@@ -1,0 +1,482 @@
+[
+  {
+    "title": "WildFire | CareLink",
+    "code": "O2S22M",
+    "titleX": 20.4,
+    "titleBaseline": 506.244,
+    "codeBaseline": 489,
+    "logo": {
+      "x": 616.5077,
+      "top": 9.546,
+      "width": 316.5023,
+      "height": 48.0003
+    },
+    "sections": [
+      {
+        "key": "team",
+        "title": "About the Team / Organisation",
+        "x": 38.66394,
+        "headerBaseline": 461.22,
+        "width": 426.35,
+        "firstBaseline": 103,
+        "lastBaseline": 341,
+        "items": [
+          {
+            "text": "A. Engineering team",
+            "kind": "subhead"
+          },
+          {
+            "text": "<b>4</b> engineers + <b>1</b> doctor; third-year B.Tech IoT, YCCE.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Siddharth Jamdhade</b>: lead architect; Gemini AI, OCR, RAG.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Abhay Harne</b>: frontend; React portal, dashboard, 9-column care.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Anaghraj Singh Thakur</b>: backend; FastAPI, ChromaDB, verification.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Rajveer Rajput</b>: hardware; ESP32-C3, RFID-RC522, NFC wristband integration.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Yeshwantrao Chavan College of Engineering (YCCE), Nagpur.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RTM Nagpur University; Department: Internet of Things (IoT).",
+            "kind": "bullet"
+          },
+          {
+            "text": "B. Doctor background and role (team-reported)",
+            "kind": "subhead"
+          },
+          {
+            "text": "<b>Dr. Tanmay Gawali</b>: MBBS intern; clinical ANC validator.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Lokmanya Tilak Municipal Medical College & Hospital, Mumbai.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Reviewed 15 ANC templates and structured extraction formats.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Validated extraction accuracy and MoHFW four-visit protocol rules.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Tested verification edge cases and doctor review workflows.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Safety oversight: AI never makes clinical decisions.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "problem",
+        "title": "Problem Statement (use case specific)",
+        "x": 38.66394,
+        "headerBaseline": 174.57,
+        "width": 426.35,
+        "firstBaseline": 390,
+        "lastBaseline": 502,
+        "items": [
+          {
+            "text": "Maternal health records fragment across facilities and referrals.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Paper ANC cards get lost, damaged, or forgotten.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Receiving hospitals lack accessible, longitudinal pregnancy histories.",
+            "kind": "bullet"
+          },
+          {
+            "text": "WHO: India accounted for 7.2% of global maternal deaths (2023).",
+            "kind": "bullet"
+          },
+          {
+            "text": "Users: nurses/ANMs, doctors, and pregnant patients.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Settings: PHCs, CHCs, district hospitals, private maternity clinics.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Missing gestational history complicates referral assessment and continuity.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "solution",
+        "title": "AI Solution Description",
+        "x": 486.26,
+        "headerBaseline": 461.53,
+        "width": 447.75,
+        "firstBaseline": 103,
+        "lastBaseline": 195,
+        "items": [
+          {
+            "text": "₹50 NFC wristband links each registered patient’s pregnancy record.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Tap scanner; authenticated Doctor Portal retrieves records; <3 seconds reported.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Doctor Portal: directory, search; 9 care columns (labs/USG/ABHA/visits).",
+            "kind": "bullet"
+          },
+          {
+            "text": "Upload ANC images; OCR and Gemini AI extract facts.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG suggests fields; nurses confirm, doctors review exceptions.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Verified data populates columns and strengthens the knowledge base.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Patient App planned: gestational progress, EDD, diet, 3D fetus.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Private patient credentials; app and voice remain in development.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "technology",
+        "title": "Technology and Tools Used",
+        "x": 486.26,
+        "headerBaseline": 320.4,
+        "width": 447.75,
+        "firstBaseline": 244,
+        "lastBaseline": 344,
+        "items": [
+          {
+            "text": "NFC: ₹50 silicone wristband, RFID-RC522 reader, ESP32-C3.",
+            "kind": "bullet"
+          },
+          {
+            "text": "AI: Gemini 2.5 Flash; PaddleOCR offline handwriting extraction.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG: ChromaDB, Gemini embeddings, 15 ANC templates, self-learning feedback.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Backend: Python 3.12, FastAPI, SQLAlchemy, SQLite/cloud sync.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Frontend: React 19, Framer Motion, Axios; Docker deployment.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Voice: Sarvam AI Hindi/Marathi; integration in progress.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Rules: MoHFW ANC minimum schedule; WHO guidance referenced.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned: ABDM/ABHA, DigiLocker, REST-based hospital integration.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "features",
+        "title": "Key Features of the solution",
+        "x": 486.26,
+        "headerBaseline": 167.22,
+        "width": 447.75,
+        "firstBaseline": 397,
+        "lastBaseline": 502,
+        "items": [
+          {
+            "text": "₹50 NFC identification: reported <3-second retrieval at connected facilities.",
+            "kind": "bullet"
+          },
+          {
+            "text": "OCR + Gemini AI: structured ANC facts, never diagnoses.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG auto-fill: 15 templates; 80% reported template matches.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Self-learning: clinician-approved corrections enrich the ChromaDB knowledge base.",
+            "kind": "bullet"
+          },
+          {
+            "text": "ANC checks: flags missing tests for clinical verification.",
+            "kind": "bullet"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "WildFire | CareLink",
+    "code": "O2S22M",
+    "titleX": 17.906,
+    "titleBaseline": 494.57236,
+    "codeBaseline": 474,
+    "logo": {
+      "x": 625.29776,
+      "top": 12,
+      "width": 316.50227,
+      "height": 48.0003
+    },
+    "sections": [
+      {
+        "key": "sprint",
+        "title": "Build Sprint Progress",
+        "x": 59.25598,
+        "headerBaseline": 440.87,
+        "width": 397.1,
+        "firstBaseline": 123,
+        "lastBaseline": 228,
+        "items": [
+          {
+            "text": "Week 1: FastAPI/SQLite, PaddleOCR, Gemini AI extraction.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Week 2: 3 conflict checks, ANC rules, confidence badges.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Week 3: 15-template RAG, ChromaDB, NFC scanner prototype.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Week 4: Doctor Portal, 9 columns, accounts, cloud sync.",
+            "kind": "bullet"
+          },
+          {
+            "text": "NFC wristband-to-record flow tested end-to-end; doctor queue operational.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Evolution: OCR, AI, RAG, then band-and-portal platform.",
+            "kind": "bullet"
+          },
+          {
+            "text": "In progress: Patient App and Sarvam Hindi/Marathi voice.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned app: gestational tracker, EDD, diet, 3D baby.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "validation",
+        "title": "User Validation and AI Evaluation",
+        "x": 59.25598,
+        "headerBaseline": 290.12,
+        "width": 397.1,
+        "firstBaseline": 275,
+        "lastBaseline": 477,
+        "items": [
+          {
+            "text": "Reported tests: 20+ synthetic ANC images; 15 RAG scenarios.",
+            "kind": "bullet"
+          },
+          {
+            "text": "3 tested conflict types: 100% detected; limited sample.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Extraction accuracy: 85-92%; RAG template matches: 80%.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Unnecessary doctor-review routing: <5% reported.",
+            "kind": "bullet"
+          },
+          {
+            "text": "ANC flag accuracy: 100% reported; denominator unavailable.",
+            "kind": "bullet"
+          },
+          {
+            "text": "NFC tap-to-record: <3 seconds; 4 test patients registered.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Data-entry reduction: ~87% target, 15 to 2 minutes.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Doctor feedback: handoff enables history before consultation.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Improvements: confidence badges, danger-sign checklist, 12→3 routine clicks.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG mismatch: doctor review before any verified save.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Limitations: faded OCR documents; pregnancy-only knowledge base.",
+            "kind": "bullet"
+          },
+          {
+            "text": "No real-PHC clinical validation; Patient App unfinished.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Performance figures reported; raw logs and denominators unavailable.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "safety",
+        "title": "Safety and Responsible AI",
+        "x": 474.29,
+        "headerBaseline": 440.47,
+        "width": 414.75,
+        "firstBaseline": 123,
+        "lastBaseline": 224,
+        "items": [
+          {
+            "text": "AI never diagnoses, prescribes, or scores clinical risk.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Every extraction UNVERIFIED until mandatory human confirmation.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Danger signs: 0% confidence; mandatory doctor review.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Low-confidence RAG mismatches route to doctor verification.",
+            "kind": "bullet"
+          },
+          {
+            "text": "NFC stores link only; authenticated portal authorizes record access.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Consent and identifier redaction required before cloud AI processing.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned app access restricted to each patient’s own records.",
+            "kind": "bullet"
+          },
+          {
+            "text": "₹50 NFC tap reduces literacy barriers; voice in progress.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "deployment",
+        "title": "Deployment and Sustainability Plan",
+        "x": 474.29,
+        "headerBaseline": 294.37,
+        "width": 414.75,
+        "firstBaseline": 269,
+        "lastBaseline": 357,
+        "items": [
+          {
+            "text": "PHC setup: computer, internet, Android phone, ₹1,500 scanner.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Per patient: reusable ₹50 NFC wristband.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Facility setup: ~₹4,300, including first-year domain and training.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Monthly: ₹0-1,300; API target ~₹0.35/record, usage dependent.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Scale: 1 Nagpur PHC, 5 PHCs, proposed NHM rollout.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned national open-source adoption; subsidies and partners remain prospective.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned integrations: ABDM/ABHA, DigiLocker, hospital REST APIs.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Pilot estimates exclude devices, internet, support, production infrastructure.",
+            "kind": "bullet"
+          }
+        ]
+      },
+      {
+        "key": "links",
+        "title": "Supporting Links",
+        "x": 473.29,
+        "headerBaseline": 163.42,
+        "width": 415.75,
+        "firstBaseline": 401,
+        "lastBaseline": 459,
+        "items": [
+          {
+            "text": "MVP: carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site",
+            "kind": "bullet"
+          },
+          {
+            "text": "Code: github.com/Siddharth-Jamdhade/CareLink",
+            "kind": "bullet"
+          },
+          {
+            "text": "Demo walkthrough: link pending",
+            "kind": "bullet"
+          },
+          {
+            "text": "Knowledge base: 15 templates, 8 symptom maps (team-reported).",
+            "kind": "bullet"
+          },
+          {
+            "text": "Evidence: WHO MMEIG 2025; MoHFW ANC standards.",
+            "kind": "bullet"
+          }
+        ]
+      }
+    ]
+  }
+]

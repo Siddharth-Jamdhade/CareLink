@@ -1,0 +1,16 @@
+{
+  "pages": 2,
+  "sections": 10,
+  "maximum_bullet_words": 10,
+  "all_numbers_bold": true,
+  "all_17_ats_keywords": true,
+  "native_powerpoint_text": true,
+  "pdf_text_selectable": true,
+  "original_template_layout_and_logo": true,
+  "demo_url": "pending",
+  "outputs": {
+    "CareLink_Exact_Section_Copy.md": "964459db6d59eefbc68e55e5f8621d0d903eba369245d633e5244b60535f5a67",
+    "CareLink_WildFire_Two_Slide_Summary.pdf": "8a718edd56c574de202dd419189a9b244bb9e8efc95ebb3a7bafb735bbb61e1d",
+    "CareLink_WildFire_Two_Slide_Summary.pptx": "638b223d62b6bdd30d1ff72e2f873a55648bfd34739db6529f40cc698c55c907"
+  }
+}

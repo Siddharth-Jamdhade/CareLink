@@ -1,0 +1,54 @@
+[
+  {
+    "part": "ppt/slides/slide1.xml",
+    "text": "FINAL SUBMISSION HEALTH-A-THON 2026  •  TITLE CareLink NFC-Powered Maternal Health Platform — AI Record Digitization, RAG Smart Entry & Secure Handoff   TEAM NAME   :- WildFire TEAM CODE  O2S22M   ₹50 band. One tap. Every mother's story — safe."
+  },
+  {
+    "part": "ppt/slides/slide2.xml",
+    "text": "Team Overview & Background  HEALTH-A-THON 2026  •  FINAL SUBMISSION ENGINEERING TEAM CLINICAL ADVISOR 🔥 Siddharth  Jamdhade Team Lead · System Architect · AI Pipeline 3rd Year  B.Tech  IoT, YCCE Nagpur PHOTO Full-stack build: Gemini AI, OCR, RAG, cloud deployment 💻 Abhay Harne Frontend Developer · Doctor Portal UI 3rd Year  B.Tech  IoT, YCCE Nagpur PHOTO React portal, patient dashboard, 9-column care view ⚙️  Anaghraj  Singh Thakur Backend Developer · RAG & Database 3rd Year  B.Tech  IoT, YCCE Nagpur PHOTO FastAPI, ChromaDB, knowledge base, verification queue 🔌 Rajveer Rajput IoT & Hardware Engineer 3rd Year  B.Tech  IoT, YCCE Nagpur PHOTO ESP32-C3, RFID-RC522 scanner, NFC wristband integration PHOTO 🩺 Dr. Tanmay  Gawali Clinical Advisor · ANC Protocol Validator MBBS Intern, Lokmanya Tilak Municipal Medical College (LTMMC), Mumbai Role in  CareLink : •  Validated AI extraction accuracy    against clinical standards •  Reviewed & approved pregnancy knowledge base    (15 templates) •  Designed ANC protocol compliance rules    ( MoHFW  4-visit schedule) •  Safety oversight: ensured AI never makes    clinical decisions •  Tested doctor verification workflow    for edge cases 🏫 Yeshwantrao Chavan College of Engineering (YCCE), Nagpur Rashtrasant Tukadoji Maharaj Nagpur University Department: IoT (Internet of Things)"
+  },
+  {
+    "part": "ppt/slides/slide3.xml",
+    "text": "Problem Statement and Supporting Evidence HEALTH-A-THON 2026  •  FINAL SUBMISSION Missing records. Delayed decisions. Mothers at risk. 7.2% of global maternal deaths India • 2023 Illustrative ANC card • Synthetic sample The Problem Why Current Solutions Fail ❌ Paper ANC cards lost or damaged ❌ Referral teams lack prior patient history ❌ Repeated questions delay consultations ❌ Emergency handoffs lack patient history 📄 Paper records need digital conversion ✍️ Handwriting needs structured extraction 👩‍⚕️ PHC nurses need assisted data entry WHO et al., 2025 • Estimates for 2023"
+  },
+  {
+    "part": "ppt/slides/slide4.xml",
+    "text": "Target Users and Use Case HEALTH-A-THON 2026  •  FINAL SUBMISSION 👩‍⚕️ Nurses / ANMs Feeds data Tap → preloaded form 👨‍⚕️ PHC / CHC Doctors Verifies cases Flags + summaries 🏥 Referral Hospital Doctors Scans QR Patient history 🏷️ ₹50 NFC WRISTBAND — The Core Product Every patient gets one at registration Nurse taps scanner → record auto-loads No manual ID. No barcodes. One tap. ₹50 NFC Band + RFID-RC522 Scanner — built in-house Illustrative case: Lakshmi, 26 • 32 weeks Severe headache • District Hospital • Paper records at home WITHOUT CareLink WITH CareLink ✕  Paper records unavailable ✕  Missing history slows assessment ✓  QR scan retrieves pregnancy history ✓  30-second history access target 🏷️ Tap wristband → patient ID auto-loaded"
+  },
+  {
+    "part": "ppt/slides/slide5.xml",
+    "text": "Solution Overview — Two Portals, One Band HEALTH-A-THON 2026  •  FINAL SUBMISSION 🏷️ NFC Wristband (₹50) 🖥️ Doctor Portal (Website) 📱 Patient App • Silicone band with NFC chip • Given at registration • Tap scanner → auto-identify • Links to cloud patient record • Cost: ₹50 per band • Password-protected workspace • Patient directory + search • 9 columns: Labs, USG, ABHA, Supplements, etc. • RAG-assisted data entry • Doctor review queue • Upload + AI extraction • Unique ID + password at registration • Pregnancy progress tracker • EDD, diet plans, 3D baby view • Appointment reminders • Private: sees ONLY own data App — Under Development Portal account creation proof CareLink = ₹50 Band + Doctor Portal + Patient App + AI Engine"
+  },
+  {
+    "part": "ppt/slides/slide6.xml",
+    "text": "CareLink Workflow & Target Impact HEALTH-A-THON 2026  •  FINAL SUBMISSION 🏷️ NFC WRISTBAND Patient taps scanner CARELINK AI PaddleOCR Gemini 2.5 RAG Pipeline 📸 Upload Photo 🎤 Voice Input 🖥️ DOCTOR PORTAL 9 record columns 📱 PATIENT APP Pregnancy dashboard ✅ RAG match → Verified → stored to columns 🔄 New info → Doctor review → RAG learns Care at a glance TARGET IMPACT • Pilot validation pending 87% Faster Entry 100% Digital 30 sec Handoff Self-Learning"
+  },
+  {
+    "part": "ppt/slides/slide7.xml",
+    "text": "Technology & AI Approach HEALTH-A-THON 2026  •  FINAL SUBMISSION TECH STACK SYSTEM ARCHITECTURE Component Technology ⭐ NFC Hardware ₹50 silicone band + RFID-RC522 + ESP32-C3 Doctor Portal React 19, Framer Motion Patient App Under development Backend Python 3.12, FastAPI, SQLAlchemy Database SQLite + Cloud sync OCR PaddleOCR (offline, handwriting) AI Model Gemini 2.5 Flash (multimodal) RAG Pipeline ChromaDB + Gemini Embeddings Voice Sarvam AI (Hindi/Marathi) NFC Band RFID-RC522 + ESP32 FastAPI Backend AI Layer Doctor Portal Patient App RFID-RC522 scanner (₹1,500) + NFC band (₹50) ⚠️ AI extracts data ONLY. It NEVER diagnoses or prescribes."
+  },
+  {
+    "part": "ppt/slides/slide8.xml",
+    "text": "Build Sprint Journey & Progress HEALTH-A-THON 2026  •  FINAL SUBMISSION WEEK 1 Foundation ✓ FastAPI + SQLite ✓ PaddleOCR integration ✓ Gemini AI extraction WEEK 2 Intelligence Layer ✓ Three conflict checks ✓ MoHFW ANC checker ✓ Confidence + review WEEK 3 RAG + NFC Hardware ✓ 15 knowledge base templates ✓ ChromaDB + RAG pipeline ✓ ESP32 + RFID-RC522 NFC scanner prototype WEEK 4 Portals + Integration ✓ Doctor Portal: directory + 9 record columns ✓ NFC band → scanner → patient auto-load ✓ Patient account creation (unique ID) AI-extracted structured data from handwritten ANC card Auto-flags missing ANC records against MoHFW protocol ✓ Completed milestones ↻ Patient App + Sarvam voice — in progress SOLUTION EVOLUTION OCR only OCR+AI OCR+AI+RAG Full Platform (Band + Portal + App)"
+  },
+  {
+    "part": "ppt/slides/slide9.xml",
+    "text": "Evaluation & User Validation HEALTH-A-THON 2026  •  FINAL SUBMISSION REPORTED PROTOTYPE RESULTS 20+ synthetic ANC images • 15 RAG scenarios 3 conflict types • MoHFW protocol checks IMPROVEMENTS MADE ✅ Emergency danger signs: manual entry 🟢 🟡 🔴 Confidence badges for review ✅ Routine nurse clicks: 12 → 3 👨‍⚕️ DOCTOR FEEDBACK “QR code handoff is the most practical feature — full history before patient enters my room” LIMITATIONS ⚠️ Faded documents reduce OCR quality ⚠️ Pregnancy-only knowledge base ⚠️ Real PHC scale untested Metric Result Fact extraction accuracy 85–92% Tested conflict types detected 100% RAG template match rate 80% False doctor referral <5% Data entry time reduction 87% NFC tap → record load <3 sec LIVE SYSTEM VALIDATION ✅ 4 patients registered successfully ✅ Patient credentials generated securely ✅ 9 record columns functional ✅ NFC wristband → auto-identification working ✅ RAG data entry → form pre-fill working ✅ Doctor review queue → cases flagged correctly ⚠️ Patient App under development"
+  },
+  {
+    "part": "ppt/slides/slide10.xml",
+    "text": "Safety & Responsible AI HEALTH-A-THON 2026  •  FINAL SUBMISSION 🔒 Data Privacy ⚠️ AI Limitations 👁️ Human Oversight • OCR → UNVERIFIED facts • Hallucinations → source checks • RAG mismatch → doctor review AI suggests Nurse reviews Doctor verifies Flagged cases → doctor Corrections → knowledge base NON-NEGOTIABLE SAFETY RULES 🚫 AI NEVER diagnoses, prescribes, or scores risk. 🚫 Human confirmation before record finalization. 🚫 Detected danger signs → 0% match confidence → doctor. ♿ Hindi/Marathi voice: in progress • Large buttons • Low-end phones • Offline OCR; cloud AI/voice online • Consent before digitization • SQLite + cloud AI processing • Redaction + training: verify 🔒 NFC band stores ONLY a unique link — no medical data on the band 🔒 Band is useless without hospital scanner + authenticated portal 🔒 Patient App shows ONLY their own data — no cross-patient access ♿ ₹50 band — affordable for all economic backgrounds ♿ NFC = no literacy needed — just tap"
+  },
+  {
+    "part": "ppt/slides/slide11.xml",
+    "text": "Deployment, Cost & Sustainability HEALTH-A-THON 2026  •  FINAL SUBMISSION PROPOSED SCALE-UP 1 PHC Pilot Nagpur • 3 months 5 PHCs Maharashtra • 6 months State Rollout Proposed NHM partnership National Open-Source Adoption + implementation partners PHC computer + internet • Android phone Hospital server / paid hosting • NFC enabled Sustainability: low costs + open-source + partners INDICATIVE PILOT BUDGET ₹50/patient ₹50/patient + ₹1,300/month = Complete maternal health digitization ONE-TIME SETUP Includes first-year domain Setup item Budget NFC wristband (per patient) ₹50 RFID-RC522 scanner (per facility) ₹1,500 Server setup (Render free) ₹0 Domain name ₹800/year Staff training ₹2,000 one-time TOTAL per facility ~₹4,300 + ₹50/patient MONTHLY RUNNING COSTS Component Budget / month Gemini API ₹0–500 Sarvam voice ₹0–300 Pilot hosting ₹0–500"
+  },
+  {
+    "part": "ppt/slides/slide12.xml",
+    "text": "What Next? CareLink Roadmap HEALTH-A-THON 2026  •  FINAL SUBMISSION 3 Months 6–12 Months Long-term Vision • National open-source platform • NHM Maharashtra partnership • TB, diabetes + pediatrics https://github.com/Siddharth-Jamdhade/CareLink • Complete Patient App (pregnancy tracker, EDD, 3D baby) • Sarvam AI voice integration • Nagpur PHC pilot with real patients • ABDM / ABHA integration • DigiLocker document verification • Multi-language: Hindi, Marathi, Telugu, Tamil • SMS/WhatsApp appointment reminders PHC Pilot → State Scale → NATIONAL OPEN SOURCE PLATFORM"
+  },
+  {
+    "part": "ppt/slides/slide13.xml",
+    "text": "Thank you HEALTH-A-THON 2026   WildFire • O2S22M Website: carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site Demo: [YouTube link] GitHub: github.com/Siddharth-Jamdhade/CareLink Email:  jamdhadesiddharth69@gmail.com ₹50 band. One tap. Every mother's story — safe, digital, connected."
+  }
+]

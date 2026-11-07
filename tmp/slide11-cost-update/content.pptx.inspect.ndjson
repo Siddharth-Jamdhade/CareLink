@@ -1,0 +1,19 @@
+{"kind":"deck","id":"pr/ogynbv","name":"Deck"}
+{"kind":"layout","id":"ly/wbqlkjup","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/rq5cralg","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/3ilwzuls","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/h0z25c7m","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/yt8napov","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/2dgnedwj","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/v6tcv2p0","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/v18xnv","slideIndex":0,"layout":{"id":"ly/v6tcv2p0","name":"Blank"},"title":"INDICATIVE PILOT BUDGET","textShapes":6,"backgroundColor":"rgba(255,255,255,1)"}
+{"kind":"textbox","id":"sh/dw3ap4bu","slideIndex":0,"position":{"left":50,"top":123,"width":620,"height":28},"name":"Pilot budget label","text":"INDICATIVE PILOT BUDGET","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Arial","color":"#1F3DA9","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/q9cru9c3","slideIndex":0,"position":{"left":50,"top":151,"width":620,"height":72},"name":"Per-patient wristband wow factor","text":"₹50/patient","geometry":"rect","lineWidth":0,"style":{"fontSize":64,"typeface":"Arial","color":"#0D8743","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/rulsneto","slideIndex":0,"position":{"left":50,"top":232,"width":620,"height":53},"name":"Complete digitization callout box","geometry":"rect","lineColor":"#1F3DA9","lineWidth":2}
+{"kind":"textbox","id":"sh/47a9szux","slideIndex":0,"position":{"left":62,"top":234,"width":596,"height":52},"name":"Complete digitization callout","text":"₹50/patient + ₹1,300/month =\nComplete maternal health digitization","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Calibri","color":"#1F3DA9","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/583al4bi","slideIndex":0,"position":{"left":50,"top":296,"width":300,"height":28},"name":"Setup heading","text":"ONE-TIME SETUP","geometry":"rect","lineWidth":0,"style":{"fontSize":23,"typeface":"Arial","color":"#1F3DA9","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/i5srqpc7","slideIndex":0,"position":{"left":350,"top":300,"width":320,"height":22},"name":"Domain accounting qualifier","text":"Includes first-year domain","geometry":"rect","lineWidth":0,"style":{"fontSize":16,"typeface":"Calibri","color":"#5D6A79","alignment":"right"}}
+{"kind":"textbox","id":"sh/g3a9ofu1","slideIndex":0,"position":{"left":50,"top":544,"width":620,"height":26},"name":"Monthly running costs heading","text":"MONTHLY RUNNING COSTS","geometry":"rect","lineWidth":0,"style":{"fontSize":21,"typeface":"Arial","color":"#1F3DA9","bold":true,"alignment":"left"}}
+{"kind":"table","id":"tb/mxkze94f","slideIndex":0,"position":{"left":50,"top":326,"width":620,"height":212},"name":"","rows":7,"cols":2,"preview":"Setup item | Budget"}
+{"kind":"table","id":"tb/sf6hsnmp","slideIndex":0,"position":{"left":50,"top":571,"width":620,"height":96},"name":"","rows":4,"cols":2,"preview":"Component | Budget / month"}
+{"kind":"notes","id":"nt/v18xnv","slideIndex":0,"text":""}

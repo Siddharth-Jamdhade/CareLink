@@ -1,0 +1,16 @@
+{"kind":"deck","id":"pr/b9uo5h","name":"Deck"}
+{"kind":"layout","id":"ly/hgvqdsz2","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/kfy5kzmp","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/3mlkfqhk","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/kjmhojat","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/7u50retw","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/lwn618bq","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/dcre1cj6","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/745m4a","slideIndex":0,"layout":{"id":"ly/dcre1cj6","name":"Blank"},"title":"CareLink","textShapes":5,"backgroundColor":"rgba(255,255,255,1)"}
+{"kind":"textbox","id":"sh/wbid07i5","slideIndex":0,"position":{"left":125,"top":294,"width":1030,"height":112},"name":"CareLink title","text":"CareLink","geometry":"rect","lineWidth":0,"style":{"fontSize":96,"typeface":"Arial","color":"#1F3DA9","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/va9w7210","slideIndex":0,"position":{"left":125,"top":414,"width":1030,"height":76},"name":"CareLink subtitle","text":"NFC-Powered Maternal Health Platform —\nAI Record Digitization, RAG Smart Entry & Secure Handoff","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Calibri","color":"#232F3E","alignment":"center"}}
+{"kind":"textbox","id":"sh/u90vyx0f","slideIndex":0,"position":{"left":150,"top":548,"width":615,"height":40},"name":"CareLink team name","text":"TEAM NAME  Siddharth Jamdhade (Solo)","geometry":"rect","lineWidth":0,"style":{"fontSize":23,"typeface":"Calibri","color":"#0D8743","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/50bexcj2","slideIndex":0,"position":{"left":780,"top":548,"width":270,"height":40},"name":"CareLink team code","text":"TEAM CODE  [my code]","geometry":"rect","lineWidth":0,"style":{"fontSize":23,"typeface":"Calibri","color":"#1F3DA9","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/4z2x4rih","slideIndex":0,"position":{"left":150,"top":612,"width":880,"height":38},"name":"CareLink tagline","text":"₹50 band. One tap. Every mother's story — safe.","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Calibri","color":"#0D8743","alignment":"left"}}
+{"kind":"image","id":"im/ytcval8j","slideIndex":0,"position":{"left":1060,"top":546,"width":166,"height":122},"fit":"contain","name":"","alt":"Blue NFC silicone wristband"}
+{"kind":"notes","id":"nt/745m4a","slideIndex":0,"text":""}

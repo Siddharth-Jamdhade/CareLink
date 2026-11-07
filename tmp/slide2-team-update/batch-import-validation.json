@@ -1,0 +1,30 @@
+{
+  "reason": "Full-deck Artifact Tool import exceeds its construction limit. Every slide was imported successfully in two private, unmodified-content batches.",
+  "candidate_sha256": "c58da12d4c6f497b7bec9961268377bcf22517329c50ded6a9ba323b686c6181",
+  "batches": [
+    {
+      "slides": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "imported": true
+    },
+    {
+      "slides": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "imported": true
+    }
+  ],
+  "slide_2_preview": "rendered and visually inspected"
+}

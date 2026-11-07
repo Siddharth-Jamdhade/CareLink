@@ -30,3 +30,6 @@ carelink-handoff/backend/chroma_db/
 carelink-handoff/backend/kb_stats.json
 carelink-handoff/backend/kb_stats.tmp
 carelink-handoff/backend/kb_stats.*.tmp
+
+# Office lock files
+~$*

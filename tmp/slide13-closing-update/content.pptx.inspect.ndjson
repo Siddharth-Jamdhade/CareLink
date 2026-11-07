@@ -1,0 +1,16 @@
+{"kind":"deck","id":"pr/wwaow1","name":"Deck"}
+{"kind":"layout","id":"ly/nido76dw","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/byh8fad4","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/b6p0r61g","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/t4j6lov2","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/sfm58fyh","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/1wbyhcf6","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/pcr2tobu","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/j9jr8i","slideIndex":0,"layout":{"id":"ly/pcr2tobu","name":"Blank"},"title":"Siddharth Jamdhade (Solo) • [Team Code]","textShapes":6,"backgroundColor":"rgba(255,255,255,1)"}
+{"kind":"textbox","id":"sh/cj6d0n65","slideIndex":0,"position":{"left":100,"top":347,"width":1080,"height":35},"name":"Closing team identity","text":"Siddharth Jamdhade (Solo) • [Team Code]","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Arial","color":"#0D8743","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/rixwri50","slideIndex":0,"position":{"left":80,"top":401,"width":1120,"height":32},"name":"Closing website","text":"Website: carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Calibri","color":"#1F3DA9","alignment":"center"}}
+{"kind":"textbox","id":"sh/qhovyxof","slideIndex":0,"position":{"left":80,"top":439,"width":1120,"height":32},"name":"Closing demo placeholder","text":"Demo: [YouTube link]","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Calibri","color":"#232F3E","alignment":"center"}}
+{"kind":"textbox","id":"sh/pgfupsnu","slideIndex":0,"position":{"left":80,"top":477,"width":1120,"height":32},"name":"Closing GitHub","text":"GitHub: github.com/Siddharth-Jamdhade/CareLink","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Calibri","color":"#1F3DA9","alignment":"center"}}
+{"kind":"textbox","id":"sh/4f6dwn69","slideIndex":0,"position":{"left":80,"top":515,"width":1120,"height":32},"name":"Closing email placeholder","text":"Email: [your email]","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Calibri","color":"#232F3E","alignment":"center"}}
+{"kind":"textbox","id":"sh/3excni5o","slideIndex":0,"position":{"left":70,"top":581,"width":1140,"height":40},"name":"Closing maternal-health tagline","text":"₹50 band. One tap. Every mother's story — safe, digital, connected.","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Calibri","color":"#0D8743","italic":true,"alignment":"center"}}
+{"kind":"notes","id":"nt/j9jr8i","slideIndex":0,"text":""}

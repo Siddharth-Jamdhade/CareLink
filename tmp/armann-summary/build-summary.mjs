@@ -1,0 +1,23 @@
+import fs from 'node:fs/promises';
+import {Presentation,PresentationFile} from 'file:///C:/Users/SIDDHARTH/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/@oai/artifact-tool/dist/artifact_tool.mjs';
+const w='C:/Users/SIDDHARTH/OneDrive/Desktop/Health A thon',d=w+'/tmp/armann-summary';
+const data=JSON.parse(await fs.readFile(d+'/layout.json','utf8')),p=Presentation.create({slideSize:{width:1280,height:720}}),scale=4/3;
+const blue='#275B9D',border='#155F82',WHO='https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1',MOHFW='https://nhm.gov.in/index1.php?lang=1&level=2&lid=218&sublinkid=822';
+function textFrame(s,name,x,baseline,width,size,color='#000000',bold=false,font='Arial',underline=false){const q=s.shapes.add({geometry:'textbox',name,position:{left:x*scale,top:(baseline-size*.9)*scale,width:width*scale,height:size*1.6*scale},fill:'none',line:{fill:'none',width:0}});q.text.insets=0;q.text.style={typeface:font,fontSize:size*scale,color,bold,alignment:'left',verticalAlignment:'top',autoFit:'none',...(underline?{underline:'sng'}:{})};return q;}
+for(const [index,page] of data.entries()){
+ const s=p.slides.add();s.background.fill='#FFFFFF';
+ for(const [i,b] of page.borders.entries())s.shapes.add({geometry:'rect',name:'Original template column '+i,position:{left:b.x*scale,top:b.top*scale,width:b.width*scale,height:b.height*scale},fill:'none',line:{fill:border,width:b.lineWidth*scale}});
+ const logo=await fs.readFile(d+'/template-logo-'+(index+1)+'-0.jpg');s.images.add({blob:logo.buffer.slice(logo.byteOffset,logo.byteOffset+logo.byteLength),contentType:'image/jpeg',alt:'Original Health-a-thon 2026 template logo',fit:'contain',position:{left:page.logo.x*scale,top:page.logo.top*scale,width:page.logo.width*scale,height:page.logo.height*scale}});
+ const title=textFrame(s,'WildFire CareLink title',page.titleX,540-page.titleBaseline,440,26,blue,true,'Calibri');title.text=[{runs:[{run:'WildFire | ',style:{typeface:'Calibri',fontSize:'26pt',bold:true,color:blue}},{run:'CareLink',style:{typeface:'Calibri',fontSize:'26pt',bold:true,color:'#000000'}}]}];
+ const code=textFrame(s,'Team code',page.titleX,540-page.codeBaseline,440,9,'#596673',true);code.text='Team code: O2S22M';
+ for(const sec of page.sections){const heading=textFrame(s,sec.title,sec.x,540-sec.headerBaseline,sec.width,14,blue,true,'Arial',true);heading.text=sec.title;}
+ for(const [i,row] of page.rows.entries()){
+  if(row.bullet){const bullet=textFrame(s,'Bullet '+i,row.bulletX,row.baseline,10,row.size);bullet.text='•';}
+  const q=textFrame(s,row.key+' row '+i,row.x,row.baseline,row.width,row.size);
+  const runs=[];for(const f of row.fragments){const next={run:f.text,style:{typeface:'Arial',fontSize:row.size+'pt',color:f.color??'#000000',bold:f.bold},...(f.link?{link:{uri:f.link,isExternal:true}}:{})};const last=runs.at(-1);if(last&&JSON.stringify(last.style)===JSON.stringify(next.style)&&JSON.stringify(last.link)===JSON.stringify(next.link))last.run+=next.run;else runs.push(next);}q.text=[{runs}];
+ }
+ if(index===0){const foot=textFrame(s,'Evidence sources',38.66,505,426.35,7.5,'#5D6A79');foot.text=[{runs:[{run:'WHO MMEIG ',style:{fontSize:'7.5pt',typeface:'Arial',color:'#5D6A79'},link:{uri:WHO,isExternal:true}},{run:'2025 (2023 estimates)',style:{fontSize:'7.5pt',typeface:'Arial',color:'#5D6A79',bold:true},link:{uri:WHO,isExternal:true}},{run:'; MoHFW ANC standards.',style:{fontSize:'7.5pt',typeface:'Arial',color:'#5D6A79'},link:{uri:MOHFW,isExternal:true}}]}];}
+ s.speakerNotes.text=index===0?'Team and project information supplied by Team WildFire and the referenced final CareLink presentation. India accounted for 7.2% of global maternal deaths in 2023, from WHO MMEIG 2025 estimates: '+WHO+' . MoHFW/NHM guidance specifies a minimum of four ANC checks; local requirements and clinical judgement apply: '+MOHFW+' . Team affiliations and clinical validation activities are team-reported. Patient App and Sarvam voice remain in progress.':'Prototype metrics and user feedback are team-reported. Tests include synthetic ANC images and limited scenarios; raw logs and denominators were not supplied. No real-PHC clinical validation is established. App and voice integration remain in progress. Costs are indicative user-supplied pilot estimates, not provider quotations or all-inclusive production costs. Demo URL remains pending.';
+ await fs.writeFile(d+'/pptx-preview-'+(index+1)+'.png',new Uint8Array(await(await p.export({slide:s,format:'png',scale:1})).arrayBuffer()));
+}
+await(await PresentationFile.exportPptx(p)).save(d+'/candidate.pptx');console.log('Created editable two-slide summary');

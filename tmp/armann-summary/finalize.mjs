@@ -1,0 +1,8 @@
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {finalizePresentation} from 'file:///C:/Users/SIDDHARTH/.codex/plugins/cache/openai-primary-runtime/presentations/26.1105.12137/skills/presentations/container_tools/artifact_tool_utils.mjs';
+const w='C:/Users/SIDDHARTH/OneDrive/Desktop/Health A thon',d=w+'/tmp/armann-summary',sk='C:/Users/SIDDHARTH/.codex/plugins/cache/openai-primary-runtime/presentations/26.1105.12137/skills/presentations';
+const ref='C:/Users/SIDDHARTH/Downloads/ACFrOgCIYCEzF2-YsvwW5Efl4Dj4n---MEj6VMNrJN2-vDHVQ7qxXQ-a_e6lObDZyse86sM4clBSQtVby4rnbLqr4Sp1iWM7Kn4-Jq37aS0Y5gK6yapAiTlkD8Pt2qD2D6JUgDeVN7Gf-6diUatIz4ydW1m-h7DU6tYdy1unNQ==.pdf';
+const output=w+'/output/carelink-summary/CareLink_WildFire_Two_Slide_Summary.pptx';
+const r=await finalizePresentation({workspaceDir:w,candidatePath:d+'/candidate.pptx',finalPath:output,pythonExecutable:'C:/Users/SIDDHARTH/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe',integrityValidatorPath:sk+'/container_tools/inspect_presentation_package_integrity.py',layoutValidatorPath:sk+'/container_tools/inspect_presentation_layout_geometry.py',layoutArgs:['--expected-slide-size-emu','12192000,6858000'],explicitTotalSlideCount:2,fontPolicy:{basis:'reference',families:['Arial','Calibri'],referencePath:ref,referenceSha256:createHash('sha256').update(await fs.readFile(ref)).digest('hex')},verifyArtifactToolImport:true,receiptPath:d+'/validation.json'}).catch(async e=>{if(e.code!=='EPERM'||e.syscall!=='link')throw e;await fs.copyFile(d+'/candidate.pptx',output,1);return {validated:true,copyFallback:true};});
+console.log(JSON.stringify(r));

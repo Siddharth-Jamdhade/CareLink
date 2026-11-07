@@ -1,0 +1,6466 @@
+[
+  {
+    "title": "WildFire | CareLink",
+    "code": "O2S22M",
+    "titleX": 20.4,
+    "titleBaseline": 506.244,
+    "codeBaseline": 489,
+    "logo": {
+      "x": 616.5077,
+      "top": 9.546,
+      "width": 316.5023,
+      "height": 48.0003
+    },
+    "sections": [
+      {
+        "key": "team",
+        "title": "About the Team / Organisation",
+        "x": 38.66394,
+        "headerBaseline": 461.22,
+        "width": 426.35,
+        "firstBaseline": 103,
+        "lastBaseline": 341,
+        "items": [
+          {
+            "text": "A. Engineering team",
+            "kind": "subhead"
+          },
+          {
+            "text": "<b>4</b> engineers + <b>1</b> doctor; third-year B.Tech IoT, YCCE.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Siddharth Jamdhade</b>: lead architect; Gemini AI, OCR, RAG.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Abhay Harne</b>: frontend; React portal, dashboard, 9-column care.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Anaghraj Singh Thakur</b>: backend; FastAPI, ChromaDB, verification.",
+            "kind": "bullet"
+          },
+          {
+            "text": "<b>Rajveer Rajput</b>: hardware; ESP32-C3, RFID-RC522, NFC wristband integration.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Yeshwantrao Chavan College of Engineering (YCCE), Nagpur.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RTM Nagpur University; Department: Internet of Things (IoT).",
+            "kind": "bullet"
+          },
+          {
+            "text": "B. Doctor background and role (team-reported)",
+            "kind": "subhead"
+          },
+          {
+            "text": "<b>Dr. Tanmay Gawali</b>: MBBS intern; clinical ANC validator.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Lokmanya Tilak Municipal Medical College & Hospital, Mumbai.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Reviewed 15 ANC templates and structured extraction formats.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Validated extraction accuracy and MoHFW four-visit protocol rules.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Tested verification edge cases and doctor review workflows.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Safety oversight: AI never makes clinical decisions.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "problem",
+        "title": "Problem Statement (use case specific)",
+        "x": 38.66394,
+        "headerBaseline": 174.57,
+        "width": 426.35,
+        "firstBaseline": 390,
+        "lastBaseline": 502,
+        "items": [
+          {
+            "text": "Maternal health records fragment across facilities and referrals.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Paper ANC cards get lost, damaged, or forgotten.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Receiving hospitals lack accessible, longitudinal pregnancy histories.",
+            "kind": "bullet"
+          },
+          {
+            "text": "WHO: India accounted for 7.2% of global maternal deaths (2023).",
+            "kind": "bullet"
+          },
+          {
+            "text": "Users: nurses/ANMs, doctors, and pregnant patients.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Settings: PHCs, CHCs, district hospitals, private maternity clinics.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Missing gestational history complicates referral assessment and continuity.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "solution",
+        "title": "AI Solution Description",
+        "x": 486.26,
+        "headerBaseline": 461.53,
+        "width": 447.75,
+        "firstBaseline": 103,
+        "lastBaseline": 195,
+        "items": [
+          {
+            "text": "₹50 NFC wristband links each registered patient’s pregnancy record.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Tap scanner; authenticated Doctor Portal retrieves records; <3 seconds reported.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Doctor Portal: directory, search; 9 care columns (labs/USG/ABHA/visits).",
+            "kind": "bullet"
+          },
+          {
+            "text": "Upload ANC images; OCR and Gemini AI extract facts.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG suggests fields; nurses confirm, doctors review exceptions.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Verified data populates columns and strengthens the knowledge base.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Patient App planned: gestational progress, EDD, diet, 3D fetus.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Private patient credentials; app and voice remain in development.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "technology",
+        "title": "Technology and Tools Used",
+        "x": 486.26,
+        "headerBaseline": 320.4,
+        "width": 447.75,
+        "firstBaseline": 244,
+        "lastBaseline": 344,
+        "items": [
+          {
+            "text": "NFC: ₹50 silicone wristband, RFID-RC522 reader, ESP32-C3.",
+            "kind": "bullet"
+          },
+          {
+            "text": "AI: Gemini 2.5 Flash; PaddleOCR offline handwriting extraction.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG: ChromaDB, Gemini embeddings, 15 ANC templates, self-learning feedback.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Backend: Python 3.12, FastAPI, SQLAlchemy, SQLite/cloud sync.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Frontend: React 19, Framer Motion, Axios; Docker deployment.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Voice: Sarvam AI Hindi/Marathi; integration in progress.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Rules: MoHFW ANC minimum schedule; WHO guidance referenced.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned: ABDM/ABHA, DigiLocker, REST-based hospital integration.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "features",
+        "title": "Key Features of the solution",
+        "x": 486.26,
+        "headerBaseline": 167.22,
+        "width": 447.75,
+        "firstBaseline": 397,
+        "lastBaseline": 502,
+        "items": [
+          {
+            "text": "₹50 NFC identification: reported <3-second retrieval at connected facilities.",
+            "kind": "bullet"
+          },
+          {
+            "text": "OCR + Gemini AI: structured ANC facts, never diagnoses.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG auto-fill: 15 templates; 80% reported template matches.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Self-learning: clinician-approved corrections enrich the ChromaDB knowledge base.",
+            "kind": "bullet"
+          },
+          {
+            "text": "ANC checks: flags missing tests for clinical verification.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      }
+    ],
+    "rows": [
+      {
+        "x": 38.66394,
+        "baseline": 103,
+        "width": 426.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "A.",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Engineering",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "team",
+            "bold": true
+          }
+        ],
+        "bullet": false,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 0
+      },
+      {
+        "x": 50.66394,
+        "baseline": 116.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "4",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "engineers",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "+",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "1",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "third-year",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "B.Tech",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "IoT,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "YCCE.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 1
+      },
+      {
+        "x": 50.66394,
+        "baseline": 129.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Siddharth",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Jamdhade",
+            "bold": true
+          },
+          {
+            "text": ":",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "lead",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "architect;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gemini",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "OCR,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RAG.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 2
+      },
+      {
+        "x": 50.66394,
+        "baseline": 142.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Abhay",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Harne",
+            "bold": true
+          },
+          {
+            "text": ":",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "frontend;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "React",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "portal,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "dashboard,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "9-column",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "care.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 3
+      },
+      {
+        "x": 50.66394,
+        "baseline": 155.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Anaghraj",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Singh",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Thakur",
+            "bold": true
+          },
+          {
+            "text": ":",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "backend;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "FastAPI,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ChromaDB,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "verification.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 4
+      },
+      {
+        "x": 50.66394,
+        "baseline": 168.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Rajveer",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Rajput",
+            "bold": true
+          },
+          {
+            "text": ":",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "hardware;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ESP32-C3,",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RFID-RC522,",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "wristband",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "integration.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 5
+      },
+      {
+        "x": 50.66394,
+        "baseline": 181.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Yeshwantrao",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Chavan",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "College",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "of",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Engineering",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "(YCCE),",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Nagpur.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 6
+      },
+      {
+        "x": 50.66394,
+        "baseline": 194.5,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "RTM",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Nagpur",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "University;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Department:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Internet",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "of",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Things",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "(IoT).",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 7
+      },
+      {
+        "x": 38.66394,
+        "baseline": 210.5,
+        "width": 426.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "B.",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Doctor",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "background",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "role",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "(team-reported)",
+            "bold": true
+          }
+        ],
+        "bullet": false,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 8
+      },
+      {
+        "x": 50.66394,
+        "baseline": 224.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Dr.",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Tanmay",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gawali",
+            "bold": true
+          },
+          {
+            "text": ":",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "MBBS",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "intern;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinical",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "validator.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 9
+      },
+      {
+        "x": 50.66394,
+        "baseline": 237.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Lokmanya",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Tilak",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Municipal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Medical",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "College",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "&",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Hospital,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Mumbai.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 10
+      },
+      {
+        "x": 50.66394,
+        "baseline": 250.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Reviewed",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "templates",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "structured",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "extraction",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "formats.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 11
+      },
+      {
+        "x": 50.66394,
+        "baseline": 263.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Validated",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "extraction",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "accuracy",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "MoHFW",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "four-visit",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "protocol",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "rules.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 12
+      },
+      {
+        "x": 50.66394,
+        "baseline": 276.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Tested",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "verification",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "edge",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "cases",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "review",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "workflows.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 13
+      },
+      {
+        "x": 50.66394,
+        "baseline": 289.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Safety",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "oversight:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "never",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "makes",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinical",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "decisions.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "team",
+        "itemIndex": 14
+      },
+      {
+        "x": 50.66394,
+        "baseline": 390,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Maternal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "health",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "records",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "fragment",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "across",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "facilities",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "referrals.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 0
+      },
+      {
+        "x": 50.66394,
+        "baseline": 403.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Paper",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "cards",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "get",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "lost,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "damaged,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "or",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "forgotten.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 1
+      },
+      {
+        "x": 50.66394,
+        "baseline": 416.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Receiving",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "hospitals",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "lack",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "accessible,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "longitudinal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "pregnancy",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "histories.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 2
+      },
+      {
+        "x": 50.66394,
+        "baseline": 429.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "WHO:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "India",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "accounted",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "for",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "7.2%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "of",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "global",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "maternal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "deaths",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "(2023).",
+            "bold": true
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 3
+      },
+      {
+        "x": 50.66394,
+        "baseline": 442.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Users:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "nurses/ANMs,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctors,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "pregnant",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "patients.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 4
+      },
+      {
+        "x": 50.66394,
+        "baseline": 455.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Settings:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "PHCs,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "CHCs,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "district",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "hospitals,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "private",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "maternity",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinics.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 5
+      },
+      {
+        "x": 50.66394,
+        "baseline": 468.0,
+        "width": 414.35,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Missing",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "gestational",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "history",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "complicates",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "referral",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "assessment",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "continuity.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 39.66394,
+        "key": "problem",
+        "itemIndex": 6
+      },
+      {
+        "x": 498.26,
+        "baseline": 103,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "₹50",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "wristband",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "links",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "each",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "registered",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "patient’s",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "pregnancy",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "record.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 0
+      },
+      {
+        "x": 498.26,
+        "baseline": 116.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Tap",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "scanner;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "authenticated",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Portal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "retrieves",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "records;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "<3",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "seconds",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reported.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 1
+      },
+      {
+        "x": 498.26,
+        "baseline": 129.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Portal:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "directory,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "search;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "9",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "care",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "columns",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "(labs/USG/ABHA/visits).",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 2
+      },
+      {
+        "x": 498.26,
+        "baseline": 142.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Upload",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "images;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "OCR",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gemini",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "extract",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "facts.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 3
+      },
+      {
+        "x": 498.26,
+        "baseline": 155.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "RAG",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "suggests",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "fields;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "nurses",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "confirm,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctors",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "review",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "exceptions.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 4
+      },
+      {
+        "x": 498.26,
+        "baseline": 168.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Verified",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "data",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "populates",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "columns",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "strengthens",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "the",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "knowledge",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "base.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 5
+      },
+      {
+        "x": 498.26,
+        "baseline": 181.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Patient",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "App",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "planned:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "gestational",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "progress,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "EDD,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "diet,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "3D",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "fetus.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 6
+      },
+      {
+        "x": 498.26,
+        "baseline": 194.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Private",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "patient",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "credentials;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "app",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "voice",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "remain",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "in",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "development.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "solution",
+        "itemIndex": 7
+      },
+      {
+        "x": 498.26,
+        "baseline": 244,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "NFC:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "₹50",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "silicone",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "wristband,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RFID-RC522",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reader,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ESP32-C3.",
+            "bold": true
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 0
+      },
+      {
+        "x": 498.26,
+        "baseline": 257.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "AI:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gemini",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "2.5",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Flash;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "PaddleOCR",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "offline",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "handwriting",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "extraction.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 1
+      },
+      {
+        "x": 498.26,
+        "baseline": 270.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "RAG:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ChromaDB,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gemini",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "embeddings,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "templates,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "self-learning",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "feedback.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 2
+      },
+      {
+        "x": 498.26,
+        "baseline": 283.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Backend:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Python",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "3.12,",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "FastAPI,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "SQLAlchemy,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "SQLite/cloud",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "sync.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 3
+      },
+      {
+        "x": 498.26,
+        "baseline": 296.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Frontend:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "React",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "19,",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Framer",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Motion,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Axios;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Docker",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "deployment.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 4
+      },
+      {
+        "x": 498.26,
+        "baseline": 309.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Voice:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Sarvam",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Hindi/Marathi;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "integration",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "in",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "progress.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 5
+      },
+      {
+        "x": 498.26,
+        "baseline": 322.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Rules:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "MoHFW",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "minimum",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "schedule;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "WHO",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "guidance",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "referenced.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 6
+      },
+      {
+        "x": 498.26,
+        "baseline": 335.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Planned:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ABDM/ABHA,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "DigiLocker,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "REST-based",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "hospital",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "integration.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "technology",
+        "itemIndex": 7
+      },
+      {
+        "x": 498.26,
+        "baseline": 397,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "₹50",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "identification:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reported",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "<3-second",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "retrieval",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "at",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "connected",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "facilities.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "features",
+        "itemIndex": 0
+      },
+      {
+        "x": 498.26,
+        "baseline": 410.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "OCR",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "+",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gemini",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "structured",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "facts,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "never",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "diagnoses.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "features",
+        "itemIndex": 1
+      },
+      {
+        "x": 498.26,
+        "baseline": 423.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "RAG",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "auto-fill:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "templates;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "80%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reported",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "template",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "matches.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "features",
+        "itemIndex": 2
+      },
+      {
+        "x": 498.26,
+        "baseline": 436.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Self-learning:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinician-approved",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "corrections",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "enrich",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "the",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ChromaDB",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "knowledge",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "base.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "features",
+        "itemIndex": 3
+      },
+      {
+        "x": 498.26,
+        "baseline": 449.0,
+        "width": 435.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "checks:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "flags",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "missing",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tests",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "for",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinical",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "verification.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 487.26,
+        "key": "features",
+        "itemIndex": 4
+      }
+    ],
+    "borders": [
+      {
+        "x": 31.460945888639998,
+        "top": 62.461970502719964,
+        "width": 438.7100140387199,
+        "height": 451.07999474952,
+        "lineWidth": 0.750000024
+      },
+      {
+        "x": 479.00001532799996,
+        "top": 62.461970502719964,
+        "width": 459.9500147183999,
+        "height": 451.07999474952,
+        "lineWidth": 0.750000024
+      }
+    ]
+  },
+  {
+    "title": "WildFire | CareLink",
+    "code": "O2S22M",
+    "titleX": 17.906,
+    "titleBaseline": 494.57236,
+    "codeBaseline": 474,
+    "logo": {
+      "x": 625.29776,
+      "top": 12,
+      "width": 316.50227,
+      "height": 48.0003
+    },
+    "sections": [
+      {
+        "key": "sprint",
+        "title": "Build Sprint Progress",
+        "x": 59.25598,
+        "headerBaseline": 440.87,
+        "width": 397.1,
+        "firstBaseline": 123,
+        "lastBaseline": 228,
+        "items": [
+          {
+            "text": "Week 1: FastAPI/SQLite, PaddleOCR, Gemini AI extraction.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Week 2: 3 conflict checks, ANC rules, confidence badges.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Week 3: 15-template RAG, ChromaDB, NFC scanner prototype.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Week 4: Doctor Portal, 9 columns, accounts, cloud sync.",
+            "kind": "bullet"
+          },
+          {
+            "text": "NFC wristband-to-record flow tested end-to-end; doctor queue operational.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Evolution: OCR, AI, RAG, then band-and-portal platform.",
+            "kind": "bullet"
+          },
+          {
+            "text": "In progress: Patient App and Sarvam Hindi/Marathi voice.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned app: gestational tracker, EDD, diet, 3D baby.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "validation",
+        "title": "User Validation and AI Evaluation",
+        "x": 59.25598,
+        "headerBaseline": 290.12,
+        "width": 397.1,
+        "firstBaseline": 275,
+        "lastBaseline": 477,
+        "items": [
+          {
+            "text": "Reported tests: 20+ synthetic ANC images; 15 RAG scenarios.",
+            "kind": "bullet"
+          },
+          {
+            "text": "3 tested conflict types: 100% detected; limited sample.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Extraction accuracy: 85-92%; RAG template matches: 80%.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Unnecessary doctor-review routing: <5% reported.",
+            "kind": "bullet"
+          },
+          {
+            "text": "ANC flag accuracy: 100% reported; denominator unavailable.",
+            "kind": "bullet"
+          },
+          {
+            "text": "NFC tap-to-record: <3 seconds; 4 test patients registered.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Data-entry reduction: ~87% target, 15 to 2 minutes.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Doctor feedback: handoff enables history before consultation.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Improvements: confidence badges, danger-sign checklist, 12→3 routine clicks.",
+            "kind": "bullet"
+          },
+          {
+            "text": "RAG mismatch: doctor review before any verified save.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Limitations: faded OCR documents; pregnancy-only knowledge base.",
+            "kind": "bullet"
+          },
+          {
+            "text": "No real-PHC clinical validation; Patient App unfinished.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Performance figures reported; raw logs and denominators unavailable.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "safety",
+        "title": "Safety and Responsible AI",
+        "x": 474.29,
+        "headerBaseline": 440.47,
+        "width": 414.75,
+        "firstBaseline": 123,
+        "lastBaseline": 224,
+        "items": [
+          {
+            "text": "AI never diagnoses, prescribes, or scores clinical risk.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Every extraction UNVERIFIED until mandatory human confirmation.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Danger signs: 0% confidence; mandatory doctor review.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Low-confidence RAG mismatches route to doctor verification.",
+            "kind": "bullet"
+          },
+          {
+            "text": "NFC stores link only; authenticated portal authorizes record access.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Consent and identifier redaction required before cloud AI processing.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned app access restricted to each patient’s own records.",
+            "kind": "bullet"
+          },
+          {
+            "text": "₹50 NFC tap reduces literacy barriers; voice in progress.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      },
+      {
+        "key": "deployment",
+        "title": "Deployment and Sustainability Plan",
+        "x": 474.29,
+        "headerBaseline": 294.37,
+        "width": 414.75,
+        "firstBaseline": 269,
+        "lastBaseline": 357,
+        "items": [
+          {
+            "text": "PHC setup: computer, internet, Android phone, ₹1,500 scanner.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Per patient: reusable ₹50 NFC wristband.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Facility setup: ~₹4,300, including first-year domain and training.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Monthly: ₹0-1,300; API target ~₹0.35/record, usage dependent.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Scale: 1 Nagpur PHC, 5 PHCs, proposed NHM rollout.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned national open-source adoption; subsidies and partners remain prospective.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Planned integrations: ABDM/ABHA, DigiLocker, hospital REST APIs.",
+            "kind": "bullet"
+          },
+          {
+            "text": "Pilot estimates exclude devices, internet, support, production infrastructure.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 9.5
+      },
+      {
+        "key": "links",
+        "title": "Supporting Links",
+        "x": 473.29,
+        "headerBaseline": 163.42,
+        "width": 415.75,
+        "firstBaseline": 401,
+        "lastBaseline": 459,
+        "items": [
+          {
+            "text": "MVP: carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site",
+            "kind": "bullet"
+          },
+          {
+            "text": "Code: github.com/Siddharth-Jamdhade/CareLink",
+            "kind": "bullet"
+          },
+          {
+            "text": "Demo walkthrough: link pending",
+            "kind": "bullet"
+          },
+          {
+            "text": "Knowledge base: 15 templates, 8 symptom maps (team-reported).",
+            "kind": "bullet"
+          },
+          {
+            "text": "Evidence: WHO MMEIG 2025; MoHFW ANC standards.",
+            "kind": "bullet"
+          }
+        ],
+        "bodyFont": 10
+      }
+    ],
+    "rows": [
+      {
+        "x": 71.25598,
+        "baseline": 123,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Week",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "1:",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "FastAPI/SQLite,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "PaddleOCR,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Gemini",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "extraction.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 0
+      },
+      {
+        "x": 71.25598,
+        "baseline": 136.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Week",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "2:",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "3",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "conflict",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "checks,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "rules,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "confidence",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "badges.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 1
+      },
+      {
+        "x": 71.25598,
+        "baseline": 149.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Week",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "3:",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15-template",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RAG,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ChromaDB,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "scanner",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "prototype.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 2
+      },
+      {
+        "x": 71.25598,
+        "baseline": 162.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Week",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "4:",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Portal,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "9",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "columns,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "accounts,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "cloud",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "sync.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 3
+      },
+      {
+        "x": 71.25598,
+        "baseline": 175.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "wristband-to-record",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "flow",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tested",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "end-to-end;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "queue",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "operational.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 4
+      },
+      {
+        "x": 71.25598,
+        "baseline": 188.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Evolution:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "OCR,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RAG,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "then",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "band-and-portal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "platform.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 5
+      },
+      {
+        "x": 71.25598,
+        "baseline": 201.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "In",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "progress:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Patient",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "App",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Sarvam",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Hindi/Marathi",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "voice.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 6
+      },
+      {
+        "x": 71.25598,
+        "baseline": 214.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Planned",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "app:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "gestational",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tracker,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "EDD,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "diet,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "3D",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "baby.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "sprint",
+        "itemIndex": 7
+      },
+      {
+        "x": 71.25598,
+        "baseline": 275,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Reported",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tests:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "20+",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "synthetic",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "images;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RAG",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "scenarios.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 0
+      },
+      {
+        "x": 71.25598,
+        "baseline": 288.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "3",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tested",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "conflict",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "types:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "100%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "detected;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "limited",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "sample.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 1
+      },
+      {
+        "x": 71.25598,
+        "baseline": 301.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Extraction",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "accuracy:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "85-92%;",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RAG",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "template",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "matches:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "80%.",
+            "bold": true
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 2
+      },
+      {
+        "x": 71.25598,
+        "baseline": 314.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Unnecessary",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor-review",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "routing:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "<5%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reported.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 3
+      },
+      {
+        "x": 71.25598,
+        "baseline": 327.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "ANC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "flag",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "accuracy:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "100%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reported;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "denominator",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "unavailable.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 4
+      },
+      {
+        "x": 71.25598,
+        "baseline": 340.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tap-to-record:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "<3",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "seconds;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "4",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "test",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "patients",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "registered.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 5
+      },
+      {
+        "x": 71.25598,
+        "baseline": 353.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Data-entry",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reduction:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "~87%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "target,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "to",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "2",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "minutes.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 6
+      },
+      {
+        "x": 71.25598,
+        "baseline": 366.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "feedback:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "handoff",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "enables",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "history",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "before",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "consultation.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 7
+      },
+      {
+        "x": 71.25598,
+        "baseline": 379.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Improvements:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "confidence",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "badges,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "danger-sign",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "checklist,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "12→3",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "routine",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clicks.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 8
+      },
+      {
+        "x": 71.25598,
+        "baseline": 392.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "RAG",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "mismatch:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "review",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "before",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "any",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "verified",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "save.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 9
+      },
+      {
+        "x": 71.25598,
+        "baseline": 405.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Limitations:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "faded",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "OCR",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "documents;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "pregnancy-only",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "knowledge",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "base.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 10
+      },
+      {
+        "x": 71.25598,
+        "baseline": 418.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "No",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "real-PHC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinical",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "validation;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Patient",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "App",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "unfinished.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 11
+      },
+      {
+        "x": 71.25598,
+        "baseline": 431.0,
+        "width": 385.1,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Performance",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "figures",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reported;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "raw",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "logs",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "denominators",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "unavailable.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 60.25598,
+        "key": "validation",
+        "itemIndex": 12
+      },
+      {
+        "x": 486.29,
+        "baseline": 123,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "AI",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "never",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "diagnoses,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "prescribes,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "or",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "scores",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "clinical",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "risk.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 0
+      },
+      {
+        "x": 486.29,
+        "baseline": 136.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Every",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "extraction",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "UNVERIFIED",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "until",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "mandatory",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "human",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "confirmation.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 1
+      },
+      {
+        "x": 486.29,
+        "baseline": 149.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Danger",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "signs:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "0%",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "confidence;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "mandatory",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "review.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 2
+      },
+      {
+        "x": 486.29,
+        "baseline": 162.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Low-confidence",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "RAG",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "mismatches",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "route",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "to",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "doctor",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "verification.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 3
+      },
+      {
+        "x": 486.29,
+        "baseline": 175.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "stores",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "link",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "only;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "authenticated",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "portal",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "authorizes",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "record",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "access.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 4
+      },
+      {
+        "x": 486.29,
+        "baseline": 188.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Consent",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "identifier",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "redaction",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "required",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "before",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "cloud",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "AI",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "processing.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 5
+      },
+      {
+        "x": 486.29,
+        "baseline": 201.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Planned",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "app",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "access",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "restricted",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "to",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "each",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "patient’s",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "own",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "records.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 6
+      },
+      {
+        "x": 486.29,
+        "baseline": 214.0,
+        "width": 402.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "₹50",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "tap",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reduces",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "literacy",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "barriers;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "voice",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "in",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "progress.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "safety",
+        "itemIndex": 7
+      },
+      {
+        "x": 486.29,
+        "baseline": 269,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "PHC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "setup:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "computer,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "internet,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Android",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "phone,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "₹1,500",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "scanner.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 0
+      },
+      {
+        "x": 486.29,
+        "baseline": 281.4,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Per",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "patient:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "reusable",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "₹50",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NFC",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "wristband.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 1
+      },
+      {
+        "x": 486.29,
+        "baseline": 293.79999999999995,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Facility",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "setup:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "~₹4,300,",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "including",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "first-year",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "domain",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "training.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 2
+      },
+      {
+        "x": 486.29,
+        "baseline": 306.19999999999993,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Monthly:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "₹0-1,300;",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "API",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "target",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "~₹0.35/record,",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "usage",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "dependent.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 3
+      },
+      {
+        "x": 486.29,
+        "baseline": 318.5999999999999,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Scale:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "1",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "Nagpur",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "PHC,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "5",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "PHCs,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "proposed",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "NHM",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "rollout.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 4
+      },
+      {
+        "x": 486.29,
+        "baseline": 330.9999999999999,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Planned",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "national",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "open-source",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "adoption;",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "subsidies",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "and",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "partners",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "remain",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "prospective.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 5
+      },
+      {
+        "x": 486.29,
+        "baseline": 343.39999999999986,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Planned",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "integrations:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "ABDM/ABHA,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "DigiLocker,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "hospital",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "REST",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "APIs.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 6
+      },
+      {
+        "x": 486.29,
+        "baseline": 355.79999999999984,
+        "width": 402.75,
+        "size": 9.5,
+        "fragments": [
+          {
+            "text": "Pilot",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "estimates",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "exclude",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "devices,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "internet,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "support,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "production",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "infrastructure.",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 475.29,
+        "key": "deployment",
+        "itemIndex": 7
+      },
+      {
+        "x": 485.29,
+        "baseline": 401,
+        "width": 403.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "MVP:",
+            "bold": false,
+            "link": "https://carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site/",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site/",
+            "color": "#467885"
+          },
+          {
+            "text": "carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site",
+            "bold": true,
+            "link": "https://carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site/",
+            "color": "#467885"
+          }
+        ],
+        "bullet": true,
+        "bulletX": 474.29,
+        "key": "links",
+        "itemIndex": 0
+      },
+      {
+        "x": 485.29,
+        "baseline": 414.0,
+        "width": 403.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Code:",
+            "bold": false,
+            "link": "https://github.com/Siddharth-Jamdhade/CareLink",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://github.com/Siddharth-Jamdhade/CareLink",
+            "color": "#467885"
+          },
+          {
+            "text": "github.com/Siddharth-Jamdhade/CareLink",
+            "bold": false,
+            "link": "https://github.com/Siddharth-Jamdhade/CareLink",
+            "color": "#467885"
+          }
+        ],
+        "bullet": true,
+        "bulletX": 474.29,
+        "key": "links",
+        "itemIndex": 1
+      },
+      {
+        "x": 485.29,
+        "baseline": 427.0,
+        "width": 403.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Demo",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "walkthrough:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "link",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "pending",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 474.29,
+        "key": "links",
+        "itemIndex": 2
+      },
+      {
+        "x": 485.29,
+        "baseline": 440.0,
+        "width": 403.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Knowledge",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "base:",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "15",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "templates,",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "8",
+            "bold": true
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "symptom",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "maps",
+            "bold": false
+          },
+          {
+            "text": " ",
+            "bold": false
+          },
+          {
+            "text": "(team-reported).",
+            "bold": false
+          }
+        ],
+        "bullet": true,
+        "bulletX": 474.29,
+        "key": "links",
+        "itemIndex": 3
+      },
+      {
+        "x": 485.29,
+        "baseline": 453.0,
+        "width": 403.75,
+        "size": 10,
+        "fragments": [
+          {
+            "text": "Evidence:",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": "WHO",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": "MMEIG",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": "2025;",
+            "bold": true,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": "MoHFW",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": "ANC",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": " ",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          },
+          {
+            "text": "standards.",
+            "bold": false,
+            "link": "https://pmnch.who.int/docs/librariesprovider9/meeting-reports/mm-report-update.pdf?download=true&sfvrsn=e5d4e25e_1",
+            "color": "#467885"
+          }
+        ],
+        "bullet": true,
+        "bulletX": 474.29,
+        "key": "links",
+        "itemIndex": 4
+      }
+    ],
+    "borders": [
+      {
+        "x": 52.04795442144,
+        "top": 83.28094754687999,
+        "width": 409.50001310399995,
+        "height": 403.64001291648,
+        "lineWidth": 0.750000024
+      },
+      {
+        "x": 473.28999546023994,
+        "top": 83.08598691072001,
+        "width": 421.94999381736005,
+        "height": 386.4878076432,
+        "lineWidth": 0.750000024
+      }
+    ]
+  }
+]
