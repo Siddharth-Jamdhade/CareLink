@@ -1,0 +1,16 @@
+node:internal/fs/promises:1774
+  return await PromisePrototypeThen(
+         ^
+
+Error: EPERM: operation not permitted, link 'C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\output\slide4\.CareLink_Slides_3_and_4_Updated.pptx.9ec1af5b-1a6a-4b07-af38-abe7cf575a02.validated' -> 'C:\Users\SIDDHARTH\OneDrive\Desktop\Health A thon\output\slide4\CareLink_Slides_3_and_4_Updated.pptx'
+    at async Object.link (node:internal/fs/promises:1774:10)
+    at async finalizePresentation (file:///C:/Users/SIDDHARTH/.codex/plugins/cache/openai-primary-runtime/presentations/26.1105.12137/skills/presentations/container_tools/artifact_tool_utils.mjs:1018:5)
+    at async file:///C:/Users/SIDDHARTH/OneDrive/Desktop/Health%20A%20thon/tmp/slide4-design/finalize.mjs:10:9 {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'link',
+  path: 'C:\\Users\\SIDDHARTH\\OneDrive\\Desktop\\Health A thon\\output\\slide4\\.CareLink_Slides_3_and_4_Updated.pptx.9ec1af5b-1a6a-4b07-af38-abe7cf575a02.validated',
+  dest: 'C:\\Users\\SIDDHARTH\\OneDrive\\Desktop\\Health A thon\\output\\slide4\\CareLink_Slides_3_and_4_Updated.pptx'
+}
+
+Node.js v24.22.1

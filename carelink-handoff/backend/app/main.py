@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from .config import UPLOAD_DIR
 from .database import engine, Base, upgrade_record_details, upgrade_patient_phone, upgrade_mobile_profile, get_db
 from . import security, mobile
-from .routers import patients, records, verification, esp32_bridge, whatsapp_webhook
+from .routers import patients, records, verification, esp32_bridge, whatsapp_webhook, rag
 
 # Import models so SQLAlchemy knows about all tables
 from . import models
@@ -117,6 +117,7 @@ async def privacy_headers(request, call_next):
 
 app.include_router(security.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(mobile.router, prefix="/api/mobile", tags=["Mobile profiles"])
+app.include_router(rag.router, prefix="/api", tags=["RAG data entry and doctor review"])
 
 
 # --------------------------------------

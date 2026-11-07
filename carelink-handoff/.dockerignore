@@ -19,3 +19,7 @@
 **/__pycache__/**
 **/*.pyc
 **/.env*
+
+backend/chroma_db/
+backend/kb_stats*.json
+backend/kb_stats*.tmp

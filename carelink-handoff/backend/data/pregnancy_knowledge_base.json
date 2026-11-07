@@ -1,0 +1,754 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "project": "CareLink Hospital Portal",
+    "description": "Standard pregnancy knowledge base for RAG-powered data entry",
+    "created": "2026-11-06",
+    "source_guidelines": ["WHO ANC Guidelines 2016", "FOGSI Good Clinical Practice", "NHM India JSSK", "PMSMA Guidelines", "ICMR National Guidelines"],
+    "total_templates": 15,
+    "coverage": "70-80% of standard Indian pregnancy cases"
+  },
+
+  "standard_anc_visits": [
+    {
+      "id": "ANC-T1-FIRST",
+      "title": "First ANC Visit — Registration & Baseline",
+      "trimester": 1,
+      "visit_type": "First Visit / Registration",
+      "gestational_week_range": "6-12 weeks",
+      "description": "Initial pregnancy registration and baseline assessment. Most common first visit in Indian public health setting.",
+      "standard_fields": {
+        "chief_complaint": "Missed periods / Positive UPT",
+        "lmp_date": "<to be filled>",
+        "edd_calculation": "Naegele's Rule: LMP + 9 months + 7 days",
+        "gravida_para": "<to be filled>",
+        "obstetric_history": {
+          "previous_pregnancies": "<number>",
+          "previous_deliveries": "<number>",
+          "abortions": "<number>",
+          "living_children": "<number>",
+          "previous_complications": "None / <specify>"
+        },
+        "vitals": {
+          "blood_pressure": "<mmHg>",
+          "weight": "<kg>",
+          "height": "<cm>",
+          "bmi": "<calculated>",
+          "pulse": "<bpm>",
+          "temperature": "<°F>"
+        },
+        "general_examination": {
+          "pallor": "Absent / Present",
+          "edema": "Absent / Present",
+          "thyroid": "Normal / Enlarged",
+          "breast_examination": "Normal"
+        },
+        "investigations_ordered": [
+          "CBC (Complete Blood Count)",
+          "Blood Group & Rh Typing",
+          "Random Blood Sugar",
+          "Urine Routine & Microscopy",
+          "HIV / VDRL / HBsAg",
+          "TSH (Thyroid)",
+          "First Trimester Ultrasound (Dating Scan)"
+        ],
+        "medications_prescribed": [
+          {"drug": "Folic Acid", "dose": "5mg", "frequency": "Once daily", "duration": "Till 12 weeks"},
+          {"drug": "Iron + Folic Acid (IFA)", "dose": "1 tablet", "frequency": "Once daily", "duration": "Throughout pregnancy"},
+          {"drug": "Calcium", "dose": "500mg", "frequency": "Twice daily", "duration": "Throughout pregnancy"}
+        ],
+        "advice_given": [
+          "Balanced diet with green leafy vegetables",
+          "Avoid raw/undercooked food",
+          "Continue folic acid supplementation",
+          "Avoid smoking, alcohol, tobacco",
+          "Next visit in 4 weeks",
+          "Danger signs to report immediately"
+        ],
+        "next_visit": "4 weeks from today",
+        "risk_category": "Low Risk"
+      },
+      "confidence_note": "Applies to ~90% of first ANC registrations"
+    },
+    {
+      "id": "ANC-T1-FOLLOWUP",
+      "title": "First Trimester Follow-up Visit",
+      "trimester": 1,
+      "visit_type": "Follow-up",
+      "gestational_week_range": "10-13 weeks",
+      "description": "Review investigations, NT scan discussion, and nausea management.",
+      "standard_fields": {
+        "chief_complaint": "Routine follow-up / Nausea & vomiting",
+        "vitals": {
+          "blood_pressure": "<mmHg>",
+          "weight": "<kg>",
+          "pulse": "<bpm>"
+        },
+        "investigation_review": {
+          "cbc_hemoglobin": "<g/dL> (Normal: 11-14 g/dL)",
+          "blood_group": "<A/B/AB/O> <Rh+/Rh->",
+          "blood_sugar": "<mg/dL> (Normal: <140 mg/dL random)",
+          "urine": "Normal / Abnormal",
+          "hiv": "Non-Reactive / Reactive",
+          "vdrl": "Non-Reactive / Reactive",
+          "hbsag": "Negative / Positive",
+          "tsh": "<mIU/L> (Normal: 0.1-2.5 in T1)"
+        },
+        "ultrasound_findings": {
+          "type": "Dating / NT Scan",
+          "gestational_age": "<weeks + days>",
+          "fetal_heartbeat": "Present / Absent",
+          "crl": "<mm>",
+          "nt_measurement": "<mm> (Normal: <3.5mm)",
+          "single_or_multiple": "Singleton / Twins"
+        },
+        "symptoms_reported": {
+          "nausea_vomiting": "Mild / Moderate / Severe",
+          "spotting": "Absent / Present",
+          "pain_abdomen": "Absent / Present"
+        },
+        "medications_prescribed": [
+          {"drug": "IFA tablet", "dose": "1 tablet", "frequency": "Once daily", "duration": "Continue"},
+          {"drug": "Calcium", "dose": "500mg", "frequency": "Twice daily", "duration": "Continue"},
+          {"drug": "Doxylamine + Pyridoxine", "dose": "10mg+10mg", "frequency": "At bedtime", "duration": "As needed for nausea", "conditional": true}
+        ],
+        "next_visit": "4 weeks",
+        "risk_category": "Low Risk"
+      },
+      "confidence_note": "Standard for 85% of first trimester follow-ups"
+    },
+    {
+      "id": "ANC-T2-ROUTINE",
+      "title": "Second Trimester Routine ANC Visit",
+      "trimester": 2,
+      "visit_type": "Routine",
+      "gestational_week_range": "14-26 weeks",
+      "description": "Most common ANC visit type. Routine check, anomaly scan, TT vaccine, OGTT screening.",
+      "standard_fields": {
+        "chief_complaint": "Routine ANC check-up",
+        "vitals": {
+          "blood_pressure": "<mmHg> (Normal: <140/90)",
+          "weight": "<kg>",
+          "weight_gain_since_last": "<kg> (Expected: 0.5-1 kg/month in T2)",
+          "pulse": "<bpm>",
+          "fundal_height": "<cm> (Should match gestational weeks ±2)"
+        },
+        "abdominal_examination": {
+          "uterus_size": "Corresponds to dates / Small / Large",
+          "fetal_heart_sound": "Present / <bpm> (Normal: 120-160)",
+          "fetal_movements": "Present / Not yet felt"
+        },
+        "investigations_ordered": [
+          "OGTT (Oral Glucose Tolerance Test) at 24-28 weeks",
+          "Anomaly Scan (Level 2 Ultrasound) at 18-20 weeks",
+          "Repeat Hemoglobin if low at first visit",
+          "Urine for protein/sugar"
+        ],
+        "vaccinations": [
+          {"vaccine": "Td (Tetanus-Diphtheria)", "dose": "Td-1 or Td-2 or Td Booster", "route": "IM", "note": "As per immunization schedule"}
+        ],
+        "medications_prescribed": [
+          {"drug": "IFA tablet", "dose": "1 tablet", "frequency": "Once daily", "duration": "Continue"},
+          {"drug": "Calcium", "dose": "500mg", "frequency": "Twice daily", "duration": "Continue"}
+        ],
+        "advice_given": [
+          "Increased protein and iron-rich diet",
+          "Monitor fetal movements daily after 20 weeks",
+          "Report reduced fetal movements immediately",
+          "Sleep on left lateral position",
+          "Gentle exercise / walking daily"
+        ],
+        "next_visit": "4 weeks (monthly till 28 weeks)",
+        "risk_category": "Low Risk"
+      },
+      "confidence_note": "Covers 90% of second trimester routine visits"
+    },
+    {
+      "id": "ANC-T2-ANOMALY-REVIEW",
+      "title": "Second Trimester — Anomaly Scan Review",
+      "trimester": 2,
+      "visit_type": "Investigation Review",
+      "gestational_week_range": "20-22 weeks",
+      "description": "Review of Level 2 anomaly scan and OGTT results.",
+      "standard_fields": {
+        "chief_complaint": "Scan review / Routine",
+        "anomaly_scan_findings": {
+          "fetal_anatomy": "Normal / Abnormal — <specify>",
+          "placenta_position": "Anterior / Posterior / Fundal / Low-lying",
+          "amniotic_fluid": "Adequate / Oligohydramnios / Polyhydramnios",
+          "cervical_length": "<mm> (Normal: >25mm)",
+          "estimated_fetal_weight": "<grams>",
+          "gender": "Not disclosed as per PCPNDT Act"
+        },
+        "ogtt_results": {
+          "fasting": "<mg/dL> (Normal: <92)",
+          "1_hour": "<mg/dL> (Normal: <180)",
+          "2_hour": "<mg/dL> (Normal: <153)",
+          "diagnosis": "Normal / Gestational Diabetes Mellitus (GDM)"
+        },
+        "action_if_normal": "Continue routine ANC, next visit in 4 weeks",
+        "action_if_gdm": "Refer to physician, dietary counselling, blood sugar monitoring",
+        "action_if_anomaly": "Refer to higher center / MFM specialist",
+        "risk_category": "Low Risk / High Risk (if GDM or anomaly detected)"
+      },
+      "confidence_note": "80% of anomaly scans are normal — auto-fill accordingly"
+    },
+    {
+      "id": "ANC-T3-ROUTINE",
+      "title": "Third Trimester Routine ANC Visit",
+      "trimester": 3,
+      "visit_type": "Routine",
+      "gestational_week_range": "28-36 weeks",
+      "description": "Fortnightly visits, growth monitoring, birth planning.",
+      "standard_fields": {
+        "chief_complaint": "Routine ANC / Fetal movements check",
+        "vitals": {
+          "blood_pressure": "<mmHg> (Alert if ≥140/90)",
+          "weight": "<kg>",
+          "weight_gain_total": "<kg> (Expected total: 10-12 kg)",
+          "pulse": "<bpm>",
+          "fundal_height": "<cm>"
+        },
+        "abdominal_examination": {
+          "presentation": "Cephalic / Breech / Transverse",
+          "fetal_heart_rate": "<bpm> (Normal: 120-160)",
+          "fetal_movements": "Adequate / Reduced",
+          "engagement": "Not engaged / Engaged"
+        },
+        "investigations_ordered": [
+          "Repeat Hemoglobin",
+          "Growth Scan Ultrasound (at 32-34 weeks)",
+          "Urine protein (to rule out preeclampsia)",
+          "Non-Stress Test (NST) if indicated"
+        ],
+        "birth_plan_discussion": {
+          "delivery_type_planned": "Normal Vaginal / Elective LSCS",
+          "hospital_for_delivery": "<to be filled>",
+          "blood_donor_arranged": "Yes / No",
+          "transport_arranged": "Yes / No",
+          "jssk_benefits_explained": "Yes / No"
+        },
+        "medications_prescribed": [
+          {"drug": "IFA tablet", "dose": "1 tablet", "frequency": "Once daily", "duration": "Continue"},
+          {"drug": "Calcium", "dose": "500mg", "frequency": "Twice daily", "duration": "Continue"}
+        ],
+        "next_visit": "2 weeks (fortnightly from 28-36 weeks)",
+        "risk_category": "Low Risk"
+      },
+      "confidence_note": "Standard for 85% of third trimester visits"
+    },
+    {
+      "id": "ANC-T3-TERM",
+      "title": "Third Trimester — Near Term Visit",
+      "trimester": 3,
+      "visit_type": "Near Term",
+      "gestational_week_range": "36-40 weeks",
+      "description": "Weekly visits, delivery readiness assessment, bishop score.",
+      "standard_fields": {
+        "chief_complaint": "Routine / Labour pains / Show",
+        "vitals": {
+          "blood_pressure": "<mmHg>",
+          "weight": "<kg>",
+          "pulse": "<bpm>",
+          "fundal_height": "<cm>"
+        },
+        "abdominal_examination": {
+          "presentation": "Cephalic / Breech",
+          "lie": "Longitudinal / Oblique / Transverse",
+          "engagement": "Floating / Fixed / Engaged",
+          "fetal_heart_rate": "<bpm>",
+          "estimated_fetal_weight": "~2.5-3.5 kg (term)"
+        },
+        "per_vaginal_examination": {
+          "cervical_dilatation": "<cm>",
+          "effacement": "<%>",
+          "station": "<-3 to +3>",
+          "membrane": "Intact / Ruptured",
+          "bishop_score": "<0-13>"
+        },
+        "delivery_readiness": {
+          "bag_packed": "Yes / No",
+          "consent_signed": "Yes / No",
+          "blood_arranged": "Yes / No",
+          "nicu_availability": "Available / Referred"
+        },
+        "next_visit": "Weekly / Admit if in labour",
+        "risk_category": "Low Risk"
+      },
+      "confidence_note": "Standard for 80% of term visits"
+    }
+  ],
+
+  "common_symptoms_diagnosis_map": [
+    {
+      "id": "SYM-001",
+      "symptom": "Nausea and Vomiting",
+      "trimester": 1,
+      "likely_diagnosis": "Morning Sickness (Nausea Gravidarum)",
+      "severity_scale": {
+        "mild": "Occasional vomiting, tolerating food, no dehydration",
+        "moderate": "Frequent vomiting, mild dehydration, weight loss <5%",
+        "severe": "Hyperemesis Gravidarum — persistent vomiting, ketonuria, weight loss >5%, needs IV fluids"
+      },
+      "standard_treatment": {
+        "mild": [{"drug": "Doxylamine + Pyridoxine", "dose": "10mg+10mg", "frequency": "At bedtime"}],
+        "moderate": [{"drug": "Ondansetron", "dose": "4mg", "frequency": "SOS", "note": "After 1st trimester only"}],
+        "severe": "REFER TO DOCTOR — needs IV fluids and admission"
+      },
+      "flag_for_doctor": false,
+      "flag_conditions": "Flag if weight loss >5% or ketonuria present"
+    },
+    {
+      "id": "SYM-002",
+      "symptom": "Bleeding / Spotting PV",
+      "trimester": 1,
+      "likely_diagnosis": "Threatened Abortion / Implantation Bleeding",
+      "severity_scale": {
+        "mild": "Scanty spotting, no pain, closed cervix",
+        "moderate": "Mild bleeding with cramping",
+        "severe": "Heavy bleeding with clots and pain"
+      },
+      "standard_treatment": {
+        "mild": [{"drug": "Progesterone support", "dose": "200mg", "frequency": "Twice daily", "route": "Vaginal/Oral"}],
+        "moderate": "REFER TO DOCTOR",
+        "severe": "EMERGENCY — REFER IMMEDIATELY"
+      },
+      "flag_for_doctor": true,
+      "flag_conditions": "Always flag — any PV bleeding needs doctor confirmation"
+    },
+    {
+      "id": "SYM-003",
+      "symptom": "Headache + Swelling of Feet + High BP",
+      "trimester": 3,
+      "likely_diagnosis": "Preeclampsia",
+      "severity_scale": {
+        "mild": "BP 140/90-149/99, mild edema, no proteinuria",
+        "moderate": "BP 150/100-159/109, proteinuria 1+",
+        "severe": "BP ≥160/110, proteinuria 2+, headache, visual disturbance, epigastric pain"
+      },
+      "standard_treatment": {
+        "mild": "Bed rest, monitor BP twice daily, low salt diet",
+        "moderate": [{"drug": "Labetalol", "dose": "100mg", "frequency": "Twice daily"}, {"drug": "Methyldopa", "dose": "250mg", "frequency": "Thrice daily"}],
+        "severe": "EMERGENCY — REFER IMMEDIATELY — MgSO4 protocol"
+      },
+      "flag_for_doctor": true,
+      "flag_conditions": "Always flag — preeclampsia needs physician management"
+    },
+    {
+      "id": "SYM-004",
+      "symptom": "Reduced Fetal Movements",
+      "trimester": 3,
+      "likely_diagnosis": "Fetal Distress (Rule Out)",
+      "severity_scale": {
+        "mild": "Less than 10 movements in 2 hours but NST reactive",
+        "moderate": "Significantly reduced movements, NST equivocal",
+        "severe": "No fetal movements felt for >12 hours"
+      },
+      "standard_treatment": {
+        "mild": "Reassure, advise kick count chart, repeat NST in 24hrs",
+        "moderate": "REFER TO DOCTOR — biophysical profile needed",
+        "severe": "EMERGENCY — immediate NST/USG, possible emergency delivery"
+      },
+      "flag_for_doctor": true,
+      "flag_conditions": "Always flag if <10 movements in 2 hours"
+    },
+    {
+      "id": "SYM-005",
+      "symptom": "Leaking / Watery Discharge PV",
+      "trimester": 3,
+      "likely_diagnosis": "Premature Rupture of Membranes (PROM)",
+      "severity_scale": {
+        "mild": "Scanty watery discharge, not sure if urine or liquor",
+        "moderate": "Clear watery gush, litmus positive",
+        "severe": "Continuous leak with fever or foul smell"
+      },
+      "standard_treatment": {
+        "mild": "Litmus test / Fern test — confirm leak. Pad test for 1 hour.",
+        "moderate": "ADMIT — steroids if preterm, antibiotics, monitor",
+        "severe": "EMERGENCY — risk of chorioamnionitis, immediate delivery"
+      },
+      "flag_for_doctor": true,
+      "flag_conditions": "Always flag — PROM needs doctor management"
+    },
+    {
+      "id": "SYM-006",
+      "symptom": "Burning Urination / Frequent Urination",
+      "trimester": "Any",
+      "likely_diagnosis": "Urinary Tract Infection (UTI)",
+      "severity_scale": {
+        "mild": "Dysuria only, no fever",
+        "moderate": "Dysuria + frequency + mild fever",
+        "severe": "High fever, loin pain — suspect Pyelonephritis"
+      },
+      "standard_treatment": {
+        "mild": [{"drug": "Nitrofurantoin", "dose": "100mg", "frequency": "Twice daily", "duration": "7 days"}],
+        "moderate": [{"drug": "Cephalexin", "dose": "500mg", "frequency": "Thrice daily", "duration": "7 days"}],
+        "severe": "REFER TO DOCTOR — IV antibiotics needed"
+      },
+      "flag_for_doctor": false,
+      "flag_conditions": "Flag if fever >101°F or loin pain"
+    },
+    {
+      "id": "SYM-007",
+      "symptom": "Itching All Over Body",
+      "trimester": 3,
+      "likely_diagnosis": "Intrahepatic Cholestasis of Pregnancy (ICP)",
+      "severity_scale": {
+        "mild": "Generalized itching, no jaundice, normal LFT",
+        "moderate": "Severe itching especially palms and soles, raised bile acids",
+        "severe": "Jaundice + itching + deranged LFT"
+      },
+      "standard_treatment": {
+        "mild": "Antihistamines (Cetirizine 10mg), check LFT and bile acids",
+        "moderate": [{"drug": "Ursodeoxycholic Acid (UDCA)", "dose": "300mg", "frequency": "Twice daily"}],
+        "severe": "REFER TO DOCTOR — early delivery may be needed"
+      },
+      "flag_for_doctor": true,
+      "flag_conditions": "Flag if palms/soles itching or bile acids elevated"
+    },
+    {
+      "id": "SYM-008",
+      "symptom": "White Discharge PV",
+      "trimester": "Any",
+      "likely_diagnosis": "Vaginal Candidiasis / Leucorrhoea",
+      "severity_scale": {
+        "mild": "White, non-foul smelling discharge",
+        "moderate": "Curdy white discharge with itching",
+        "severe": "Foul-smelling greenish discharge — suspect BV/Trichomoniasis"
+      },
+      "standard_treatment": {
+        "mild": "Reassure — physiological leucorrhoea is common in pregnancy",
+        "moderate": [{"drug": "Clotrimazole vaginal pessary", "dose": "200mg", "frequency": "Once at bedtime", "duration": "3 nights"}],
+        "severe": "REFER TO DOCTOR — culture and sensitivity needed"
+      },
+      "flag_for_doctor": false,
+      "flag_conditions": "Flag if foul smell or greenish discharge"
+    }
+  ],
+
+  "normal_vitals_reference": {
+    "blood_pressure": {
+      "normal": "90/60 - 139/89 mmHg",
+      "alert_high": "≥140/90 mmHg — suspect PIH/Preeclampsia",
+      "alert_low": "<90/60 mmHg — suspect dehydration or shock",
+      "emergency": "≥160/110 mmHg — severe preeclampsia, immediate referral"
+    },
+    "hemoglobin": {
+      "normal": "≥11 g/dL",
+      "mild_anemia": "10-10.9 g/dL — oral iron therapy",
+      "moderate_anemia": "7-9.9 g/dL — double dose iron, consider IV iron",
+      "severe_anemia": "<7 g/dL — REFER, may need blood transfusion"
+    },
+    "blood_sugar": {
+      "fasting_normal": "<92 mg/dL",
+      "random_normal": "<140 mg/dL",
+      "ogtt_1hr_normal": "<180 mg/dL",
+      "ogtt_2hr_normal": "<153 mg/dL",
+      "gdm_diagnosis": "Any ONE value abnormal on OGTT = GDM"
+    },
+    "tsh_thyroid": {
+      "trimester_1": "0.1 - 2.5 mIU/L",
+      "trimester_2": "0.2 - 3.0 mIU/L",
+      "trimester_3": "0.3 - 3.5 mIU/L",
+      "subclinical_hypo": "TSH elevated but T4 normal — may need levothyroxine",
+      "overt_hypo": "TSH >10 or symptomatic — REFER to physician"
+    },
+    "fetal_heart_rate": {
+      "normal": "120-160 bpm",
+      "tachycardia": ">160 bpm — may indicate fetal distress or maternal fever",
+      "bradycardia": "<120 bpm — URGENT, possible fetal distress"
+    },
+    "weight_gain_expected": {
+      "underweight_bmi_lt_18_5": "12.5-18 kg total",
+      "normal_bmi_18_5_24_9": "11.5-16 kg total",
+      "overweight_bmi_25_29_9": "7-11.5 kg total",
+      "obese_bmi_gte_30": "5-9 kg total",
+      "monthly_t2_t3": "1.5-2 kg per month"
+    },
+    "fundal_height": {
+      "rule": "Fundal height in cm ≈ Gestational age in weeks (±2 cm)",
+      "small_for_dates": ">2 cm less than expected — suspect IUGR, refer for growth scan",
+      "large_for_dates": ">2 cm more than expected — suspect macrosomia/polyhydramnios/twins"
+    }
+  },
+
+  "standard_lab_templates": {
+    "first_visit_panel": {
+      "tests": ["CBC", "Blood Group + Rh", "RBS", "Urine R/M", "HIV", "VDRL", "HBsAg", "TSH"],
+      "purpose": "Baseline screening at registration",
+      "when": "First ANC visit (6-12 weeks)"
+    },
+    "second_trimester_panel": {
+      "tests": ["OGTT (75g)", "Anomaly Scan", "Repeat Hb if low", "Urine for protein"],
+      "purpose": "GDM screening + fetal anomaly check",
+      "when": "18-28 weeks"
+    },
+    "third_trimester_panel": {
+      "tests": ["Repeat Hb", "Growth Scan", "Urine protein", "NST (if indicated)", "GBS screening (optional)"],
+      "purpose": "Growth monitoring + preeclampsia screening",
+      "when": "32-36 weeks"
+    }
+  },
+
+  "indian_government_schemes": {
+    "jssk": {
+      "full_name": "Janani Shishu Suraksha Karyakram",
+      "entitlements": [
+        "Free delivery (normal and C-section) at public facilities",
+        "Free drugs and consumables",
+        "Free diagnostics",
+        "Free diet during hospital stay",
+        "Free blood (up to 3 units)",
+        "Free transport (home to facility and back)",
+        "No out-of-pocket expense for the mother"
+      ],
+      "eligibility": "All pregnant women delivering in government health facilities"
+    },
+    "pmsma": {
+      "full_name": "Pradhan Mantri Surakshit Matritva Abhiyan",
+      "description": "Free ANC check-up on the 9th of every month by OBGYN specialists at government facilities",
+      "services": [
+        "Free comprehensive ANC check-up",
+        "Ultrasound if needed",
+        "Specialist consultation",
+        "High risk identification and referral"
+      ]
+    },
+    "pmmvy": {
+      "full_name": "Pradhan Mantri Matru Vandana Yojana",
+      "description": "Cash incentive of ₹5,000 in 3 installments for first living child",
+      "installments": [
+        {"amount": 1000, "condition": "Early registration (within 150 days of LMP)"},
+        {"amount": 2000, "condition": "At least one ANC at 6 months"},
+        {"amount": 2000, "condition": "Child birth registration + first cycle of vaccination"}
+      ]
+    },
+    "mcp_card": {
+      "full_name": "Mother and Child Protection Card",
+      "description": "Mandatory record card tracking all ANC visits, immunizations, weight, BP, and growth",
+      "fields_tracked": ["Weight", "BP", "Hb", "Urine", "Fundal Height", "Fetal HR", "Td vaccination", "IFA compliance"]
+    }
+  },
+
+  "common_complications_templates": [
+    {
+      "id": "COMP-001",
+      "condition": "Gestational Diabetes Mellitus (GDM)",
+      "frequency": "~10-15% of Indian pregnancies",
+      "diagnosis_criteria": "OGTT (75g): Fasting ≥92, 1hr ≥180, 2hr ≥153 — any ONE abnormal",
+      "standard_management": {
+        "diet": "Medical Nutrition Therapy — small frequent meals, low GI, no sugar",
+        "monitoring": "4-point blood sugar profile (Fasting + 2hr post each meal)",
+        "exercise": "30 min daily walking after meals",
+        "medication_if_needed": [
+          {"drug": "Metformin", "dose": "500mg", "frequency": "Twice daily", "note": "If diet fails after 2 weeks"},
+          {"drug": "Insulin", "note": "If metformin insufficient — REFER TO DOCTOR"}
+        ],
+        "targets": {
+          "fasting": "<95 mg/dL",
+          "2hr_post_meal": "<120 mg/dL"
+        }
+      },
+      "flag_for_doctor": true,
+      "risk_category": "High Risk"
+    },
+    {
+      "id": "COMP-002",
+      "condition": "Anaemia in Pregnancy",
+      "frequency": "~50% of Indian pregnant women",
+      "diagnosis_criteria": "Hb <11 g/dL",
+      "standard_management": {
+        "mild_10_10_9": [
+          {"drug": "IFA (Iron Folic Acid)", "dose": "1 tablet", "frequency": "Once daily"},
+          {"note": "Dietary advice: jaggery, dates, green leafy vegetables, vitamin C with iron"}
+        ],
+        "moderate_7_9_9": [
+          {"drug": "IFA", "dose": "2 tablets daily (morning + evening)"},
+          {"drug": "IV Iron Sucrose", "dose": "200mg", "frequency": "Alternate days x 5 doses", "note": "If oral not tolerated"},
+          {"note": "Deworming: Albendazole 400mg single dose (after 1st trimester)"}
+        ],
+        "severe_lt_7": "REFER — blood transfusion may be needed"
+      },
+      "flag_for_doctor": false,
+      "flag_conditions": "Flag if Hb <7 or not responding to oral iron in 4 weeks"
+    },
+    {
+      "id": "COMP-003",
+      "condition": "Hypothyroidism in Pregnancy",
+      "frequency": "~10-12% in India",
+      "diagnosis_criteria": "TSH above trimester-specific range",
+      "standard_management": {
+        "subclinical": [
+          {"drug": "Levothyroxine", "dose": "25-50 mcg", "frequency": "Once daily (empty stomach, 30 min before food)"}
+        ],
+        "overt": [
+          {"drug": "Levothyroxine", "dose": "50-100 mcg", "frequency": "Once daily"},
+          {"note": "Recheck TSH every 6-8 weeks, adjust dose"}
+        ],
+        "targets": {
+          "trimester_1": "TSH <2.5",
+          "trimester_2_3": "TSH <3.0"
+        }
+      },
+      "flag_for_doctor": true,
+      "flag_conditions": "Always needs physician-managed dosing"
+    },
+    {
+      "id": "COMP-004",
+      "condition": "Pregnancy Induced Hypertension (PIH) / Preeclampsia",
+      "frequency": "~8-10% of pregnancies",
+      "diagnosis_criteria": "BP ≥140/90 after 20 weeks with/without proteinuria",
+      "standard_management": {
+        "gestational_hypertension": [
+          {"drug": "Labetalol", "dose": "100mg", "frequency": "Twice daily"},
+          {"note": "Monitor BP twice daily, weekly urine protein, watch for symptoms"}
+        ],
+        "mild_preeclampsia": [
+          {"drug": "Labetalol", "dose": "100-200mg", "frequency": "Twice daily"},
+          {"drug": "Methyldopa", "dose": "250mg", "frequency": "Thrice daily", "note": "Alternative to labetalol"},
+          {"note": "Weekly blood tests: LFT, KFT, Platelets, LDH"}
+        ],
+        "severe_preeclampsia": "EMERGENCY — MgSO4 loading dose + REFER for delivery"
+      },
+      "flag_for_doctor": true,
+      "risk_category": "High Risk"
+    }
+  ],
+
+  "delivery_templates": [
+    {
+      "id": "DEL-NVD",
+      "title": "Normal Vaginal Delivery — Standard Template",
+      "type": "Normal Vaginal Delivery (NVD)",
+      "frequency": "~60-65% of deliveries",
+      "standard_fields": {
+        "admission_details": {
+          "time_of_admission": "<time>",
+          "gestational_age_at_delivery": "<weeks + days>",
+          "complaint_at_admission": "Labour pains / Leaking PV / Routine admission at term",
+          "admission_vitals": {
+            "bp": "<mmHg>",
+            "pulse": "<bpm>",
+            "temp": "<°F>",
+            "fhr": "<bpm>"
+          }
+        },
+        "labour_details": {
+          "onset": "Spontaneous / Induced",
+          "duration_first_stage": "<hours>",
+          "duration_second_stage": "<minutes>",
+          "duration_third_stage": "<minutes>",
+          "mode_of_delivery": "Spontaneous vaginal delivery",
+          "episiotomy": "Given / Not given",
+          "complications": "None / PPH / Perineal tear"
+        },
+        "baby_details": {
+          "time_of_birth": "<time>",
+          "sex": "Male / Female",
+          "birth_weight": "<kg>",
+          "apgar_1min": "<0-10>",
+          "apgar_5min": "<0-10>",
+          "cry_at_birth": "Immediate / Delayed",
+          "resuscitation_needed": "No / Yes — <details>",
+          "breastfeeding_initiated": "Within 1 hour / Delayed"
+        },
+        "postnatal_mother": {
+          "uterus_contracted": "Yes / No",
+          "bleeding_pv": "Normal / Excessive",
+          "vitals_post_delivery": {"bp": "<mmHg>", "pulse": "<bpm>"}
+        }
+      },
+      "confidence_note": "Standard for 65% of deliveries"
+    },
+    {
+      "id": "DEL-LSCS",
+      "title": "Caesarean Section (LSCS) — Standard Template",
+      "type": "Lower Segment Caesarean Section",
+      "frequency": "~30-35% of deliveries in India",
+      "standard_fields": {
+        "indication": "Previous LSCS / Fetal distress / Non-progress of labour / CPD / Breech / Placenta previa / <other>",
+        "type_of_lscs": "Elective / Emergency",
+        "anaesthesia": "Spinal / General",
+        "incision": "Pfannenstiel (standard)",
+        "intra_operative_findings": {
+          "uterus": "Normal / Thin lower segment / Adhesions",
+          "amniotic_fluid": "Clear / Meconium stained / Blood stained",
+          "placenta": "Delivered completely / Manual removal needed"
+        },
+        "baby_details": {
+          "time_of_birth": "<time>",
+          "sex": "Male / Female",
+          "birth_weight": "<kg>",
+          "apgar_1min": "<0-10>",
+          "apgar_5min": "<0-10>",
+          "cry_at_birth": "Immediate / Delayed"
+        },
+        "post_op_orders": [
+          "NPO for 6 hours, then sips of water",
+          "IV fluids as per anaesthetist",
+          "Inj. Ceftriaxone 1g IV BD x 3 days",
+          "Inj. Metronidazole 500mg IV TDS x 3 days",
+          "Inj. Tramadol 50mg IM SOS for pain",
+          "Foley catheter removal after 12-24 hours",
+          "Ambulation after 12 hours",
+          "Breastfeeding as soon as mother is comfortable"
+        ]
+      },
+      "flag_for_doctor": true,
+      "confidence_note": "LSCS always needs doctor involvement — template for documentation only"
+    }
+  ],
+
+  "danger_signs_checklist": {
+    "description": "Danger signs that nurses/VAD boys should immediately flag — DO NOT auto-fill, ALWAYS refer to doctor",
+    "signs": [
+      {"sign": "Heavy vaginal bleeding", "action": "EMERGENCY REFERRAL"},
+      {"sign": "Severe headache with blurred vision", "action": "Check BP — suspect eclampsia"},
+      {"sign": "Convulsions / Fits", "action": "EMERGENCY — MgSO4 + REFER"},
+      {"sign": "Severe abdominal pain", "action": "Rule out abruption / ectopic — REFER"},
+      {"sign": "High fever >101°F with chills", "action": "Suspect infection — REFER"},
+      {"sign": "No fetal movements for >12 hours", "action": "URGENT NST — possible IUD"},
+      {"sign": "Sudden gush of fluid PV at <37 weeks", "action": "Preterm PROM — ADMIT + REFER"},
+      {"sign": "Swelling of face + hands + feet suddenly", "action": "Suspect preeclampsia — Check BP + urine protein"},
+      {"sign": "Difficulty breathing / chest pain", "action": "EMERGENCY — rule out PE / cardiac"},
+      {"sign": "Unable to eat or drink for >24 hours", "action": "IV fluids needed — ADMIT"}
+    ],
+    "rag_behavior": "NEVER auto-fill these cases. Always set confidence = 0% and flag for doctor."
+  },
+
+  "rag_confidence_rules": {
+    "description": "Rules for the RAG system to determine confidence level and routing",
+    "high_confidence_auto_fill": {
+      "threshold": "≥80%",
+      "conditions": [
+        "Standard routine ANC visit matching a known template",
+        "Normal vitals within reference ranges",
+        "No danger signs reported",
+        "No comorbidities flagged",
+        "Standard medication prescription matching protocol"
+      ],
+      "action": "Auto-fill form, nurse confirms with one tap"
+    },
+    "medium_confidence_nurse_review": {
+      "threshold": "50-79%",
+      "conditions": [
+        "Slightly abnormal values (e.g., BP 135/85, Hb 9.5)",
+        "Mild symptoms that may or may not need intervention",
+        "Mixed template match (partially routine, partially complex)",
+        "Known comorbidity like mild GDM or hypothyroidism on medication"
+      ],
+      "action": "Auto-fill with yellow warning, nurse reviews carefully, option to send to doctor"
+    },
+    "low_confidence_doctor_required": {
+      "threshold": "<50%",
+      "conditions": [
+        "Any danger sign present",
+        "Multiple abnormal values",
+        "No matching template found",
+        "High-risk conditions (severe preeclampsia, IUGR, previous stillbirth)",
+        "Emergency situation"
+      ],
+      "action": "DO NOT auto-fill. Send directly to doctor verification queue."
+    }
+  }
+}

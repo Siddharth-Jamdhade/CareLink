@@ -60,6 +60,7 @@ function PatientJourney() {
           <span style={{ fontSize: 12, color: "#A4B0CC" }}>{offline && "📴 Offline"}</span>
         </div>
 
+        {canVerify && <button className="btn btn-primary" onClick={() => navigate('/rag/' + id)}>RAG-assisted data entry</button>}
         <div className="patient-header" style={{ background: "#fff", padding: 16, borderRadius: 12, marginBottom: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
           <h2 style={{ fontSize: 20, fontWeight: 800 }}>{p.name}</h2>
           <p style={{ color: "#5C6B8A", fontSize: 13 }}>Age {p.age} · Week {p.gestational_week} · ID: {p.id.slice(0, 8)}</p>

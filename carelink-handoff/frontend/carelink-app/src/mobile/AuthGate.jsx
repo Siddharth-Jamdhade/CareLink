@@ -61,6 +61,7 @@ export default function AuthGate({ children }) {
       <p className="cl-eyebrow">TOGETHER, THROUGH EVERY STAGE</p>
       <h1>A little support.<br />A more connected journey.</h1>
       <p>Your records, your care team, and your pregnancy journey. All in one place.</p>
+      <p><a href="https://carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site/mobile">Have a hospital-issued CareLink username? Sign in to your linked patient app →</a></p>
       <form onSubmit={login}>
         <h2>Welcome back</h2>
         <label>Username<input name="username" autoComplete="username" required maxLength="100" /></label>

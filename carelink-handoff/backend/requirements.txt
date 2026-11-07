@@ -1,7 +1,7 @@
 fastapi==0.143.1
 uvicorn[standard]==0.54.0
 SQLAlchemy==2.1.4
-pydantic==2.14.1
+pydantic==2.14.3
 python-dotenv==1.2.4
 python-multipart==0.0.32
 Pillow==12.3.0
@@ -13,3 +13,7 @@ httpx==0.28.1
 requests>=2.32.3,<3
 twilio>=9,<10
 psycopg2-binary>=2.9.9
+chromadb==1.5.9
+
+# Pin the Chroma client dependency to a version compatible with the Pydantic patch above.
+kubernetes==37.0.2

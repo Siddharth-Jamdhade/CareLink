@@ -124,3 +124,27 @@ class DatingAudit(Base):
     before_json = Column(Text, nullable=False)
     after_json = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class RagCase(Base):
+    """RAG drafts and review audit, isolated from source-document extraction."""
+    __tablename__ = 'rag_cases'
+    id = Column(String, primary_key=True, default=generate_uuid)
+    patient_id = Column(String, ForeignKey('patients.id'), nullable=False)
+    owner_id = Column(String, ForeignKey('mobile_accounts.id'), nullable=False)
+    data_json = Column(Text, nullable=False)
+    status = Column(String, nullable=False, default='draft')
+    urgency = Column(Integer, nullable=False, default=0)
+    record_id = Column(String, nullable=True)
+    reviewed_by = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class RagEntry(Base):
+    __tablename__ = 'rag_entries'
+    id = Column(String, primary_key=True, default=generate_uuid)
+    case_id = Column(String, ForeignKey('rag_cases.id'), unique=True, nullable=False)
+    patient_id = Column(String, ForeignKey('patients.id'), nullable=False)
+    form_json = Column(Text, nullable=False)
+    author_id = Column(String, ForeignKey('mobile_accounts.id'), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

@@ -14,6 +14,8 @@ WORKDIR /app/backend
 COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/app ./app
+COPY backend/rag_knowledge.py backend/rag_pipeline.py backend/setup_vector_db.py backend/feedback_loop.py backend/main.py ./
+COPY backend/data/pregnancy_knowledge_base.json ./data/pregnancy_knowledge_base.json
 COPY backend/manage_mobile.py backend/cloud_start.py ./
 COPY --from=frontend /build/build /app/frontend/carelink-app/build
 RUN groupadd --gid 10001 carelink && useradd --uid 10001 --gid carelink --create-home carelink

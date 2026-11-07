@@ -3,7 +3,7 @@
   "appName": "CareLink",
   "webDir": "build",
   "server": {
-    "url": "https://carelink-app.onrender.com",
+    "url": "https://carelink-hospital-portal-sj.jamdhadesiddharth69.chatgpt.site/mobile",
     "androidScheme": "https"
   },
   "android": { "backgroundColor": "#fafbf7" }

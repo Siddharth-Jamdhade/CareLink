@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
+import NurseDataEntry from "./pages/NurseDataEntry";
 import PatientJourney from "./pages/PatientJourney";
 import CameraCapture from "./pages/CameraCapture";
 import Splash from "./pages/Splash";
@@ -21,6 +22,7 @@ function Portal() {
         <Route path="/" element={<Splash />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/rag/:id" element={<NurseDataEntry />} />
         <Route path="/patient/:id" element={<PatientJourney />} />
         <Route path="/capture/:id" element={<CameraCapture />} />
         <Route path="/settings" element={<Settings onWithdraw={() => setConsent(null)} />} />

@@ -24,3 +24,9 @@ carelink-handoff/hardware/card_patients.json
 carelink-handoff/mobile-delivery/
 carelink-handoff/frontend/carelink-ap/
 tmp/carelink-feature-baseline/
+
+# Local RAG vector index and generated statistics
+carelink-handoff/backend/chroma_db/
+carelink-handoff/backend/kb_stats.json
+carelink-handoff/backend/kb_stats.tmp
+carelink-handoff/backend/kb_stats.*.tmp
